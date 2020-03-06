@@ -5,7 +5,7 @@ import './Appointments.css';
 const Appointments = () => {
     return (
         <div className = "Appointments">
-            this is an appointment
+            Appointments
 
         </div>
     )

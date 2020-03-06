@@ -1,0 +1,27 @@
+.header {
+    background: #282c34;
+    align-self: right;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 1%;
+}
+
+.user-nav-items {
+    display:flex;
+    margin-left: auto;
+    margin-right: 5%;
+    align-items: right;
+}
+
+.user-nav-link {
+
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.user-nav-link:hover {
+    color: 	#FA4616;
+}

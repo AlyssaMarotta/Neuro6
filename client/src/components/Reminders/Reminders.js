@@ -5,7 +5,7 @@ import './Reminders.css';
 const Reminders = () => {
     return (
         <div className = "Reminders">
-            this is a reminder
+            Reminders
 
         </div>
     )
