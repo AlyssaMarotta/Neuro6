@@ -9,7 +9,6 @@
 .nav-logo {
     display:flex;
     height: 50px;
-    width: 50px;
     padding: 10%;
 }
 
@@ -25,7 +24,7 @@
 }
 
 .nav-link {
-    background-color: #09d3ac;
+    background-color: white;
     color: black;
     padding: 14px 25px;
     text-align: center;
@@ -33,6 +32,6 @@
 }
 
 .nav-link:hover {
-    background-color: #08bd9a;
+    background-color: 	#FA4616;
 }
 
