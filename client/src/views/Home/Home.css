@@ -54,6 +54,9 @@ body {
     border-radius: 4px;
     font-family: Palatino, "Palatino Linotype"
 }
+.buttons:hover {
+    background-color: #ff7500;
+}
 .section{
     margin: 5px;
     width: 20%;
