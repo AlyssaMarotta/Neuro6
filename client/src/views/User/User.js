@@ -9,8 +9,10 @@ import Calendar from '../../components/Calendar/Calendar';
 function User() {
     return (
     <div className="User">
+    <div className = "navBar2">
+        <UserNavBar2 />
+    </div> 
     <header className="User-Section">  
-    <UserNavBar2 />
     <div className = "all"> 
     <div className = "left">
     <Reminders />
