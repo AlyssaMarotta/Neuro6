@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Redirect, withRouter} from 'react-router-dom';
 
 import logo from '../../assets/logo.svg';
 import uflogo from '../../assets/NeurosurgeryLogo.gif';
 import uflogo2 from '../../assets/uf-monogram.svg';
 import './Home.css';
 
+
+
 function Home() {
+
+ 
     return (
         <div className="App">
             <header className="App-header">
@@ -20,16 +25,10 @@ function Home() {
                 </p> */}
 
                 <p></p>
-                <button className="buttons">Login</button>
+                <button to = '/Login' className="buttons">Login</button>
                 <p></p>
                 <button className="buttons">Sign Up</button>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                </a>
+                
             </header>
         </div>
     );
