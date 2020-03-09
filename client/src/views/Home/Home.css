@@ -38,3 +38,27 @@ body {
         
 
 }
+.buttons {
+    height: 70px;
+    width: 155px;
+    background-color: rgb(100, 105, 129);
+    border: none;
+    color: white;
+    padding: 17px, 30px;
+    margin: 2px auto;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 20px;
+    border-radius: 4px;
+    font-family: Palatino, "Palatino Linotype"
+}
+.section{
+    margin: 5px;
+    width: 20%;
+    border-width: 3px;
+    border-style: solid;
+    border-color: white;
+    background-color: white;
+    border-radius: 12px;
+}

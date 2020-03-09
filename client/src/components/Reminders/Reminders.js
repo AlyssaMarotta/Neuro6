@@ -6,7 +6,6 @@ const Reminders = () => {
     return (
         <div className = "Reminders">
             Reminders
-
         </div>
     )
 };
