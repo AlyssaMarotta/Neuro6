@@ -30,38 +30,42 @@ function Login() {
       if (response.status !== 200) {
         throw Error(body.message);
       }
-      return body;
+
+      console.log(res);
     };
 
-    callBackendAPI()
-      .then(res => console.log(res)) //this.setState({ data: res.express }))
-      .catch(err => console.log(err));
+    callBackendAPI().catch(err => console.log(err));
   };
 
   return (
     <div className='App'>
       <header className='App-header'>
         <div className='forum'>
-          <p>
-            <input
+          <form onSubmit={handleSubmit}>
+            <label>
+              Username:{' '}
+              <input
               type='text'
+              className='textbox'
               placeholder='Username'
               onChange={handleUsernameChange}
+              required
             />
-          </p>
-          <p>
-            <input
+            </label>
+            <p>{'\n'}</p>
+            <label>
+              Password:{' '}
+              <input
               type='password'
+              className='textbox'
               placeholder='Password'
               onChange={handlePasswordChange}
+              required
             />
-          </p>
-          <p>
-            <Link className='nav-link' to='/User'>
-              Enter
-            </Link>
-            <button onClick={handleSubmit}>sup</button>
-          </p>
+            </label>
+            <p>{'\n'}</p>
+            <input className='buttons' type='submit' value='Login'/>
+          </form>
         </div>
       </header>
     </div>

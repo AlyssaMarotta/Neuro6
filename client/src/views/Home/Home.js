@@ -10,12 +10,14 @@ function Home() {
                 <div className = "section"> 
                 <p>
                     
-                <Link to='/Login'>
+                <Link className="buttons" to='/Login'>
                     <button className="buttons">Login</button>
                 </Link>
                 </p>
                 <p>
-                    <button className="buttons">Sign Up</button>
+                <Link className="buttons"to='/CreateUser'>
+                    <button className="buttons">Create Account</button>
+                </Link>
                 </p>
                 </div> 
             </header>
