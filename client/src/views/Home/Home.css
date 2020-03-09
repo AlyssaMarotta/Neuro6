@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    font-family: Palatino, "Palatino Linotype"
 }
 
 .App {
@@ -8,7 +9,24 @@ body {
 }
 
 .App-logo {
-    height: 40vmin;
+    height: 100px;
+    width: auto;
+}
+
+.buttons {
+    height: 70px;
+    width: 155px;
+    background-color: rgb(100, 105, 129);
+    border: none;
+    color: white;
+    padding: 17px, 30px;
+    margin: 2px auto;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 20px;
+
+    font-family: Palatino, "Palatino Linotype"
 }
 
 .App-header {
