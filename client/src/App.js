@@ -3,6 +3,7 @@ import { Route, Switch, Redirect  } from 'react-router-dom';
 import Home from "./views/Home/Home";
 import NotFound from "./views/NotFound";
 import NavBar from "./components/Header/NavBar";
+import UserNavBar from "./components/UserHeader/UserNavBar";
 import CreateUser from './views/CreateUser/CreateUser';
 import User from './views/User/User';
 import Login from './views/Login/Login';
@@ -10,7 +11,11 @@ import Login from './views/Login/Login';
 const App = () => {
   return (
     <div>
-      <NavBar />
+      <Switch>
+
+      <UserNavBar exact path="/User"/>
+        <NavBar exact path= ""/>
+      </Switch>
       <Switch>
         <Route exact path="/Home" component={Home} />
         <Route exact path="/User" component={User} />
