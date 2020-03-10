@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import './Login.css';
+import { PromiseProvider } from 'mongoose';
 
-const Login = () => {
+const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authorized, setAuthorized] = useState(false);
@@ -34,7 +35,9 @@ const Login = () => {
       }
 
       console.log(body);
+      props.set(email);
       setAuthorized(true);
+      
     };
 
     callBackendAPI().catch(err => console.log(err));

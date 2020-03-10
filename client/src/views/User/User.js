@@ -5,9 +5,10 @@ import Reminders from '../../components/Reminders/Reminders';
 import Appointments from '../../components/Appointments/Appointments';
 import UserNavBar2 from '../../components/UserNavBar2/UserNavBar2';
 import CalendarComponent from '../../components/Calendar/Calendar';
+import { PromiseProvider } from 'mongoose';
 
 
-const User = () => {
+const User = (props) => {
   return (
     <div className='User'>
       <div className='navBar2'>
@@ -17,7 +18,7 @@ const User = () => {
         <div className='all'>
           <div className='left'>
             <Reminders />
-            <Appointments />
+            <Appointments email = {props.email}/>
           </div>
             <CalendarComponent />
         </div>
