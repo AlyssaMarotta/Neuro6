@@ -1,15 +1,72 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Appointments.css';
-import Appointment from '../Appointment/Appointment'
+import Appointment from '../Appointment/Appointment';
+
+const dummyData = {
+  patientEmail: 'fake.email@gmail.com',
+  title: 'First Visit Appointment',
+  time: new Date(2018, 1, 13, 15),
+  location: 'Dummy location',
+  reminders: [
+    'Bring your best smile!',
+    'Remember to floss'
+  ]
+};
 
 const Appointments = () => {
-    return (
-        <div className = "Appointments">
-            Appointments
-            <Appointment />
-            <Appointment />
-        </div>
-    )
+  // TODO: Use logged in email from useReducer + useContext
+  const email = dummyData.patientEmail;
+
+  const [appointments, setAppointments] = useState([]);
+
+  useEffect(() => {
+    // TODO: Fetch appointments with backend endpoint
+    const getAppointments = async () => {
+      const response = await fetch(`/appointments/${email}`, {
+        // TODO: Find out how to actually send the authorized email/password
+        headers: {'Authorization': 'Basic YWxhZGRpbjpvcGVuc2VzYW1l'}
+      });
+      const body = await response.json();
+
+      if (response.status !== 200) throw Error(body.error);
+  
+      console.log(body);
+      setAppointments(body.appointments || []);
+    };
+    // setAppointments([dummyData]);
+    getAppointments().catch(err => console.log(err));
+  }, []);
+
+  const handleAddAppointment = appointment => {
+    const addAppointment = async () => {
+      // const response = await fetch(`/appointments/${encodeURIComponent(email)}`, {
+      const response = await fetch('/appointments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(appointment),
+      });
+      const body = await response.json();
+
+      if (response.status !== 200) {
+        throw Error(body.error);
+      }
+
+      console.log(body);
+      setAppointments(appointments => [...appointments, appointment]);
+    };
+
+    addAppointment().catch(err => console.log(err));
+  };
+
+  return (
+    <div className='Appointments'>
+      Appointments
+      {appointments.map((appointment, index) => (
+        <Appointment key={index} data={appointment} />
+      ))}
+      <button onClick={() => handleAddAppointment(dummyData)}>Add Dummy Appointment</button>
+    </div>
+  );
 };
 export default Appointments;

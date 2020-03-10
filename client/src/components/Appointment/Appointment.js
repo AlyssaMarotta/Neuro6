@@ -1,22 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 import './Appointment.css';
 
-const Appointment = () => {
-    return (
-        <div className = "Appointment">
-            <div className='all'>
-            <div className='leftAppointment'>
-            <p>First Visit Appointment</p>
-            <p>January 13, 2018 @ 3:00pm</p>
-            </div>
-                <div className ="rights">
-                <Link to='/Login'>
-                    <button className="buttons">More Details</button>
-                </Link>
-                </div>
-            </div>
+const Appointment = (props) => {
+  const { patientEmail, title, time, location, reminders } = props.data;
+
+  return (
+    <div className='Appointment'>
+      <div className='all'>
+        <div className='leftAppointment'>
+          <p>{title}</p>
+          <p>{moment(time).format('MMMM Do, YYYY @ h:mm a')}</p>
         </div>
-    )
+        <div className='rights'>
+          <Link to='/Login'>
+            <button className='buttons'>More Details</button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 };
 export default Appointment;
