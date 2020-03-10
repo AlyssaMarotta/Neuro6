@@ -2,11 +2,12 @@
 {
     margin: 5px;
     width: 95%;
-    height: 3em;
+    min-height: 3em;
     border-width: 3px;
     border-style: solid;
-    border-color: white;
+    border-color: rgb(255, 168, 217);
     border-radius: 12px;
+    color:  rgb(255, 168, 217);
     
 
 }
