@@ -1,36 +1,50 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import './CreateUser.css';
 
-function CreateUser() {
+const initForm = {
+  email: '',
+  password: '',
+  firstName: '',
+  lastName: '',
+  dob: '',
+};
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const CreateUser = () => {
+  const [formData, setFormData] = useState(initForm);
+  const [authorized, setAuthorized] = useState(false);
+
+  const handleFormChange = e => {
+    const { name, value } = e.target;
+    setFormData(formData => ({
+      ...formData,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
     //sourced from https://medium.com/@maison.moa/setting-up-an-express-backend-server-for-create-react-app-bc7620b20a61
     const callBackendAPI = async () => {
-      const response = await fetch('/login', {
+      const response = await fetch('/create-account', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username,
-          password
-        })
+        body: JSON.stringify(formData),
       });
       const body = await response.json();
 
       if (response.status !== 200) {
         throw Error(body.message);
       }
-      return body;
+
+      console.log(body);
+      setAuthorized(true);
     };
 
-    callBackendAPI()
-      .then(res => console.log(res)) //this.setState({ data: res.express }))
-      .catch(err => console.log(err));
+    callBackendAPI().catch(err => console.log(err));
   };
 
+  if (authorized) return <Redirect to='/User' />;
 
   return (
     <div className='App'>
@@ -42,8 +56,10 @@ function CreateUser() {
               <input
                 className='textbox'
                 type='email'
+                name='email'
                 placeholder='Email'
                 required
+                onChange={handleFormChange}
               />
             </label>
             <p>{'\n'}</p>
@@ -52,8 +68,10 @@ function CreateUser() {
               <input
                 className='textbox'
                 type='password'
+                name='password'
                 placeholder='Password'
                 required
+                onChange={handleFormChange}
               />
             </label>
             <p>{'\n'}</p>
@@ -62,8 +80,10 @@ function CreateUser() {
               <input
                 className='textbox'
                 type='text'
+                name='firstName'
                 placeholder='First Name'
                 required
+                onChange={handleFormChange}
               />
             </label>
             <p>{'\n'}</p>
@@ -72,8 +92,10 @@ function CreateUser() {
               <input
                 className='textbox'
                 type='text'
+                name='lastName'
                 placeholder='Last Name'
                 required
+                onChange={handleFormChange}
               />
             </label>
             <p>{'\n'}</p>
@@ -83,8 +105,10 @@ function CreateUser() {
               <input
                 className='textbox'
                 type='date'
+                name='dob'
                 placeholder='Date of Birth'
                 required
+                onChange={handleFormChange}
               />
             </label>
             <p>{'\n'}</p>
@@ -94,6 +118,6 @@ function CreateUser() {
       </header>
     </div>
   );
-}
+};
 
 export default CreateUser;
