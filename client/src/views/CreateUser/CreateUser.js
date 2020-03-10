@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './CreateUser.css';
 
 function CreateUser() {
 
-  const handleSubmit = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = e => {
+    e.preventDefault();
     //sourced from https://medium.com/@maison.moa/setting-up-an-express-backend-server-for-create-react-app-bc7620b20a61
     const callBackendAPI = async () => {
       const response = await fetch('/login', {
