@@ -20,8 +20,6 @@ function Home() {
                 </Link>
                 </p>
                 </div> 
-            </header>
-        </div>
       </header>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Home from './views/Home/Home';
 import NotFound from './views/NotFound';
@@ -9,17 +9,29 @@ import User from './views/User/User';
 import Login from './views/Login/Login';
 
 const App = () => {
+  const [account, setAccount] = useState('');
+  const updateAccount =  (value) => {
+    console.log(value);
+    setAccount(value);    
+};
   return (
     <div>
       <Switch>
-        <UserNavBar exact path='/User' />
+        <UserNavBar exact path='/User' user = {account}/>
         <NavBar exact path='' />
       </Switch>
       <Switch>
         <Route exact path='/Home' component={Home} />
-        <Route exact path='/User' component={User} />
-        <Route exact path='/CreateUser' component={CreateUser} />4
-        <Route exact path='/Login' component={Login} />
+        <Route exact path='/User' 
+          component={() => <User email={account} />}
+        />
+        <Route 
+          exact path='/CreateUser' 
+          component={() => <CreateUser set={e =>updateAccount(e)} />}
+        />
+        <Route 
+          exact path='/Login' 
+          component={() => <Login set={e =>updateAccount(e)} />}/>
         <Route exact path='/'>
           <Redirect to='/Home' />
         </Route>
@@ -27,6 +39,7 @@ const App = () => {
       </Switch>
     </div>
   );
+
 };
 
 export default App;

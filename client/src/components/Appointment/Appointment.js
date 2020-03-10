@@ -2,13 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Appointment.css';
 
-const Appointment = () => {
+const Appointment = (props) => {
     return (
         <div className = "Appointment">
             <div className='all'>
             <div className='leftAppointment'>
-            <p>First Visit Appointment</p>
-            <p>January 13, 2018 @ 3:00pm</p>
+            <p>props.title</p>
+            <p>props.time</p>
             </div>
                 <div className ="rights">
                 <Link to='/Login'>
