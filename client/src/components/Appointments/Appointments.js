@@ -24,6 +24,7 @@ const Appointments = (props) => {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
+    if (!email) return;
     // TODO: Fetch appointments with backend endpoint
     const getAppointments = async () => {
       const response = await fetch(`/appointments/${email}`, {
@@ -33,12 +34,15 @@ const Appointments = (props) => {
           'Cache-Control': 'no-cache',
         }
       });
-      const body = await response.json();
+      try {
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.error);
+        console.log(body);
+        setAppointments(body.appointments || []);
+      } catch {
+        throw Error(await response.text());
+      }
 
-      if (response.status !== 200) throw Error(body.error);
-  
-      console.log(body);
-      setAppointments(body.appointments || []);
     };
     // setAppointments([dummyData]);
     getAppointments().catch(err => console.log(err));
