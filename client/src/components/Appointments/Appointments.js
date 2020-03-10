@@ -10,7 +10,7 @@ const Appointments = (props) => {
   const {email} = props;
 
   
-const dummyData = {
+  const dummyData = {
     patientEmail: email,
     title: 'Checkup Appointment',
     time: new Date(),
@@ -42,7 +42,7 @@ const dummyData = {
     };
     // setAppointments([dummyData]);
     getAppointments().catch(err => console.log(err));
-  }, []);
+  }, [email]);
 
   const handleAddAppointment = appointment => {
     const addAppointment = async () => {
