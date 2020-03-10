@@ -28,7 +28,10 @@ const dummyData = {
     const getAppointments = async () => {
       const response = await fetch(`/appointments/${email}`, {
         // TODO: Find out how to actually send the authorized email/password
-        headers: {'Authorization': 'Basic YWxhZGRpbjpvcGVuc2VzYW1l'}
+        headers: {
+          'Authorization': 'Basic YWxhZGRpbjpvcGVuc2VzYW1l',
+          'Cache-Control': 'no-cache',
+        }
       });
       const body = await response.json();
 
