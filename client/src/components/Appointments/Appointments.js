@@ -24,6 +24,7 @@ const Appointments = (props) => {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
+    if (!email) return;
     // TODO: Fetch appointments with backend endpoint
     const getAppointments = async () => {
       const response = await fetch(`/appointments/${email}`, {
