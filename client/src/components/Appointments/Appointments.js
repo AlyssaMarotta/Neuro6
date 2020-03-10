@@ -10,7 +10,7 @@ const Appointments = (props) => {
   const {email} = props;
 
   
-const dummyData = {
+  const dummyData = {
     patientEmail: email,
     title: 'Checkup Appointment',
     time: new Date(),
@@ -28,7 +28,10 @@ const dummyData = {
     const getAppointments = async () => {
       const response = await fetch(`/appointments/${email}`, {
         // TODO: Find out how to actually send the authorized email/password
-        headers: {'Authorization': 'Basic YWxhZGRpbjpvcGVuc2VzYW1l'}
+        headers: {
+          'Authorization': 'Basic YWxhZGRpbjpvcGVuc2VzYW1l',
+          'Cache-Control': 'no-cache',
+        }
       });
       const body = await response.json();
 
@@ -39,7 +42,7 @@ const dummyData = {
     };
     // setAppointments([dummyData]);
     getAppointments().catch(err => console.log(err));
-  }, []);
+  }, [email]);
 
   const handleAddAppointment = appointment => {
     const addAppointment = async () => {
