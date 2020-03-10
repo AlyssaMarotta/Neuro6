@@ -14,7 +14,8 @@ function Login() {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = e => {
+    e.preventDefault();
     //sourced from https://medium.com/@maison.moa/setting-up-an-express-backend-server-for-create-react-app-bc7620b20a61
     const callBackendAPI = async () => {
       const response = await fetch('/login', {
@@ -31,7 +32,7 @@ function Login() {
         throw Error(body.message);
       }
 
-      console.log(res);
+      console.log(body);
     };
 
     callBackendAPI().catch(err => console.log(err));
