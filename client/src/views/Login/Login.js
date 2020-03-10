@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import './Login.css';
 
-function Login() {
-  const [username, setUsername] = useState('');
+const Login = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [authorized, setAuthorized] = useState(false);
 
-  const handleUsernameChange = e => {
-    setUsername(e.target.value);
+  const handleEmailChange = e => {
+    setEmail(e.target.value);
   };
 
   const handlePasswordChange = e => {
@@ -22,9 +23,9 @@ function Login() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username,
-          password
-        })
+          email,
+          password,
+        }),
       });
       const body = await response.json();
 
@@ -33,10 +34,15 @@ function Login() {
       }
 
       console.log(body);
+      setAuthorized(true);
     };
 
     callBackendAPI().catch(err => console.log(err));
   };
+
+  if (authorized) return (
+    <Redirect to='/User' />
+  );
 
   return (
     <div className='App'>
@@ -44,33 +50,33 @@ function Login() {
         <div className='forum'>
           <form onSubmit={handleSubmit}>
             <label>
-              Username:{' '}
+              Email:{' '}
               <input
-              type='text'
-              className='textbox'
-              placeholder='Username'
-              onChange={handleUsernameChange}
-              required
-            />
+                type='email'
+                className='textbox'
+                placeholder='Email'
+                onChange={handleEmailChange}
+                required
+              />
             </label>
             <p>{'\n'}</p>
             <label>
               Password:{' '}
               <input
-              type='password'
-              className='textbox'
-              placeholder='Password'
-              onChange={handlePasswordChange}
-              required
-            />
+                type='password'
+                className='textbox'
+                placeholder='Password'
+                onChange={handlePasswordChange}
+                required
+              />
             </label>
             <p>{'\n'}</p>
-            <input className='buttons' type='submit' value='Login'/>
+            <input className='buttons' type='submit' value='Login' />
           </form>
         </div>
       </header>
     </div>
   );
-}
+};
 
 export default Login;

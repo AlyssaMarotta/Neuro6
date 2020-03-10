@@ -22,7 +22,9 @@ function Home() {
                 </div> 
             </header>
         </div>
-    );
-}
+      </header>
+    </div>
+  );
+};
 
 export default Home;

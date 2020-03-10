@@ -7,7 +7,7 @@ import UserNavBar2 from '../../components/UserNavBar2/UserNavBar2';
 import CalendarComponent from '../../components/Calendar/Calendar';
 
 
-function User() {
+const User = () => {
   return (
     <div className='User'>
       <div className='navBar2'>
