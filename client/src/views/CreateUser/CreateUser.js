@@ -10,7 +10,7 @@ const initForm = {
   dob: '',
 };
 
-const CreateUser = () => {
+const CreateUser = (props) => {
   const [formData, setFormData] = useState(initForm);
   const [authorized, setAuthorized] = useState(false);
 
@@ -38,6 +38,7 @@ const CreateUser = () => {
       }
 
       console.log(body);
+      props.set(formData.email);
       setAuthorized(true);
     };
 

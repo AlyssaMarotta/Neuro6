@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './UserNavBar.css';
 
-const NavBar = () => {
+const NavBar = (props) => {
     return (
         <div className = "header">
             {/* Logo */}
@@ -12,7 +12,7 @@ const NavBar = () => {
 
             {/* Page Links */}
             <div className = "nav-items">
-                <Link className = "nav-link" to='#'>Peyton Marinelli</Link>
+                <Link className = "nav-link" to='#'> {props.user} </Link>
                 <Link className = "nav-link" to='/Home'>Log Out</Link>
             </div>
 

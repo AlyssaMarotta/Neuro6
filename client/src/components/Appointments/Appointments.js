@@ -68,5 +68,6 @@ const Appointments = () => {
       <button onClick={() => handleAddAppointment(dummyData)}>Add Dummy Appointment</button>
     </div>
   );
+
 };
 export default Appointments;
