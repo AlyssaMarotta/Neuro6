@@ -11,7 +11,6 @@ import Login from './views/Login/Login';
 const App = () => {
   const [account, setAccount] = useState('');
   const updateAccount =  (value) => {
-    console.log(value);
     setAccount(value);    
 };
   return (

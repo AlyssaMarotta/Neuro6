@@ -3,20 +3,23 @@ import { Link } from 'react-router-dom';
 import './Appointments.css';
 import Appointment from '../Appointment/Appointment';
 
-const dummyData = {
-  patientEmail: 'fake.email@gmail.com',
-  title: 'First Visit Appointment',
-  time: new Date(2018, 1, 13, 15),
-  location: 'Dummy location',
-  reminders: [
-    'Bring your best smile!',
-    'Remember to floss'
-  ]
-};
 
-const Appointments = () => {
+const Appointments = (props) => {
+    
   // TODO: Use logged in email from useReducer + useContext
-  const email = dummyData.patientEmail;
+  const {email} = props;
+
+  
+const dummyData = {
+    patientEmail: email,
+    title: 'Checkup Appointment',
+    time: new Date(),
+    location: 'Dummy location',
+    reminders: [
+      'Bring your best smile!',
+      'Remember to floss'
+    ]
+  };
 
   const [appointments, setAppointments] = useState([]);
 

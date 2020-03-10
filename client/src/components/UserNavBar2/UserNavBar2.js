@@ -10,13 +10,13 @@ const UserNavBar2 = () => {
         <Link className='user-nav-link' to='#'>
           Reminders
         </Link>
-        <Link className='user-nav-link' to='/Home'>
+        <Link className='user-nav-link' to='#'>
           Find Us
         </Link>
-        <Link className='user-nav-link' to='/Home'>
+        <Link className='user-nav-link' to='#'>
           Contact Us
         </Link>
-        <Link className='user-nav-link' to='/Home'>
+        <Link className='user-nav-link' to='#'>
           Print
         </Link>
       </div>

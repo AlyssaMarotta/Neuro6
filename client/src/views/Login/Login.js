@@ -35,8 +35,8 @@ const Login = (props) => {
       }
 
       console.log(body);
-      props.set(email);
       setAuthorized(true);
+      props.set(email);
       
     };
 
