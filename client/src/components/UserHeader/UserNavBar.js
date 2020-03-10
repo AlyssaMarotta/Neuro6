@@ -12,7 +12,7 @@ const NavBar = () => {
 
             {/* Page Links */}
             <div className = "nav-items">
-                <Link className = "nav-link">Peyton Marinelli</Link>
+                <Link className = "nav-link" to='#'>Peyton Marinelli</Link>
                 <Link className = "nav-link" to='/Home'>Log Out</Link>
             </div>
 

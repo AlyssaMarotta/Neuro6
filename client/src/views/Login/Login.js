@@ -30,7 +30,7 @@ const Login = () => {
       const body = await response.json();
 
       if (response.status !== 200) {
-        throw Error(body.message);
+        throw Error(body.error);
       }
 
       console.log(body);
