@@ -38,8 +38,8 @@ const CreateUser = (props) => {
       }
 
       console.log(body);
-      props.set(formData.email);
       setAuthorized(true);
+      props.set(formData.email);
     };
 
     createAccount().catch(err => console.log(err));
