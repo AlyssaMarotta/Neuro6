@@ -19,7 +19,7 @@ const Login = (props) => {
   const handleSubmit = e => {
     e.preventDefault();
     //sourced from https://medium.com/@maison.moa/setting-up-an-express-backend-server-for-create-react-app-bc7620b20a61
-    const callBackendAPI = async () => {
+    const login = async () => {
       const response = await fetch('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -40,7 +40,7 @@ const Login = (props) => {
       
     };
 
-    callBackendAPI().catch(err => console.log(err));
+    login().catch(err => console.log(err));
   };
 
   if (authorized) return (
