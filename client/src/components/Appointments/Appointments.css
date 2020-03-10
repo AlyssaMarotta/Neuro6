@@ -2,7 +2,7 @@
 {
         margin: 5px;
         width: 95%;
-        height: 12em;
+        min-height: 12em;
         border-width: 3px;
         border-style: solid;
         border-color: white;
