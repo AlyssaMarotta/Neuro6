@@ -19,9 +19,7 @@ function Home() {
                     <button className="buttons">Create Account</button>
                 </Link>
                 </p>
-                </div> 
-            </header>
-        </div>
+            </div> 
       </header>
     </div>
   );
