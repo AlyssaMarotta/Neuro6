@@ -1,0 +1,13 @@
+.Reminders
+{
+    margin: 5px;
+    width: 95%;
+    min-height: 3em;
+    border-width: 3px;
+    border-style: solid;
+    border-color: rgb(252, 122, 133);
+    border-radius: 12px;
+    color:  rgb(252, 122, 133);
+    
+
+}

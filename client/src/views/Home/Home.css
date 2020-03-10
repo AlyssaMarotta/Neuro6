@@ -17,11 +17,54 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
 }
 
 .App-link {
-    color: #09d3ac;
+    text-decoration: none;
+    
+}
+
+.forum
+{
+        margin: 5px;
+        padding: 20px;
+        width: fit-content;
+        height: fit-content;
+        border-width: 3px;
+        border-style: solid;
+        border-color: white;
+        border-radius: 12px;
+        
+
+}
+.buttons {
+    height: 70px;
+    min-width: 155px;
+    width: auto;
+    background-color: rgb(100, 105, 129);
+    border: none;
+    color: white;
+    padding: 17px, 30px;
+    margin: 2px auto;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 4px;
+    font-family: Palatino, "Palatino Linotype";
+    vertical-align: middle;
+    
+}
+.buttons:hover {
+    background-color: #ff7500;
+}
+.section{
+    margin: 5px;
+    width: 20%;
+    border-width: 3px;
+    border-style: solid;
+    border-color: white;
+    background-color: white;
+    border-radius: 12px;
 }
