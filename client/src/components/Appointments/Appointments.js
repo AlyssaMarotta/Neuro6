@@ -10,7 +10,7 @@ const Appointments = (props) => {
   const {email} = props;
 
   
-const dummyData = {
+  const dummyData = {
     patientEmail: email,
     title: 'Checkup Appointment',
     time: new Date(),
@@ -24,22 +24,29 @@ const dummyData = {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
+    if (!email) return;
     // TODO: Fetch appointments with backend endpoint
     const getAppointments = async () => {
       const response = await fetch(`/appointments/${email}`, {
         // TODO: Find out how to actually send the authorized email/password
-        headers: {'Authorization': 'Basic YWxhZGRpbjpvcGVuc2VzYW1l'}
+        headers: {
+          'Authorization': 'Basic YWxhZGRpbjpvcGVuc2VzYW1l',
+          'Cache-Control': 'no-cache',
+        }
       });
-      const body = await response.json();
+      try {
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.error);
+        console.log(body);
+        setAppointments(body.appointments || []);
+      } catch {
+        throw Error(await response.text());
+      }
 
-      if (response.status !== 200) throw Error(body.error);
-  
-      console.log(body);
-      setAppointments(body.appointments || []);
     };
     // setAppointments([dummyData]);
     getAppointments().catch(err => console.log(err));
-  }, []);
+  }, [email]);
 
   const handleAddAppointment = appointment => {
     const addAppointment = async () => {
