@@ -3,10 +3,19 @@ import logo from '../../assets/logo.svg';
 import { Link } from 'react-router-dom';
 import './Home.css';
 
+
+
+// <img src={ "/NeurosurgeryLogo.gif" } alt="Uf Health Building" />  {//possibly have logo above the buttons and remove navbar}
+
+
 function Home() {
   return (
     <div className='App'>
+     
       <header className='App-header'>
+      
+        <img className = 'FrontImage' src={ "/UFHealthBuilding.jpg" } alt="Uf Health Building" />
+       
         <div className='section'>
           <p>
             <Link to='/Login'>
