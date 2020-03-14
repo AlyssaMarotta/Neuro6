@@ -6,7 +6,7 @@ import { PromiseProvider } from 'mongoose';
 const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [authorized, setAuthorized] = useState(false);
+  //const [authorized, setAuthorized] = useState(false);
 
   const handleEmailChange = e => {
     setEmail(e.target.value);
@@ -35,16 +35,16 @@ const Login = (props) => {
       }
 
       console.log(body);
-      setAuthorized(true);
+      //setAuthorized(true);
+      props.setAuthorized(true);
       props.set(email);
-      
     };
 
     login().catch(err => console.log(err));
   };
 
-  if (authorized) return (
-    <Redirect to='/User' />
+  if (props.authorized) return (
+    <Redirect to= {props.exactpath} />
   );
 
   return (

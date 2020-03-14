@@ -13,38 +13,87 @@ import RescheduleAppointment from './views/RescheduleAppointment/RescheduleAppoi
 import ContactAndFindUs from './views/ContactAndFindUs/ContactAndFindUs';
 import Appointment from './views/Appointment/Appointment';
 
+const Auth = {
+  isAuthenticated: false,
+  update(change) {
+    this.isAuthenticated = change;
+  }
+}
+
+
+const PrivateRoute = ({ component: Component, authorized: auth, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    Auth.isAuthenticated === true
+      ? <Component {...props} />
+      : <Redirect to={{
+        pathname: '/login',
+        state: {exactpath: rest[0]}  // TODO: Pass in a state of where they were going so it wouldnt have to bring them to user page.
+    }} />
+  )} />
+)
+
+
+function DecideNavBar(props) {
+  const isLoggedIn = props.authorized;
+  if (isLoggedIn) {
+    return <UserNavBar 
+      exact path='' 
+      user = {props.user} 
+      updateAuthorization = {props.updateAuthorization}
+      updateAccount = {props.updateAccount}/>;
+  }
+  return <NavBar exact path='' />;
+}
+
+
 const App = () => {
   const [account, setAccount] = useState('');
+  const [authorizedAdmin, setAuthorizedAdmin] = useState(false);
   const updateAccount =  (value) => {
-    setAccount(value);    
+    setAccount(value);
+};
+const updateAuthorization = (value) => {
+  Auth.update(value);
 };
   return (
     <div>
       <Switch>
-        <UserNavBar exact path='/User' user = {account}/>
-        <UserNavBar exact path='/NewAppointment' user = {account}/>
-        <UserNavBar exact path='/RescheduleAppointment' user = {account}/>
-        <UserNavBar exact path='/Appointment' user = {account}/>
-        <UserNavBar exact path='/ContactAndFindUs' user = {account}/>
-        <NavBar exact path='' />
+        <DecideNavBar 
+          authorized ={Auth.isAuthenticated} 
+          user={account} 
+          updateAuthorization = {updateAuthorization} 
+          updateAccount = {updateAccount}/>
       </Switch>
       <Switch>
         <Route exact path='/Home' component={Home} />
-        <Route exact path='/User' 
-          component={() => <User email={account} />}
-        />
+        <Route exact path="/ContactAndFindUs" component={ContactAndFindUs} />
         <Route 
           exact path='/CreateUser' 
-          component={() => <CreateUser set={e =>updateAccount(e)} />}
+          component={() => 
+          <CreateUser 
+            set={e =>updateAccount(e)} 
+            setAuthorized= {e=>updateAuthorization(e)} 
+            setAuthorizedAdmin= {e=>setAuthorizedAdmin(e)}
+          />}
         />
         <Route 
           exact path='/Login' 
-          component={() => <Login set={e =>updateAccount(e)} />}/>
-          <Route exact path="/NewAppointment" component={NewAppointment} />
-          <Route exact path="/Admin" component={Admin} />
-          <Route exact path="/RescheduleAppointment" component={RescheduleAppointment} />
-          <Route exact path="/ContactAndFindUs" component={ContactAndFindUs} />
-          <Route exact path="/Appointment" component={Appointment} />
+          component={() => 
+          <Login 
+            set={e =>updateAccount(e)} 
+            exactpath = {'/user'}
+            authorized={Auth.isAuthenticated}
+            setAuthorized= {e=>updateAuthorization(e)} 
+            setAuthorizedAdmin= {e=>setAuthorizedAdmin(e)}/>}
+        />
+        <PrivateRoute exact path='/User' authorized = {Auth.isAuthenticated}
+          component={() => <User email={account} />}
+        />
+        <PrivateRoute exact path="/NewAppointment" component={NewAppointment} />
+        <PrivateRoute exact path="/Admin" component={Admin} />
+        <PrivateRoute exact path="/RescheduleAppointment" component={RescheduleAppointment} />
+        
+        <PrivateRoute exact path="/Appointment" component={Appointment} />
 
         <Route exact path='/'>
           <Redirect to='/Home' />

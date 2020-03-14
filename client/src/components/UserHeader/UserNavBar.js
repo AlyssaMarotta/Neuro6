@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import './UserNavBar.css';
 
 const NavBar = (props) => {
+    const logout = e => {
+        props.updateAuthorization(false);
+        props.updateAccount('');
+        return;
+    }
+
     return (
         <div className = "header">
             {/* Logo */}
@@ -13,7 +19,7 @@ const NavBar = (props) => {
             {/* Page Links */}
             <div className = "nav-items">
                 <Link className = "nav-link" to='#'> {props.user} </Link>
-                <Link className = "nav-link" to='/Home'>Log Out</Link>
+                <div onClick={logout} className = "nav-link" to='/Home'>Log Out</div>
             </div>
 
         </div>
