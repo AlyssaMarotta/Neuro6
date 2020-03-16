@@ -31,6 +31,13 @@ const PrivateRoute = ({ component: Component, authorized: auth, ...rest }) => (
     }} />
   )} />
 )
+const PrivateHomeRoute = ({ component: Component, authorized: auth, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    Auth.isAuthenticated === true
+      ?  <Redirect to='/User'/>
+      : <Component {...props}/>
+  )} />
+)
 
 
 function DecideNavBar(props) {
@@ -65,7 +72,7 @@ const updateAuthorization = (value) => {
           updateAccount = {updateAccount}/>
       </Switch>
       <Switch>
-        <Route exact path='/Home' component={Home} />
+        <PrivateHomeRoute exact path='/Home' component={Home} />
         <Route exact path="/ContactAndFindUs" component={ContactAndFindUs} />
         <Route 
           exact path='/CreateUser' 
@@ -81,7 +88,7 @@ const updateAuthorization = (value) => {
           component={() => 
           <Login 
             set={e =>updateAccount(e)} 
-            exactpath = {'/user'}
+            exactpath = {'/User'}
             authorized={Auth.isAuthenticated}
             setAuthorized= {e=>updateAuthorization(e)} 
             setAuthorizedAdmin= {e=>setAuthorizedAdmin(e)}/>}

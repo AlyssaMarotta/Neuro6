@@ -12,12 +12,17 @@ const NavBar = (props) => {
     return (
         <div className = "header">
             {/* Logo */}
+            
             <Link className = "nav-title" to="/">
                 <img className = "nav-logo" src={ "/NeurosurgeryLogo.gif" } alt="Neurosurgery logo" />
             </Link>
 
             {/* Page Links */}
+            
             <div className = "nav-items">
+                <Link className='nav-link' to='/ContactAndFindUs'>
+                    Contact and Find Us
+                </Link>
                 <Link className = "nav-link" to='#'> {props.user} </Link>
                 <div onClick={logout} className = "nav-link" to='/Home'>Log Out</div>
             </div>
