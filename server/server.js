@@ -76,6 +76,7 @@ app.post('/create-account', async (req, res) => {
       last: lastName,
     },
     dob: new Date(dob),
+    isAdmin: false,
   });
   user.save((err, doc) => {
     if (err) {

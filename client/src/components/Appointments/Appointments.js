@@ -40,7 +40,7 @@ const Appointments = (props) => {
         console.log(body);
         setAppointments(body.appointments || []);
       } catch {
-        throw Error(await response.text());
+        throw Error(await response.clone().text());
       }
 
     };
