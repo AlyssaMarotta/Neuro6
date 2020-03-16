@@ -14,7 +14,7 @@ const Appointment = (props) => {
           <p>{moment(time).format('MMMM Do, YYYY @ h:mm a')}</p>
         </div>
         <div className='rights'>
-          <Link to='#'>
+          <Link to='/Appointment'>
             <button className='buttons'>More Details</button>
           </Link>
         </div>
