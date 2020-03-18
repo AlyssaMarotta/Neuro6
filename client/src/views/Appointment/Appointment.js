@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './Appointment.css';
 
 
-function Appointment() {
+const Appointment = () => {
   return (
     <div className='App'>
         <header className='App-header'>

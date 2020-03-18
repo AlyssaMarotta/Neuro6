@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './RescheduleAppointment.css';
 
 
-function Reschedule() {
+const Reschedule = () => {
   return (
     <div className='App'>
         <header className='App-header'>

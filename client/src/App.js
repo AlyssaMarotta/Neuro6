@@ -40,7 +40,7 @@ const PrivateHomeRoute = ({ component: Component, authorized: auth, ...rest }) =
 )
 
 
-function DecideNavBar(props) {
+const DecideNavBar = (props) => {
   const isLoggedIn = props.authorized;
   if (isLoggedIn) {
     return <UserNavBar 

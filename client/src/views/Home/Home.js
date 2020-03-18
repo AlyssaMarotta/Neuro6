@@ -8,7 +8,7 @@ import './Home.css';
 // <img src={ "/NeurosurgeryLogo.gif" } alt="Uf Health Building" />  {//possibly have logo above the buttons and remove navbar}
 
 
-function Home() {
+const Home = () => {
   return (
     <div className='App'>
      

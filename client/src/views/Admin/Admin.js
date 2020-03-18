@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './Admin.css';
 
 
-function Admin() {
+const Admin = () => {
   return (
     <div className='App'>
         <header className='App-header'>
