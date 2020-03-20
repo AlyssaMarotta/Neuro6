@@ -53,7 +53,7 @@ const DecideNavBar = (props) => {
 }
 
 
-const App = () => {
+const App = (props) => {
   const [account, setAccount] = useState('');
   const [authorizedAdmin, setAuthorizedAdmin] = useState(false);
   const updateAccount =  (value) => {
@@ -100,7 +100,7 @@ const updateAuthorization = (value) => {
         <PrivateRoute exact path="/Admin" component={Admin} />
         <PrivateRoute exact path="/RescheduleAppointment" component={RescheduleAppointment} />
         
-        <PrivateRoute exact path="/Appointment" component={Appointment} />
+        <PrivateRoute exact path="/Appointment/:value" component={(matchProps) => <Appointment email={account} {...matchProps} {...props}/>} />
 
         <Route exact path='/'>
           <Redirect to='/Home' />

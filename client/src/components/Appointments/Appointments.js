@@ -73,7 +73,7 @@ const Appointments = (props) => {
     <div className='Appointments'>
       Appointments
       {appointments.map((appointment, index) => (
-        <Appointment key={index} data={appointment} />
+        <Appointment key={index} data={appointment} id = {index} />
       ))}
       <button onClick={() => handleAddAppointment(dummyData)}>Add Dummy Appointment</button>
     </div>
