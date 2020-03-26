@@ -20,6 +20,12 @@ const Auth = {
   }
 }
 
+const AdminAuth = {
+  isAuthenticated: false,
+  update(change) {
+    this.isAuthenticated = change;
+  }
+}
 
 const PrivateRoute = ({ component: Component, authorized: auth, ...rest }) => (
   <Route {...rest} render={(props) => (
@@ -39,6 +45,14 @@ const PrivateHomeRoute = ({ component: Component, authorized: auth, ...rest }) =
   )} />
 )
 
+const PrivateAdminRoute = ({ component: Component, adminAuthorized: adminAuth, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    adminAuth === true
+      ?  <Redirect to='/Admin'/>
+      : <PrivateRoute component= {Component} {...props}/>
+  )} />
+)
+
 
 const DecideNavBar = (props) => {
   const isLoggedIn = props.authorized;
@@ -47,6 +61,7 @@ const DecideNavBar = (props) => {
       exact path='' 
       user = {props.user} 
       updateAuthorization = {props.updateAuthorization}
+      updateAdminAuthorization = {props.updateAdminAuthorization}
       updateAccount = {props.updateAccount}/>;
   }
   return <NavBar exact path='' />;
@@ -62,6 +77,9 @@ const App = (props) => {
 const updateAuthorization = (value) => {
   Auth.update(value);
 };
+const updateAdminAuthorization = (value) => {
+  AdminAuth.update(value);
+};
   return (
     <div>
       <Switch>
@@ -69,6 +87,7 @@ const updateAuthorization = (value) => {
           authorized ={Auth.isAuthenticated} 
           user={account} 
           updateAuthorization = {updateAuthorization} 
+          updateAdminAuthorization = {updateAdminAuthorization} 
           updateAccount = {updateAccount}/>
       </Switch>
       <Switch>
@@ -80,7 +99,6 @@ const updateAuthorization = (value) => {
           <CreateUser 
             set={e =>updateAccount(e)} 
             setAuthorized= {e=>updateAuthorization(e)} 
-            setAuthorizedAdmin= {e=>setAuthorizedAdmin(e)}
           />}
         />
         <Route 
@@ -90,10 +108,14 @@ const updateAuthorization = (value) => {
             set={e =>updateAccount(e)} 
             exactpath = {'/User'}
             authorized={Auth.isAuthenticated}
+            AdminAuthorized={AdminAuth.isAuthenticated}
             setAuthorized= {e=>updateAuthorization(e)} 
-            setAuthorizedAdmin= {e=>setAuthorizedAdmin(e)}/>}
+            setAdminAuthorized= {e=>updateAdminAuthorization(e)}
+            />}
         />
-        <PrivateRoute exact path='/User' authorized = {Auth.isAuthenticated}
+        <PrivateAdminRoute exact path='/User' 
+          adminAuthorized = {AdminAuth.isAuthenticated} 
+          authorized = {Auth.isAuthenticated}
           component={() => <User email={account} />}
         />
         <PrivateRoute exact path="/NewAppointment" component={NewAppointment} />

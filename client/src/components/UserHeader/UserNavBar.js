@@ -5,6 +5,7 @@ import './UserNavBar.css';
 const NavBar = (props) => {
     const logout = e => {
         props.updateAuthorization(false);
+        props.updateAdminAuthorization(false);
         props.updateAccount('');
         return;
     }

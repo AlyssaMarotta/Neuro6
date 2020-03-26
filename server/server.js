@@ -58,7 +58,7 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/create-account', async (req, res) => {
-  const { email, password, firstName, lastName, dob } = req.body;
+  const { email, password, firstName, lastName, dob} = req.body;
   const { salt, hashedPassword } = saltHashPassword(password);
 
   const userExists = await User.exists({ email });

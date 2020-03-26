@@ -33,8 +33,12 @@ const Login = (props) => {
       if (response.status !== 200) {
         throw Error(body.error);
       }
-
+      
       console.log(body);
+      if(body.isAdmin == true)
+      {
+        props.setAdminAuthorized(true);
+      }
       //setAuthorized(true);
       props.setAuthorized(true);
       props.set(email);
