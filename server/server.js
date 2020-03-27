@@ -46,6 +46,26 @@ app.post('/appointments', async (req, res) => {
   });
 });
 
+/**
+ * Endpoint to delete an appointment
+ * 
+ * Pass the ID of the appointment in the request body as id
+ */
+app.delete('/appointments', async (req, res) => {
+  Appointment.findByIdAndDelete(req.body.id, (err, doc) => {
+    if (err) {
+      console.warn(err);
+      res.status(500).send({ error: 'Appointment deletion failed'});
+      return;
+    }
+    if (!doc) {
+      res.status(404).send({ error: 'Appointment does not exist'});
+      return;
+    }
+    res.status(200).send(doc);
+  });
+});
+
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const userDoc = await getUser(email, password);
