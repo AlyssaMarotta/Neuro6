@@ -14,9 +14,9 @@ const Appointments = (props) => {
     patientEmail: email,
     title: 'Checkup Appointment',
     time: new Date(),
-    location: 'Dummy location',
+    location: '1505 SW Archer Road, Gainesville, FL 32608',
     reminders: [
-      'Bring your best smile!',
+      'Bring your best smile! ',
       'Remember to floss'
     ]
   };
