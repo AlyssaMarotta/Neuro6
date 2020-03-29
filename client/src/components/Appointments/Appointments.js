@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Appointments.css';
 import Appointment from '../Appointment/Appointment';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
-
-const Appointments = (props) => {
+const Appointments = () => {
     
   // TODO: Use logged in email from useReducer + useContext
-  const {email} = props;
+  const email = cookies.get('account');
 
   
   const dummyData = {

@@ -5,7 +5,7 @@ import './Appointment.css';
 import { Input } from 'antd';
 
 const Appointment = (props) => {
-  const { patientEmail, title, time, location, reminders } = props.data;
+  const { title, time, location, reminders } = props.data;
 
   return (
     <div className='Appointment'>

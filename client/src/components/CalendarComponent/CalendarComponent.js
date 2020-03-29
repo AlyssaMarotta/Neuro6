@@ -7,7 +7,7 @@ import { Calendar } from 'antd';
 import 'antd/dist/antd.dark.css';
 import { Input } from 'antd';
 
-const CalendarComponent = () => {
+const CalendarComponent = (props) => {
 
   function onPanelChange(value, mode) {
     console.log(value, mode);

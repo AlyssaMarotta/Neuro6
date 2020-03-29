@@ -12,24 +12,13 @@ import Admin from './views/Admin/Admin';
 import RescheduleAppointment from './views/RescheduleAppointment/RescheduleAppointment';
 import ContactAndFindUs from './views/ContactAndFindUs/ContactAndFindUs';
 import Appointment from './views/Appointment/Appointment';
+import Cookies from 'universal-cookie';
 
-const Auth = {
-  isAuthenticated: false,
-  update(change) {
-    this.isAuthenticated = change;
-  }
-}
-
-const AdminAuth = {
-  isAuthenticated: false,
-  update(change) {
-    this.isAuthenticated = change;
-  }
-}
+const cookies = new Cookies();
 
 const PrivateRoute = ({ component: Component, authorized: auth, ...rest }) => (
   <Route {...rest} render={(props) => (
-    Auth.isAuthenticated === true
+    cookies.get('account') != undefined
       ? <Component {...props} />
       : <Redirect to={{
         pathname: '/login',
@@ -39,7 +28,7 @@ const PrivateRoute = ({ component: Component, authorized: auth, ...rest }) => (
 )
 const PrivateHomeRoute = ({ component: Component, authorized: auth, ...rest }) => (
   <Route {...rest} render={(props) => (
-    Auth.isAuthenticated === true
+    cookies.get('account') != undefined
       ?  <Redirect to='/User'/>
       : <Component {...props}/>
   )} />
@@ -47,48 +36,27 @@ const PrivateHomeRoute = ({ component: Component, authorized: auth, ...rest }) =
 
 const PrivateAdminRoute = ({ component: Component, adminAuthorized: adminAuth, ...rest }) => (
   <Route {...rest} render={(props) => (
-    adminAuth === true
+    cookies.get('admin')!= undefined
       ?  <Redirect to='/Admin'/>
       : <PrivateRoute component= {Component} {...props}/>
   )} />
 )
 
 
-const DecideNavBar = (props) => {
-  const isLoggedIn = props.authorized;
-  if (isLoggedIn) {
+const DecideNavBar = () => {
+  if (cookies.get('account') != undefined) {
     return <UserNavBar 
-      exact path='' 
-      user = {props.user} 
-      updateAuthorization = {props.updateAuthorization}
-      updateAdminAuthorization = {props.updateAdminAuthorization}
-      updateAccount = {props.updateAccount}/>;
+      exact path='' />;
   }
   return <NavBar exact path='' />;
 }
 
 
 const App = (props) => {
-  const [account, setAccount] = useState('');
-  const [authorizedAdmin, setAuthorizedAdmin] = useState(false);
-  const updateAccount =  (value) => {
-    setAccount(value);
-};
-const updateAuthorization = (value) => {
-  Auth.update(value);
-};
-const updateAdminAuthorization = (value) => {
-  AdminAuth.update(value);
-};
   return (
     <div>
       <Switch>
-        <DecideNavBar 
-          authorized ={Auth.isAuthenticated} 
-          user={account} 
-          updateAuthorization = {updateAuthorization} 
-          updateAdminAuthorization = {updateAdminAuthorization} 
-          updateAccount = {updateAccount}/>
+        <DecideNavBar/>
       </Switch>
       <Switch>
         <PrivateHomeRoute exact path='/Home' component={Home} />
@@ -96,33 +64,21 @@ const updateAdminAuthorization = (value) => {
         <Route 
           exact path='/CreateUser' 
           component={() => 
-          <CreateUser 
-            set={e =>updateAccount(e)} 
-            setAuthorized= {e=>updateAuthorization(e)} 
-          />}
+          <CreateUser />}
         />
         <Route 
           exact path='/Login' 
           component={() => 
-          <Login 
-            set={e =>updateAccount(e)} 
-            exactpath = {'/User'}
-            authorized={Auth.isAuthenticated}
-            AdminAuthorized={AdminAuth.isAuthenticated}
-            setAuthorized= {e=>updateAuthorization(e)} 
-            setAdminAuthorized= {e=>updateAdminAuthorization(e)}
-            />}
+          <Login exactpath = {'/User'}/>}
         />
         <PrivateAdminRoute exact path='/User' 
-          adminAuthorized = {AdminAuth.isAuthenticated} 
-          authorized = {Auth.isAuthenticated}
-          component={() => <User email={account} />}
+          component={() => <User/>}
         />
-        <PrivateRoute exact path="/NewAppointment" component={NewAppointment} />
+        <PrivateRoute exact path="/NewAppointment" component={NewAppointment}/>
         <PrivateRoute exact path="/Admin" component={Admin} />
         <PrivateRoute exact path="/RescheduleAppointment" component={RescheduleAppointment} />
         
-        <PrivateRoute exact path="/Appointment/:value" component={(matchProps) => <Appointment email={account} {...matchProps} {...props}/>} />
+        <PrivateRoute exact path="/Appointment/:value" component={(matchProps) => <Appointment {...matchProps} {...props}/>} />
 
         <Route exact path='/'>
           <Redirect to='/Home' />

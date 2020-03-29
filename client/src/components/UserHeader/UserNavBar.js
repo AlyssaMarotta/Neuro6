@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './UserNavBar.css';
+import Cookies from 'universal-cookie';
 
 const NavBar = (props) => {
+    const cookies = new Cookies();
     const logout = e => {
-        props.updateAuthorization(false);
-        props.updateAdminAuthorization(false);
-        props.updateAccount('');
+        cookies.remove('account')
         return;
     }
 
@@ -15,7 +15,7 @@ const NavBar = (props) => {
             {/* Logo */}
             
             <Link className = "nav-title" to="/">
-                <img className = "nav-logo" src={ "/NeurosurgeryLogo.gif" } alt="Neurosurgery logo" />
+                <img className = "nav-logo" src={ "/UFHealthLogo.png" } alt="Neurosurgery logo" />
             </Link>
 
             {/* Page Links */}
@@ -24,7 +24,7 @@ const NavBar = (props) => {
                 <Link className='nav-link' to='/ContactAndFindUs'>
                     Contact and Find Us
                 </Link>
-                <Link className = "nav-link" to='#'> {props.user} </Link>
+                <Link className = "nav-link" to='#'> {cookies.get('account')} </Link>
                 <div onClick={logout} className = "nav-link" to='/Home'>Log Out</div>
             </div>
 

@@ -3,6 +3,8 @@ import { Redirect } from 'react-router-dom';
 import './Login.css';
 import { PromiseProvider } from 'mongoose';
 import { Input } from 'antd';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -38,17 +40,16 @@ const Login = (props) => {
       console.log(body);
       if(body.isAdmin == true)
       {
-        props.setAdminAuthorized(true);
+        cookies.set('admin', email);
       }
       //setAuthorized(true);
-      props.setAuthorized(true);
-      props.set(email);
+      cookies.set('account',email);
     };
 
     login().catch(err => console.log(err));
   };
 
-  if (props.authorized) return (
+  if (cookies.get('account') != undefined) return (
     <Redirect to= {props.exactpath} />
   );
 

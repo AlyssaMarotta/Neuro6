@@ -9,7 +9,7 @@ const NavBar = () => {
       <Link className='nav-title' to='/'>
         <img
           className='nav-logo'
-          src={'/NeurosurgeryLogo.gif'}
+          src={'/UFHealthLogo.png'}
           alt='Neurosurgery logo'
         />
       </Link>

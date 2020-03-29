@@ -8,7 +8,7 @@ import CalendarComponent from '../../components/CalendarComponent/CalendarCompon
 import { PromiseProvider } from 'mongoose';
 
 
-const User = (props) => {
+const User = () => {
   return (
     <div className='User'>
       <div className='navBar2'>
@@ -18,7 +18,7 @@ const User = (props) => {
         <div className='all'>
           <div className='left'>
             <Reminders />
-            <Appointments email = {props.email}/>
+            <Appointments />
           </div>
             <CalendarComponent />
         </div>
