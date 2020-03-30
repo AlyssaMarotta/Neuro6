@@ -7,10 +7,10 @@ const initForm = {
   password: '',
   firstName: '',
   lastName: '',
-  dob: '',
+  dob: ''
 };
 
-const CreateUser = (props) => {
+const CreateUser = props => {
   const [formData, setFormData] = useState(initForm);
   const [authorized, setAuthorized] = useState(false);
 
@@ -18,7 +18,7 @@ const CreateUser = (props) => {
     const { name, value } = e.target;
     setFormData(formData => ({
       ...formData,
-      [name]: value,
+      [name]: value
     }));
   };
 
@@ -29,7 +29,7 @@ const CreateUser = (props) => {
       const response = await fetch('/create-account', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData)
       });
       const body = await response.json();
 
