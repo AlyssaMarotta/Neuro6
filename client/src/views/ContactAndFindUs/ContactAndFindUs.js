@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './ContactAndFindUs.css';
+import Map from '../../components/Map/Map.js';
 
 const ContactAndFindUs = () => {
   return (
@@ -13,6 +14,7 @@ const ContactAndFindUs = () => {
         Gainesville, Fla., on the University of Florida campus off of Archer
         Road (SR 24), about three miles east of I-75, exit 384, and one block
         west of U.S. Hwy 441.
+        <Map />
         <h2> Directions</h2>
         <h3> From I-75</h3>
         Take exit 384 to Gainesville/Archer. Head east on Archer Road for
