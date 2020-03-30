@@ -1,0 +1,19 @@
+.CalendarComponent
+{
+    margin: 5px;
+    width: 40%;
+    text-align: center;
+    align-items: center;
+    border-width: 3px;
+    border-style: solid;
+    border-color: white;
+    border-radius: 12px;
+    padding: 5px;
+    color: black;
+}
+
+.site-calendar-demo-card {
+    width: 300px;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+  }
