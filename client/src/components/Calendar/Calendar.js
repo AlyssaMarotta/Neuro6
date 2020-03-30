@@ -9,7 +9,7 @@ const Calendar = () => {
       <ReactCalendar />
       <p></p>
       <p></p>
-      <Link to='#'>
+      <Link to='/NewAppointment'>
         <button className='buttons'>Schedule an Appointment</button>
       </Link>
     </div>
