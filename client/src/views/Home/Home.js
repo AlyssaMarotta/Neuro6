@@ -3,7 +3,6 @@ import logo from '../../assets/logo.svg';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import './Home.css';
-import { Input } from 'antd';
 
 
 
@@ -27,6 +26,7 @@ const Home = () => {
           <p>
             <Link to='/CreateUser'>
             <Button type='primary' size='large'>Create Account</Button>
+              {/* className='buttons' */}
             </Link>
           </p>
         </div>
