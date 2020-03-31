@@ -7,26 +7,58 @@ const User = require('./models/User.js');
 const Appointment = require('./models/Appointment.js');
 const { sha512WithSalt, saltHashPassword } = require('./utils/salt.js');
 
-// Use env port or default
 const port = process.env.PORT || 5000;
-
 const app = express.init();
 
-const getUser = async (email, password) => {
-  const userDoc = await User.findOne({ email });
-  if (!userDoc) return null;
-  const { salt, hashedPassword } = userDoc;
-  return sha512WithSalt(password, salt) === hashedPassword ? userDoc : null;
+/**
+ * Gets a user document associated with an email, if it exists.
+ * 
+ * @param {string} email Email for the account.
+ */
+const getUser = async (email) => {
+  return (await User.findOne({ email }));
 };
 
-const isAuthorized = async (email, password) => {
-  return (await getUser(email, password)) !== null;
+/**
+ * Authenticates a user login with email and password.
+ * 
+ * @param {string} email Email for the user's account
+ * @param {string} password Password for the user's account
+ */
+const authLogin = async (email, password) => {
+  const user = getUser(email);
+  if (!user) return false;
+  const { salt, hashedPassword } = user;
+  return sha512WithSalt(password, salt) === hashedPassword;
 };
 
-const isAuthorizedHash = async (email, hashedPassword) => {
-  const userDoc = await User.findOne({ email });
-  if (!userDoc) return false;
-  return hashedPassword === userDoc.hashedPassword;
+/**
+ * Gets a user document associated with an email.
+ * 
+ * Returns null if the user does not exist or the password is invalid.
+ * 
+ * @param {string} email Email for the user's account
+ * @param {string} password Password for the user's account
+ */
+const getUserWithAuthLogin = async (email, password) => {
+  const user = getUser(email);
+  if (!user) return false;
+  const { salt, hashedPassword } = user;
+  return (sha512WithSalt(password, salt) === hashedPassword) ? user : null;
+};
+
+/**
+ * Gets a user document associated with a JWT token.
+ * 
+ * Returns null if the token is invalid.
+ * 
+ * @param {string} token JWT token associated with the user
+ */
+getUserWithAuthToken = async (token) => {
+  jwt.verify(token, config.jwt.accessTokenSecret, (err, user) => {
+    if (err) return null;
+    return user;
+  });
 };
 
 /**
@@ -34,7 +66,7 @@ const isAuthorizedHash = async (email, hashedPassword) => {
  * 
  * @param {string} email Email to create token for
  */
-const genToken = (email) => {
+const createToken = (email) => {
   return jwt.sign({ email }, config.jwt.accessTokenSecret);
 };
 
@@ -51,14 +83,22 @@ const authToken = (req, res, next) => {
   if (!token) {
     return res.status(401).send({ error: `No authorization provided` });
   }
-
-  jwt.verify(token, config.jwt.accessTokenSecret, (err, user) => {
-    if (err) return res.status(403).send({ error: `Forbidden` });
-    req.user = user;
-    next();
-  });
+  const user = getUserWithAuthToken(token);
+  if (!user) return res.status(403).send({ error: `Forbidden` });
+  req.user = user;
+  next();
 };
 
+/**
+ * Endpoint to authenticate token.
+ */
+app.get('/auth', authToken, async (req, res) => {
+  res.send(req.user);
+});
+
+/**
+ * @deprecated Use the endpoint with auth token instead.
+ */
 app.get('/appointments/:patientEmail', async (req, res) => {
   console.log(req.headers.authorization);
   const { patientEmail } = req.params;
@@ -69,7 +109,7 @@ app.get('/appointments/:patientEmail', async (req, res) => {
 });
 
 /**
- * Retrieve a list of appointments associated with an email given a JWT access token.
+ * Endpoint to retrieve a list of appointments associated with a JWT access token.
  */
 app.get('/appointments', authToken, async (req, res) => {
   console.log(req.user);
@@ -79,7 +119,11 @@ app.get('/appointments', authToken, async (req, res) => {
   res.send({appointments});
 });
 
+/**
+ * Endpoint to create an appointment.
+ */
 app.post('/appointments', async (req, res) => {
+  // TODO: authenticate with JWT token
   console.log(req.body);
   const appointment = new Appointment(req.body);
   appointment.save((err, doc) => {
@@ -94,11 +138,34 @@ app.post('/appointments', async (req, res) => {
 });
 
 /**
- * Endpoint to delete an appointment
+ * Endpoint to update an appointment.
  *
- * Pass the ID of the appointment in the request body as id
+ * Pass the ID of the appointment in the request body as id.
+ */
+app.put('/appointments', async (req, res) => {
+  // TODO: authenticate with JWT token
+  const { id, ...newAppt } = req.body;
+  Appointment.findByIdAndUpdate(id, newAppt, (err, doc) => {
+    if (err) {
+      console.warn(err);
+      res.status(500).send({ error: 'Appointment update failed' });
+      return;
+    }
+    if (!doc) {
+      res.status(404).send({ error: 'Appointment does not exist' });
+      return;
+    }
+    res.status(200).send(doc);
+  });
+});
+
+/**
+ * Endpoint to delete an appointment.
+ *
+ * Pass the ID of the appointment in the request body as id.
  */
 app.delete('/appointments', async (req, res) => {
+  // TODO: authenticate with JWT token
   Appointment.findByIdAndDelete(req.body.id, (err, doc) => {
     if (err) {
       console.warn(err);
@@ -113,19 +180,27 @@ app.delete('/appointments', async (req, res) => {
   });
 });
 
+/**
+ * Endpoint to log in a user given the email and password.
+ * 
+ * Returns the JWT access token and email, name, DOB, and isAdmin for the user.
+ */
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const userDoc = await getUser(email, password);
+  const userDoc = await getUserWithAuthLogin(email, password);
   if (!userDoc) {
     res.status(401).send({ error: `Incorrect email or password` });
     return;
   }
-  const { dob, name } = userDoc;
-  const user = {email, name, dob, accessToken: genToken(email)};
+  const { name, dob, isAdmin } = userDoc;
+  const user = {email, name, dob, isAdmin, accessToken: createToken(email)};
   console.log(user);
   res.send(user);
 });
 
+/**
+ * Endpoint to create an account.
+ */
 app.post('/create-account', async (req, res) => {
   const { email, password, firstName, lastName, dob } = req.body;
   const { salt, hashedPassword } = saltHashPassword(password);
@@ -183,7 +258,8 @@ app.post('/create-account', async (req, res) => {
       res.status(500).send({ error: `User creation failed` });
       return;
     }
-    res.status(200).send(doc);
+    const accessToken = createToken(email);
+    res.status(200).send({ email, name, dob, isAdmin, accessToken });
     return;
   });
 });
