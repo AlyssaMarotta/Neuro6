@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import './Login.css';
 import { PromiseProvider } from 'mongoose';
+import { Input } from 'antd';
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -58,7 +59,7 @@ const Login = (props) => {
           <form onSubmit={handleSubmit}>
             <label>
               Email:{' '}
-              <input
+              <Input
                 type='email'
                 className='textbox'
                 placeholder='Email'
@@ -69,7 +70,7 @@ const Login = (props) => {
             <p>{'\n'}</p>
             <label>
               Password:{' '}
-              <input
+              <Input
                 type='password'
                 className='textbox'
                 placeholder='Password'
@@ -78,7 +79,7 @@ const Login = (props) => {
               />
             </label>
             <p>{'\n'}</p>
-            <input className='buttons' type='submit' value='Login' />
+            <Input className='buttons' type='submit' value='Login' />
           </form>
         </div>
       </header>
