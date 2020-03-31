@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import './Appointment.css';
+import { Input } from 'antd';
 
 const Appointment = (props) => {
   const { patientEmail, title, time, location, reminders } = props.data;
@@ -15,7 +16,7 @@ const Appointment = (props) => {
         </div>
         <div className='rights'>
         <Link to={'/Appointment/'+ props.id}>
-          <button className='buttons'>More Details</button>
+          <Input value = "More Details"/>
         </Link>
         </div>
       </div>
