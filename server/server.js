@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken');
+
+const config = require('./config/config.js');
 const express = require('./config/express.js');
 const User = require('./models/User.js');
 const Appointment = require('./models/Appointment.js');
@@ -25,10 +28,51 @@ const isAuthorizedHash = async (email, hashedPassword) => {
   return hashedPassword === userDoc.hashedPassword;
 };
 
+/**
+ * Generates a JSON Web Token (JWT) from an email.
+ * 
+ * @param {string} email Email to create token for
+ */
+const genToken = (email) => {
+  return jwt.sign({ email }, config.jwt.accessTokenSecret);
+};
+
+/**
+ * Middleware for authenticating requests.
+ * 
+ * @param {*} req HTTP Request object
+ * @param {*} res HTTP Response object
+ * @param {*} next Next callback
+ */
+const authToken = (req, res, next) => {
+  const { authorization } = req.headers;
+  const token = authorization && authorization.split(' ')[1];
+  if (!token) {
+    return res.status(401).send({ error: `No authorization provided` });
+  }
+
+  jwt.verify(token, config.jwt.accessTokenSecret, (err, user) => {
+    if (err) return res.status(403).send({ error: `Forbidden` });
+    req.user = user;
+    next();
+  });
+};
+
 app.get('/appointments/:patientEmail', async (req, res) => {
   console.log(req.headers.authorization);
   const { patientEmail } = req.params;
   const appointments = await Appointment.find({ patientEmail }).sort({ time: 1 });
+  res.send({appointments});
+});
+
+/**
+ * Retrieve a list of appointments associated with an email given a JWT access token.
+ */
+app.get('/appointments', authToken, async (req, res) => {
+  console.log(req.user);
+  const { email } = req.user;
+  const appointments = await Appointment.find({ patientEmail: email })
+    .sort({ time: 1 });
   res.send({appointments});
 });
 
@@ -73,8 +117,10 @@ app.post('/login', async (req, res) => {
     res.status(401).send({ error: `Incorrect email or password`});
     return;
   }
-  console.log(userDoc);
-  res.send(userDoc);
+  const { dob, name } = userDoc;
+  const user = {email, name, dob, accessToken: genToken(email)};
+  console.log(user);
+  res.send(user);
 });
 
 app.post('/create-account', async (req, res) => {
