@@ -118,7 +118,7 @@ const updateAdminAuthorization = (value) => {
           authorized = {Auth.isAuthenticated}
           component={() => <User email={account} />}
         />
-        <PrivateRoute exact path="/NewAppointment" email = {account} component={() => <NewAppointment email={account}/>} />
+        <PrivateRoute exact path="/NewAppointment" component={NewAppointment} />
         <PrivateRoute exact path="/Admin" component={Admin} />
         <PrivateRoute exact path="/RescheduleAppointment" component={RescheduleAppointment} />
         

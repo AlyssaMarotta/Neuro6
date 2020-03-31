@@ -71,8 +71,8 @@ body {
     width: 20%;
     border-width: 3px;
     border-style: solid;
-    border-color: rgb(153, 153, 153);
-    background-color: rgb(153, 153, 153);
+    border-color: white;
+    background-color: white;
     border-radius: 12px;
     position: absolute;
 }
