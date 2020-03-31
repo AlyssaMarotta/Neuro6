@@ -4,7 +4,7 @@ import './User.css';
 import Reminders from '../../components/Reminders/Reminders';
 import Appointments from '../../components/Appointments/Appointments';
 import UserNavBar2 from '../../components/UserNavBar2/UserNavBar2';
-import CalendarComponent from '../../components/Calendar/Calendar';
+import CalendarComponent from '../../components/CalendarComponent/CalendarComponent';
 import { PromiseProvider } from 'mongoose';
 
 

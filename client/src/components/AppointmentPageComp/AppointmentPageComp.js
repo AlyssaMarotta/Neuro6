@@ -3,7 +3,9 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import './AppointmentPageComp.css';
 import ConfirmCancel from '../ConfirmCancel/ConfirmCancel'
+import { Input } from 'antd';
 import Map from '../../components/Map/Map.js';
+
 
 const AppointmentPageComponent = (props) => {
   const { patientEmail, title, time, location, reminders } = props.data
@@ -20,7 +22,7 @@ const AppointmentPageComponent = (props) => {
           <p>{reminders}</p>
           <p>{location}</p>
           <Map />
-          <button className='buttons' onClick = {togglePopup}>Cancel Appointment</button>
+          <Input onClick = {togglePopup} value = "Cancel Appointment"/>
           {showPopup ?
             <ConfirmCancel
               text= {title}
@@ -30,7 +32,7 @@ const AppointmentPageComponent = (props) => {
           }
           <p>
           <Link to={'/RescheduleAppointment'}>
-            <button className='buttons'>Reschedule Appointment</button>
+            <Input value = "Reschedule Appointment"/>  
           </Link>
           
           </p>
