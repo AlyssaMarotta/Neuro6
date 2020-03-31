@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../../assets/logo.svg';
+import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import './Home.css';
 
@@ -19,12 +20,13 @@ const Home = () => {
         <div className='section'>
           <p>
             <Link to='/Login'>
-              <button className='buttons'>Login</button>
+              <Button color='red' type='primary' size='large' >Login</Button>
             </Link>
           </p>
           <p>
             <Link to='/CreateUser'>
-              <button className='buttons'>Create Account</button>
+            <Button type='primary' size='large'>Create Account</Button>
+              {/* className='buttons' */}
             </Link>
           </p>
         </div>

@@ -12,6 +12,7 @@ import Admin from './views/Admin/Admin';
 import RescheduleAppointment from './views/RescheduleAppointment/RescheduleAppointment';
 import ContactAndFindUs from './views/ContactAndFindUs/ContactAndFindUs';
 import Appointment from './views/Appointment/Appointment';
+import 'antd/dist/antd.css';
 
 const Auth = {
   isAuthenticated: false,
