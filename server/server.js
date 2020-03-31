@@ -26,7 +26,7 @@ const getUser = async (email) => {
  * @param {string} password Password for the user's account
  */
 const authLogin = async (email, password) => {
-  const user = getUser(email);
+  const user = await getUser(email);
   if (!user) return false;
   const { salt, hashedPassword } = user;
   return sha512WithSalt(password, salt) === hashedPassword;
@@ -41,8 +41,8 @@ const authLogin = async (email, password) => {
  * @param {string} password Password for the user's account
  */
 const getUserWithAuthLogin = async (email, password) => {
-  const user = getUser(email);
-  if (!user) return false;
+  const user = await getUser(email);
+  if (!user) return null;
   const { salt, hashedPassword } = user;
   return (sha512WithSalt(password, salt) === hashedPassword) ? user : null;
 };
@@ -77,13 +77,13 @@ const createToken = (email) => {
  * @param {*} res HTTP Response object
  * @param {*} next Next callback
  */
-const authToken = (req, res, next) => {
+const authToken = async (req, res, next) => {
   const { authorization } = req.headers;
   const token = authorization && authorization.split(' ')[1];
   if (!token) {
     return res.status(401).send({ error: `No authorization provided` });
   }
-  const user = getUserWithAuthToken(token);
+  const user = await getUserWithAuthToken(token);
   if (!user) return res.status(403).send({ error: `Forbidden` });
   req.user = user;
   next();
@@ -186,16 +186,21 @@ app.delete('/appointments', async (req, res) => {
  * Returns the JWT access token and email, name, DOB, and isAdmin for the user.
  */
 app.post('/login', async (req, res) => {
+  console.log('ASDF1');
   const { email, password } = req.body;
   const userDoc = await getUserWithAuthLogin(email, password);
+  console.log('ASDF2');
   if (!userDoc) {
     res.status(401).send({ error: `Incorrect email or password` });
     return;
   }
+  console.log('ASDF3');
   const { name, dob, isAdmin } = userDoc;
   const user = {email, name, dob, isAdmin, accessToken: createToken(email)};
+  console.log('ASDF4');
   console.log(user);
   res.send(user);
+  console.log('ASDF5');
 });
 
 /**
