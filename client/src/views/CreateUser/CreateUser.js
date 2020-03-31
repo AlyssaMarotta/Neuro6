@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import './CreateUser.css';
-import { Input } from 'antd';
 
 const initForm = {
   email: '',
@@ -55,7 +54,7 @@ const CreateUser = props => {
           <form onSubmit={handleSubmit}>
             <label>
               Email:{' '}
-              <Input
+              <input
                 className='textbox'
                 type='email'
                 name='email'
@@ -67,7 +66,7 @@ const CreateUser = props => {
             <p>{'\n'}</p>
             <label>
               Password:{' '}
-              <Input
+              <input
                 className='textbox'
                 type='password'
                 name='password'
@@ -79,7 +78,7 @@ const CreateUser = props => {
             <p>{'\n'}</p>
             <label>
               First Name:{' '}
-              <Input
+              <input
                 className='textbox'
                 type='text'
                 name='firstName'
@@ -91,7 +90,7 @@ const CreateUser = props => {
             <p>{'\n'}</p>
             <label>
               Last Name:{' '}
-              <Input
+              <input
                 className='textbox'
                 type='text'
                 name='lastName'
@@ -104,7 +103,7 @@ const CreateUser = props => {
 
             <label>
               Date of Birth:{' '}
-              <Input
+              <input
                 className='textbox'
                 type='date'
                 name='dob'
@@ -114,7 +113,7 @@ const CreateUser = props => {
               />
             </label>
             <p>{'\n'}</p>
-            <Input className='buttons' type='submit' value='Create Account' />
+            <input className='buttons' type='submit' value='Create Account' />
           </form>
         </div>
       </header>
