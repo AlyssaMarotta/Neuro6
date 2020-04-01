@@ -14,7 +14,7 @@
 }
 
 .card-container > .ant-tabs-card > .ant-tabs-content {
-    height: 120px;
+    height: auto;
     margin-top: -16px;
   }
   

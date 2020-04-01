@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Admin.css';
-import { Tabs } from 'antd';
-import { Calendar } from 'antd';
-import { Row, Col, Divider } from 'antd';
-import { Input } from 'antd';
+import { Row, Col, Divider, DatePicker, Tabs, Calendar, Input } from 'antd';
 import Appointment from '../Appointment/Appointment';
+import moment from 'moment';
 
 
 const Admin = () => {
 
   const [appointments, setAppointments] = useState([]);
   const { Search } = Input;
+  const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
+  const dateFormat = 'YYYY/MM/DD';
+  const { RangePicker } = DatePicker;
 
   /*useEffect(() => {
     const getAppointments = async () => {
@@ -50,30 +51,44 @@ const Admin = () => {
               <Tabs type="card">
                       <TabPane tab="Appointments" key="1">
                       <Search
-                        placeholder="input search text"
+                        placeholder="Patients Email"
                         onSearch={value => console.log(value)}
                         style={{ width: 200}}
+                      />
+                      <RangePicker
+                        defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
+                        format={dateFormat}
                       />
                         {appointments.map((appointment, index) => (
                           <Appointment key={index} data={appointment} id = {index} />
                         ))}
                       </TabPane>
                       <TabPane tab="Patients" key="2">
-                        <p>Content of Tab Pane 2</p>
-                        <p>Content of Tab Pane 2</p>
-                        <p>Content of Tab Pane 2</p>
+                      <Search
+                        placeholder="Patients Email"
+                        onSearch={value => console.log(value)}
+                        style={{ width: 200}}
+                      />
+                        <p>Patient 1</p>
+                        <p>Patient 2</p>
+                        <p>Patient 3</p>
                       </TabPane>
               </Tabs>
               </div>
             </Col>
             <Col flex={2}>    
-              <div className='CalendarComponent'>
+              
+                <div className='CalendarComponent'> <p>
                 <div className="site-calendar-demo-card">
-                  <Calendar fullscreen={false} onPanelChange={onPanelChange} />
+                 <Calendar fullscreen={false} onPanelChange={onPanelChange} />
                 </div>
-                <Link to='/NewAppointment'>
+                </p>
+                
+                <p><Link to='/NewAppointmentAdmin'>
                   <Input className='buttons' value = "Schedule an Appointment"/>
-                </Link>
+                </Link></p>
+                <p><Input className='buttons' value = "Create a new User"/></p>
+                <p><Input className='buttons' value = "Create a new Admin"/></p>
               </div>
             </Col>
           </Row>

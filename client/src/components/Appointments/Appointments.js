@@ -47,7 +47,7 @@ const Appointments = (props) => {
     // setAppointments([dummyData]);
     getAppointments().catch(err => console.log(err));
   }, [email]);
-
+/*
   const handleAddAppointment = appointment => {
     const addAppointment = async () => {
       // const response = await fetch(`/appointments/${encodeURIComponent(email)}`, {
@@ -67,7 +67,7 @@ const Appointments = (props) => {
     };
 
     addAppointment().catch(err => console.log(err));
-  };
+  };*/
 
   return (
     <div className='Appointments'>
@@ -75,7 +75,6 @@ const Appointments = (props) => {
       {appointments.map((appointment, index) => (
         <Appointment key={index} data={appointment} id = {index} />
       ))}
-      <button onClick={() => handleAddAppointment(dummyData)}>Add Dummy Appointment</button>
     </div>
   );
 

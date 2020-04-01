@@ -19,7 +19,7 @@ const ConfirmCancel = (props) => {
       });
       const body = await response.json();
       if (response.status !== 200) {
-        console.log("Failed add Appointment");
+        console.log("Failed delete Appointment");
         throw Error(body.error);
       }
       else {
