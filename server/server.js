@@ -119,6 +119,15 @@ app.get('/appointments', authToken, async (req, res) => {
   res.send({appointments});
 });
 
+//BEST BACKEND CODE EVER, ITS GREAT BUT MIGHT POSSIBLY NOT WORK AT ALL BUT STILL GREAT
+app.get('/appointments/getAll', authToken, async (req, res) => {
+  console.log(req.user);
+  const appointments = await Appointment.find( {_id: 1})
+    .sort({ time: 1 });
+  res.send({appointments});
+});
+//END OF GREAT CODE, ALTHOUGH I DO NOT RECOMEND USING UNLESS YOU WANT TO INFINITLY REQUEST
+
 /**
  * Endpoint to create an appointment.
  */

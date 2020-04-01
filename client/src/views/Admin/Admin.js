@@ -1,16 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Admin.css';
 import { Tabs } from 'antd';
 import { Calendar } from 'antd';
 import { Row, Col, Divider } from 'antd';
 import { Input } from 'antd';
+import Appointment from '../Appointment/Appointment';
 
 
 const Admin = () => {
 
-
+  const [appointments, setAppointments] = useState([]);
   const { Search } = Input;
+
+  /*useEffect(() => {
+    const getAppointments = async () => {
+      const response = await fetch(`/appointments/getAll`, {
+        headers: {
+          'Authorization': 'Basic YWxhZGRpbjpvcGVuc2VzYW1l',
+          'Cache-Control': 'no-cache',
+        }
+      });
+      try {
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.error);
+        console.log(body);
+        setAppointments(body.appointments || []);
+      } catch {
+        throw Error(await response.clone().text());
+      }
+
+    };
+
+    // setAppointments([dummyData]);
+    getAppointments().catch(err => console.log(err));
+  },);
+  */
+//WHENEVER WE FIX /APPOINTMENT/GETALL UNCOMMENT ABOVE 
 
   function onPanelChange(value, mode) {
     console.log(value, mode);
@@ -28,8 +54,9 @@ const Admin = () => {
                         onSearch={value => console.log(value)}
                         style={{ width: 200}}
                       />
-                        <p>Content of Tab Pane 1</p>
-                        <p>Content of Tab Pane 1</p>
+                        {appointments.map((appointment, index) => (
+                          <Appointment key={index} data={appointment} id = {index} />
+                        ))}
                       </TabPane>
                       <TabPane tab="Patients" key="2">
                         <p>Content of Tab Pane 2</p>
