@@ -8,7 +8,7 @@ import Map from '../../components/Map/Map.js';
 
 
 const AppointmentPageComponent = (props) => {
-  const { patientEmail, title, time, location, reminders } = props.data
+  const { patientEmail, title, time, location, reminders, id } = props.data
   const [showPopup, setPopup] = useState(false);
 
 
@@ -27,6 +27,7 @@ const AppointmentPageComponent = (props) => {
             <ConfirmCancel
               text= {title}
               closePopup={togglePopup}
+              id= {id}
             />
             : null
           }

@@ -10,6 +10,7 @@ const CalendarComponent = () => {
   function onPanelChange(value, mode) {
     console.log(value, mode);
   }
+  
   return (
     
     <div className='CalendarComponent'>
