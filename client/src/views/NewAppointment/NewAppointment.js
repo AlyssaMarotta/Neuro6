@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import './NewAppointment.css';
 import { Calendar, Select, Button, Input } from 'antd';
 import moment from 'moment';
@@ -18,20 +19,23 @@ const initForm = {
   ]
 };
 
+var d = new Date(); 
 
 const [formData, setFormData] = useState(initForm);
-const [date, setDate] = useState(moment('2018-03-25'));
-const [appointments, setAppointments] = useState([]);
 const { Option } = Select;
+const [submitted, setSubmitted] = useState(false);
 
 
 const UpdateDate = e => 
 {
-  console.log(new Date());
-  setDate(e.format('MM-DD-YYYY'));
+
+  d.setFullYear(e.format('YYYY'));
+  d.setDate(e.format('DD'));
+  d.setMonth(e.format('MM')-1);
+  console.log(d);
 }
 const onPanelChange = value => {
-  setDate({ value });
+  UpdateDate(value);
 };
 
   const handleFormChange = e => {
@@ -43,11 +47,14 @@ const onPanelChange = value => {
   };
 
   const handleFormTimeChange = e => {
-    const { value } = e;
-    {console.log(date +" " + value + " GMT-0400 (Eastern Daylight Time)");}
+
+    const {value} = e;
+    d.setHours(value.substring(0,2))
+    d.setMinutes(value.substring(3,5))
+    console.log(d);
     setFormData(formData => ({
       ...formData,
-      ['time']: new Date()//date +" " + value + " GMT-0400 (Eastern Daylight Time)",
+      ['time']: d//new date(date + " " + value)//date +" " + value + " GMT-0400 (Eastern Daylight Time)",
       
     }));console.log(formData);
   };
@@ -55,30 +62,33 @@ const onPanelChange = value => {
 
 
   const handleAddAppointment = (appointment) => {
+    console.log("Trying To Add appointment");
     const addAppointment = async () => {
-      // const response = await fetch(`/appointments/${encodeURIComponent(email)}`, {
       const response = await fetch('/appointments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(appointment),
+        body: JSON.stringify(formData),
       });
       const body = await response.json();
       if (response.status !== 200) {
+        console.log("Failed add Appointment");
         throw Error(body.error);
-        
+      }
+      else {
+        setSubmitted(true);
       }
     };
-    console.log("4");
     addAppointment().catch(err => console.log(err));
   };
-
+  if (submitted) return (
+    <Redirect to= {"/user"} />
+  );
   return (
     <div className='App'>
         <header className='App-header'>
           Schedule a New Appointment
           <div className="NewAppointment">
               <Calendar 
-                onSelect={UpdateDate}
                 fullscreen={false}
                 onPanelChange={onPanelChange}
               />
@@ -89,9 +99,9 @@ const onPanelChange = value => {
                     style={{ width: 120 }}
                     onChange={handleFormTimeChange}
                   >
-                    <Option value="01:30:00">1:30</Option>
-                    <Option value="04:00:00">4:00</Option>
-                    <Option value="05:00:00">5:00</Option>
+                    <Option value="01:30:00" hour = "13" minute = "30" >1:30</Option>
+                    <Option value="04:00:00" hour = "16" minute = "00">4:00</Option>
+                    <Option value="05:00:00" hour = "17" minute = "00">5:00</Option>
                   </Select></p>
                   <Input  
                     name='title'
@@ -100,7 +110,7 @@ const onPanelChange = value => {
                     required
                     onChange={handleFormChange}
                   />
-              <p><Button onClick={handleAddAppointment(initForm)}>Submit</Button></p>
+              <p><Button onClick={handleAddAppointment}>Submit</Button></p>
               <p>Or click here to call</p>
           </div>
         </header>
