@@ -3,6 +3,7 @@ import { Card, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import './Appointments.css';
 import Appointment from '../Appointment/Appointment';
+import { Card } from 'antd';
 
 const Appointments = props => {
   // TODO: Use logged in email from useReducer + useContext
@@ -41,7 +42,7 @@ const Appointments = props => {
     // setAppointments([dummyData]);
     getAppointments().catch(err => console.log(err));
   }, [email]);
-
+/*
   const handleAddAppointment = appointment => {
     const addAppointment = async () => {
       // const response = await fetch(`/appointments/${encodeURIComponent(email)}`, {
@@ -61,18 +62,20 @@ const Appointments = props => {
     };
 
     addAppointment().catch(err => console.log(err));
-  };
+  };*/
 
   return (
+
     <div className='Appointments'>
-      {appointments.map((appointment, index) => (
-        <Appointment key={index} data={appointment} id={index} />
-      ))}
-      <p>{'\n'}</p>
-      <Button type='primary' onClick={() => handleAddAppointment(dummyData)}>
-        Add Dummy Appointment
-      </Button>
+      <Card style = {{margin : 10}}>
+        Appointments
+        {appointments.map((appointment, index) => (
+          <Appointment key={index} data={appointment} id={index} />
+        ))}
+      </Card>
     </div>
-  );
+   );
+
 };
+
 export default Appointments;

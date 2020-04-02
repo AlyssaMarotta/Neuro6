@@ -53,7 +53,7 @@ const NavBar = props => {
         <Col align='right' theme='dark' span={4}>
           <Menu margin-bottom='20px' theme='dark' align='center'>
             <Link theme='dark' className='nav-title' to='/'>
-              <Logo style={{ backgroundColor: '#041528' }} />
+              <Logo style={{ backgroundColor: '#041528' , margin : 5 }} />
             </Link>
           </Menu>
         </Col>

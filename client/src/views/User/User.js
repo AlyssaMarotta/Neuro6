@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import './User.css';
 import Reminders from '../../components/Reminders/Reminders';
 import Appointments from '../../components/Appointments/Appointments';
-import UserNavBar2 from '../../components/UserNavBar2/UserNavBar2';
 import CalendarComponent from '../../components/CalendarComponent/CalendarComponent';
 import { PromiseProvider } from 'mongoose';
+import { Row, Col,  } from 'antd';
 
 const User = props => {
   const styles = {

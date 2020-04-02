@@ -2,7 +2,7 @@
 
 .User {
     text-align: center;
-    background: #282c34;
+    background: white;
 }
 
 .navBar2{
@@ -10,13 +10,13 @@
     align-items: right;
 }
 .User-Section {
-    background-color: #282c34;
+    background-color: white;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: calc(10px + 2vmin);
-    color: white;
+    color: black;
 }
 .left {
     display: flex;

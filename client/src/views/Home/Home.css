@@ -4,7 +4,7 @@ body {
 
 .App {
     text-align: center;
-    background: #282c34;
+    background: #ffffff;
 }
 
 .App-logo {
@@ -17,7 +17,7 @@ body {
     flex-direction: column;
     align-items: center;
     font-size: calc(10px + 2vmin);
-    color: white;
+    color: black;
     justify-content: space-around;
     
 }
@@ -35,7 +35,8 @@ body {
         height: fit-content;
         border-width: 3px;
         border-style: solid;
-        border-color: white;
+        border-color: rgb(177, 177, 177);
+        background-color: rgba(109, 93, 93, 0.281);
         border-radius: 12px;
         
 
@@ -44,13 +45,13 @@ body {
 {
     position: relative;
     width: 100%;
-    opacity: 20%;
+    opacity: 40%;
 }
 .buttons {
     height: 70px;
     min-width: 155px;
     width: auto;
-    background-color: rgb(100, 105, 129);
+    background-color: white;
     border: none;
     color: white;
     padding: 17px, 30px;
@@ -67,12 +68,12 @@ body {
     background-color: #ff7500;
 }
 .section{
-    margin: 5px;
+    padding: 75px;
     width: 20%;
     /* border-width: 3px;
-    border-style: solid;
-    border-color: rgb(153, 153, 153); */
-    background-color: rgb(153, 153, 153);
+    border-style: solid;*/
+    border-color: rgb(177, 177, 177);
+    background-color: rgba(43, 36, 36, 0.596);
     border-radius: 12px;
     position: absolute;
 }

@@ -20,6 +20,16 @@ const getUser = async (email) => {
 };
 
 /**
+ * Retrieves only the necessary data to send back to the user.
+ * 
+ * @param {User.schema} userData User data of the User schema
+ */
+const getUserDataToSend = (userData) => {
+  const { email, name, dob, isAdmin } = userData;
+  return { email, name, dob, isAdmin };
+};
+
+/**
  * Authenticates a user login with email and password.
  * 
  * @param {string} email Email for the user's account
@@ -48,17 +58,16 @@ const getUserWithAuthLogin = async (email, password) => {
 };
 
 /**
+ * 
  * Gets a user document associated with a JWT token.
  * 
  * Returns null if the token is invalid.
  * 
  * @param {string} token JWT token associated with the user
  */
-getUserWithAuthToken = async (token) => {
-  jwt.verify(token, config.jwt.accessTokenSecret, (err, user) => {
-    if (err) return null;
-    return user;
-  });
+const getUserWithAuthToken = async (token) => {
+  const { email } = jwt.verify(token, config.jwt.accessTokenSecret);
+  return (await getUser(email));
 };
 
 /**
@@ -93,8 +102,16 @@ const authToken = async (req, res, next) => {
  * Endpoint to authenticate token.
  */
 app.get('/auth', authToken, async (req, res) => {
-  res.send(req.user);
+  res.status(200).send(getUserDataToSend(req.user));
 });
+
+//BEST BACKEND CODE EVER, ITS GREAT
+app.get('/usersgetall', async (req, res) => {
+  const users = await User.find({});
+  res.send({users});
+});
+//END OF GREAT CODE
+
 
 /**
  * @deprecated Use the endpoint with auth token instead.
@@ -118,6 +135,14 @@ app.get('/appointments', authToken, async (req, res) => {
     .sort({ time: 1 });
   res.send({appointments});
 });
+
+//BEST BACKEND CODE EVER, ITS GREAT
+app.get('/appointmentsgetall', async (req, res) => {
+  const appointments = await Appointment.find({})
+    .sort({ time: 1 });
+  res.send({appointments});
+});
+//END OF GREAT CODE
 
 /**
  * Endpoint to create an appointment.
@@ -186,21 +211,13 @@ app.delete('/appointments', async (req, res) => {
  * Returns the JWT access token and email, name, DOB, and isAdmin for the user.
  */
 app.post('/login', async (req, res) => {
-  console.log('ASDF1');
   const { email, password } = req.body;
   const userDoc = await getUserWithAuthLogin(email, password);
-  console.log('ASDF2');
   if (!userDoc) {
     res.status(401).send({ error: `Incorrect email or password` });
     return;
   }
-  console.log('ASDF3');
-  const { name, dob, isAdmin } = userDoc;
-  const user = {email, name, dob, isAdmin, accessToken: createToken(email)};
-  console.log('ASDF4');
-  console.log(user);
-  res.send(user);
-  console.log('ASDF5');
+  res.send({ ...getUserDataToSend(userDoc), accessToken: createToken(email) });
 });
 
 /**
@@ -263,9 +280,8 @@ app.post('/create-account', async (req, res) => {
       res.status(500).send({ error: `User creation failed` });
       return;
     }
-    //const accessToken = createToken(email);
-    //res.status(200).send({ email, name, dob, isAdmin, accessToken });
-    res.status(200).send(doc);
+    const accessToken = createToken(email);
+    res.status(200).send({ ...getUserDataToSend(doc), accessToken });
     return;
   });
 });

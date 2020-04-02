@@ -79,6 +79,7 @@ const CreateUser = props => {
                 placeholder='Password'
                 required
                 onChange={handleFormChange}
+                minLength={8}
               />
             </label>
             <p>{'\n'}</p>
