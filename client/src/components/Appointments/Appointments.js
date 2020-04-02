@@ -3,7 +3,6 @@ import { Card, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import './Appointments.css';
 import Appointment from '../Appointment/Appointment';
-import { Card } from 'antd';
 
 const Appointments = props => {
   // TODO: Use logged in email from useReducer + useContext

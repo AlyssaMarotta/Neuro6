@@ -6,7 +6,7 @@ import Reminders from '../../components/Reminders/Reminders';
 import Appointments from '../../components/Appointments/Appointments';
 import CalendarComponent from '../../components/CalendarComponent/CalendarComponent';
 import { PromiseProvider } from 'mongoose';
-import { Row, Col,  } from 'antd';
+//import { Row, Col} from 'antd';
 
 const User = props => {
   const styles = {
@@ -21,9 +21,7 @@ const User = props => {
 
   return (
     <div className='User'>
-      <div className='navBar2'>
-        <UserNavBar2 />
-      </div>
+      
       <header className='User-Section'>
         <div className='all'>
           {/* <div className='left'> */}

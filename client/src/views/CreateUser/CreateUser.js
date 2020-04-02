@@ -57,6 +57,7 @@ const CreateUser = props => {
           alt='Uf Health Building'
         />
         <div className='section'>
+          <Card>
           <form onSubmit={handleSubmit}>
             <label>
               Email:{' '}
@@ -122,6 +123,7 @@ const CreateUser = props => {
             <p>{'\n'}</p>
             <Input className='buttons' type='submit' value='Create Account' />
           </form>
+          </Card>
 
           {/* <Card title='Create Account' align='left' span={14}>
             <Form size='large' name='basic' onFinish={handleSubmit}>
