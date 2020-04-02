@@ -23,9 +23,7 @@ const ConfirmCancel = (props) => {
         headers: {
         'Content-Type': 'application/json',
         }, 
-        body: {
-          id : (JSON.stringify(data))
-        },
+        body: JSON.stringify({id: data._id}),
       });
       const body = await response.json();
       if (response.status !== 200) {
