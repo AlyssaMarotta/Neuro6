@@ -3,18 +3,28 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import './ConfirmCancel.css';
+import { Button } from 'antd';
+var ObjectId = require('mongoose').Types.ObjectId; 
+
+
 
 const ConfirmCancel = (props) => {
 
   const [submitted, setSubmitted] = useState(false);
-
+  const data = { 
+    _id: (props.data._id)
+  };
+    
   const handleDeleteAppointment = () => {
-    console.log("Trying To Delete appointment");
+    console.log(JSON.stringify(ObjectId(props.data._id)));
     const deleteAppointment = async () => {
       const response = await fetch('/appointments', {
         method: 'DELETE',
+        headers: {
+        'Content-Type': 'application/json',
+        }, 
         body: {
-          id: props.id
+          id : (JSON.stringify(data))
         },
       });
       const body = await response.json();
@@ -38,10 +48,10 @@ const ConfirmCancel = (props) => {
         <div className='popup_inner'>
         <h1>Are you sure you want to cancel {props.text}</h1>
         <Link to={'/User'}>
-          <button className='buttons' onClick={handleDeleteAppointment}>Yes, Cancel</button>
+          <Button className='buttons' onClick={handleDeleteAppointment}>Yes, Cancel</Button>
         </Link>
         
-        <button className='buttons' onClick={props.closePopup}>No, Close</button>
+        <Button className='buttons' onClick={props.closePopup}>No, Close</Button>
         </div>
       </div>
     );

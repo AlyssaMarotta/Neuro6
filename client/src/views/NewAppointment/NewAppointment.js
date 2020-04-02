@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import './NewAppointment.css';
-import { Calendar, Select, Button, Input } from 'antd';
+import { Calendar, Select, Button, Input, Card } from 'antd';
 import moment from 'moment';
 
 const NewAppointment = (props) => {
@@ -84,14 +84,18 @@ const onPanelChange = value => {
     <Redirect to= {"/user"} />
   );
   return (
+    
     <div className='App'>
         <header className='App-header'>
           Schedule a New Appointment
           <div className="NewAppointment">
+          <Card> 
+          <Card>
               <Calendar 
                 fullscreen={false}
                 onPanelChange={onPanelChange}
               />
+              </Card>
               <p>  <Select
                     labelInValue
                     placeholder = {'Select A Time'}
@@ -112,9 +116,11 @@ const onPanelChange = value => {
                   />
               <p><Button onClick={handleAddAppointment}>Submit</Button></p>
               <p>Or click here to call</p>
+              </Card>
           </div>
         </header>
     </div>
+    
   );
 }
 

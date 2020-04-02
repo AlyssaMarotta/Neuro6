@@ -27,10 +27,10 @@ const NavBar = () => {
         <Menu margin-bottom='20px' theme='dark' align='center'>
           <Link theme='dark' className='nav-title' to='/'>
             <Logo
-              style={{ backgroundColor: '#041528' }}
+              style={{ backgroundColor: '#041528', margin :5 }}
               // className='nav-logo'
-              // src={'/NeurosurgeryLogo.gif'}
-              // alt='Neurosurgery logo'
+              src={'/NeurosurgeryLogo.gif'}
+              alt='Neurosurgery logo'
             />
           </Link>
         </Menu>

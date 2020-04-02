@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Appointments.css';
 import Appointment from '../Appointment/Appointment';
+import { Card } from 'antd';
 
 
 const Appointments = (props) => {
@@ -70,13 +71,13 @@ const Appointments = (props) => {
   };*/
 
   return (
-    <div className='Appointments'>
+    <Card style = {{margin : 10}}>
       Appointments
       {appointments.map((appointment, index) => (
         <Appointment key={index} data={appointment} id = {index} />
       ))}
-    </div>
-  );
+    </Card>
+   );
 
 };
 export default Appointments;

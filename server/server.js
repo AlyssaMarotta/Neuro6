@@ -96,6 +96,14 @@ app.get('/auth', authToken, async (req, res) => {
   res.send(req.user);
 });
 
+//BEST BACKEND CODE EVER, ITS GREAT
+app.get('/usersgetall', async (req, res) => {
+  const users = await User.find({});
+  res.send({users});
+});
+//END OF GREAT CODE
+
+
 /**
  * @deprecated Use the endpoint with auth token instead.
  */
@@ -119,14 +127,13 @@ app.get('/appointments', authToken, async (req, res) => {
   res.send({appointments});
 });
 
-//BEST BACKEND CODE EVER, ITS GREAT BUT MIGHT POSSIBLY NOT WORK AT ALL BUT STILL GREAT
-app.get('/appointments/getAll', authToken, async (req, res) => {
-  console.log(req.user);
-  const appointments = await Appointment.find( {_id: 1})
+//BEST BACKEND CODE EVER, ITS GREAT
+app.get('/appointmentsgetall', async (req, res) => {
+  const appointments = await Appointment.find({})
     .sort({ time: 1 });
   res.send({appointments});
 });
-//END OF GREAT CODE, ALTHOUGH I DO NOT RECOMEND USING UNLESS YOU WANT TO INFINITLY REQUEST
+//END OF GREAT CODE
 
 /**
  * Endpoint to create an appointment.
