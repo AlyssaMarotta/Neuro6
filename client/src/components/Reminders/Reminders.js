@@ -6,9 +6,11 @@ import Reminder from '../Reminder/Reminder';
 // TODO: Fetch reminders based on user context
 const Reminders = () => {
   return (
-    <div className='Reminders'>
-      Reminders
+    // <div className='Reminders'>
+      <div>
+      {/* Reminders */}
       <Reminder>Be on time</Reminder>
+      <p>{'\n'}</p>
       <Reminder>Fast the night before</Reminder>
     </div>
   );

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import './Login.css';
 import { PromiseProvider } from 'mongoose';
-import { Input } from 'antd';
+import { Col, Card, Form, Input, Button } from 'antd';
 
-const Login = (props) => {
+const Login = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   //const [authorized, setAuthorized] = useState(false);
@@ -18,7 +18,8 @@ const Login = (props) => {
   };
 
   const handleSubmit = e => {
-    e.preventDefault();
+    // comment out e.preventDefault(); for the Ant Design Form
+    //e.preventDefault();
     //sourced from https://medium.com/@maison.moa/setting-up-an-express-backend-server-for-create-react-app-bc7620b20a61
     const login = async () => {
       const response = await fetch('/login', {
@@ -26,18 +27,17 @@ const Login = (props) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
-          password,
-        }),
+          password
+        })
       });
       const body = await response.json();
 
       if (response.status !== 200) {
         throw Error(body.error);
       }
-      
+
       console.log(body);
-      if(body.isAdmin == true)
-      {
+      if (body.isAdmin == true) {
         props.setAdminAuthorized(true);
       }
       //setAuthorized(true);
@@ -48,15 +48,18 @@ const Login = (props) => {
     login().catch(err => console.log(err));
   };
 
-  if (props.authorized) return (
-    <Redirect to= {props.exactpath} />
-  );
+  if (props.authorized) return <Redirect to={'/User'} />;
 
   return (
     <div className='App'>
       <header className='App-header'>
-        <div className='forum'>
-          <form onSubmit={handleSubmit}>
+        <img
+          className='FrontImage'
+          src={'/UFHealthBuilding.jpg'}
+          alt='Uf Health Building'
+        />
+        <div className='section'>
+          {/* <form onSubmit={handleSubmit}>
             <label>
               Email:{' '}
               <Input
@@ -80,7 +83,38 @@ const Login = (props) => {
             </label>
             <p>{'\n'}</p>
             <Input className='buttons' type='submit' value='Login' />
-          </form>
+          </form> */}
+
+          <Card title='Login' align='left' span={14}>
+            <Form size='large' name='basic' onFinish={handleSubmit}>
+              <Form.Item
+                label='Email'
+                name='email'
+                rules={[
+                  { type: 'email', message: 'Not a valid Email!' },
+                  { required: true, message: 'Please input your Email!' }
+                ]}
+              >
+                <Input onChange={handleEmailChange} />
+              </Form.Item>
+
+              <Form.Item
+                label='Password'
+                name='password'
+                rules={[
+                  { required: true, message: 'Please input your password!' }
+                ]}
+              >
+                <Input.Password onChange={handlePasswordChange} />
+              </Form.Item>
+
+              <Form.Item>
+                <Button type='primary' htmlType='submit'>
+                  Submit
+                </Button>
+              </Form.Item>
+            </Form>
+          </Card>
         </div>
       </header>
     </div>

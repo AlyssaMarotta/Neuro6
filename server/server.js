@@ -263,8 +263,9 @@ app.post('/create-account', async (req, res) => {
       res.status(500).send({ error: `User creation failed` });
       return;
     }
-    const accessToken = createToken(email);
-    res.status(200).send({ email, name, dob, isAdmin, accessToken });
+    //const accessToken = createToken(email);
+    //res.status(200).send({ email, name, dob, isAdmin, accessToken });
+    res.status(200).send(doc);
     return;
   });
 });

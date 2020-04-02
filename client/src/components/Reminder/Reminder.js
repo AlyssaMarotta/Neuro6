@@ -1,4 +1,5 @@
 import React from 'react';
+import {Alert} from 'antd';
 import { Link } from 'react-router-dom';
 import './Reminder.css';
 
@@ -7,7 +8,14 @@ const Reminder = props => {
 
   return (
     <div className='Reminder'>
-      <p>{children}</p>
+      <Alert
+      message="Appointment Reminder"
+      description={children}
+      type="info"
+      showIcon
+      align='left'
+    />
+      {/* <p>{children}</p> */}
     </div>
   );
 };

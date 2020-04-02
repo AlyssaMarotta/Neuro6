@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { Card, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import './Appointments.css';
 import Appointment from '../Appointment/Appointment';
 
-
-const Appointments = (props) => {
-    
+const Appointments = props => {
   // TODO: Use logged in email from useReducer + useContext
-  const {email} = props;
+  const { email } = props;
 
-  
   const dummyData = {
     patientEmail: email,
     title: 'Checkup Appointment',
     time: new Date(),
     location: '1505 SW Archer Road, Gainesville, FL 32608',
-    reminders: [
-      'Bring your best smile! ',
-      'Remember to floss'
-    ]
+    reminders: ['Bring your best smile! ', 'Remember to floss']
   };
 
   const [appointments, setAppointments] = useState([]);
@@ -30,8 +25,8 @@ const Appointments = (props) => {
       const response = await fetch(`/appointments/${email}`, {
         // TODO: Find out how to actually send the authorized email/password
         headers: {
-          'Authorization': 'Basic YWxhZGRpbjpvcGVuc2VzYW1l',
-          'Cache-Control': 'no-cache',
+          Authorization: 'Basic YWxhZGRpbjpvcGVuc2VzYW1l',
+          'Cache-Control': 'no-cache'
         }
       });
       try {
@@ -42,7 +37,6 @@ const Appointments = (props) => {
       } catch {
         throw Error(await response.clone().text());
       }
-
     };
     // setAppointments([dummyData]);
     getAppointments().catch(err => console.log(err));
@@ -54,7 +48,7 @@ const Appointments = (props) => {
       const response = await fetch('/appointments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(appointment),
+        body: JSON.stringify(appointment)
       });
       const body = await response.json();
 
@@ -71,13 +65,14 @@ const Appointments = (props) => {
 
   return (
     <div className='Appointments'>
-      Appointments
       {appointments.map((appointment, index) => (
-        <Appointment key={index} data={appointment} id = {index} />
+        <Appointment key={index} data={appointment} id={index} />
       ))}
-      <button onClick={() => handleAddAppointment(dummyData)}>Add Dummy Appointment</button>
+      <p>{'\n'}</p>
+      <Button type='primary' onClick={() => handleAddAppointment(dummyData)}>
+        Add Dummy Appointment
+      </Button>
     </div>
   );
-
 };
 export default Appointments;

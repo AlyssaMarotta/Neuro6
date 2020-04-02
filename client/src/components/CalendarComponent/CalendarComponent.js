@@ -5,7 +5,7 @@ import ReactCalendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Calendar } from 'antd';
 import 'antd/dist/antd.dark.css';
-import { Input } from 'antd';
+import { Input, Button } from 'antd';
 
 const CalendarComponent = () => {
 
@@ -18,12 +18,12 @@ const CalendarComponent = () => {
       <div className="site-calendar-demo-card">
     <Calendar fullscreen={false} onPanelChange={onPanelChange} />
   </div>
-      <ReactCalendar />
+      {/* <ReactCalendar /> */}
 
       <p></p>
       <p></p>
       <Link to='/NewAppointment'>
-        <Input value = "Schedule an Appointment"/>
+      <Button type='primary' size='large'>Schedule an Appointment</Button>
       </Link>
     </div>
   );

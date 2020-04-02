@@ -3,7 +3,7 @@ import logo from '../../assets/logo.svg';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import './Home.css';
-import { Input } from 'antd';
+import { Input, Card } from 'antd';
 
 
 
@@ -19,6 +19,7 @@ const Home = () => {
         <img className = 'FrontImage' src={ "/UFHealthBuilding.jpg" } alt="Uf Health Building" />
        
         <div className='section'>
+        <Card align='center'>
           <p>
             <Link to='/Login'>
               <Button color='red' type='primary' size='large' >Login</Button>
@@ -29,6 +30,7 @@ const Home = () => {
             <Button type='primary' size='large'>Create Account</Button>
             </Link>
           </p>
+          </Card>
         </div>
       </header>
     </div>

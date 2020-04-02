@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Row, Col } from 'antd';
+import { Menu, Row, Col, Layout } from 'antd';
 import {
   EnvironmentOutlined,
   HomeOutlined,
@@ -13,8 +13,9 @@ import { ReactComponent as Logo } from '../../assets/ufhealth.svg';
 const NavBar = () => {
   //const LogoIcon = props => <Icon component={Logo} {...props} />;
 
-  return (
+  const { Header, Content, Footer } = Layout;
 
+  return (
 
     <Row
       style={{

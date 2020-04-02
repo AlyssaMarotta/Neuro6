@@ -69,9 +69,9 @@ body {
 .section{
     margin: 5px;
     width: 20%;
-    border-width: 3px;
+    /* border-width: 3px;
     border-style: solid;
-    border-color: rgb(153, 153, 153);
+    border-color: rgb(153, 153, 153); */
     background-color: rgb(153, 153, 153);
     border-radius: 12px;
     position: absolute;

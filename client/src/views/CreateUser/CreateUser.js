@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import './CreateUser.css';
-import { Input } from 'antd';
+import { DatePicker, Card, Button, Form, Input } from 'antd';
 
 const initForm = {
   email: '',
@@ -51,7 +51,12 @@ const CreateUser = props => {
   return (
     <div className='App'>
       <header className='App-header'>
-        <div className='forum'>
+        <img
+          className='FrontImage'
+          src={'/UFHealthBuilding.jpg'}
+          alt='Uf Health Building'
+        />
+        <div className='section'>
           <form onSubmit={handleSubmit}>
             <label>
               Email:{' '}
@@ -116,6 +121,69 @@ const CreateUser = props => {
             <p>{'\n'}</p>
             <Input className='buttons' type='submit' value='Create Account' />
           </form>
+
+          {/* <Card title='Create Account' align='left' span={14}>
+            <Form size='large' name='basic' onFinish={handleSubmit}>
+              <Form.Item
+                label='Email'
+                name='email'
+                rules={[
+                  { type: 'email', message: 'Not a valid Email!' },
+                  { required: true, message: 'Please enter your Email!' }
+                ]} onChange={handleFormChange} 
+              >
+                <Input name='email' />
+              </Form.Item>
+
+              <Form.Item
+                label='Password'
+                name='password'
+                rules={[
+                  { required: true, message: 'Please enter your password!' }
+                ]} onChange={handleFormChange} 
+              >
+                <Input.Password name='password' />
+              </Form.Item>
+
+              <Form.Item
+                label='First Name'
+                name='firstname'
+                rules={[
+                  { required: true, message: 'Please enter your first name!' }
+                ]} onChange={handleFormChange}
+              >
+                <Input name='firstname'/>
+              </Form.Item>
+
+              <Form.Item
+                label='Last Name'
+                name='lastname'
+                rules={[
+                  { required: true, message: 'Please enter your last name!' }
+                ]} onChange={handleFormChange}
+              >
+                <Input name='lastname'/>
+              </Form.Item>
+
+              <Form.Item
+                label='Date of Birth'
+                name='dob'
+                rules={[{ required: true, message: 'Please enter your DOB!' }]} onChange={handleFormChange} 
+              >
+                <DatePicker 
+                name='dob'
+                />
+              </Form.Item>
+
+              <Form.Item>
+                <Button type='primary' htmlType='submit'>
+                  Create Account
+                </Button>
+              </Form.Item>
+            </Form>
+          </Card> */}
+
+
         </div>
       </header>
     </div>
