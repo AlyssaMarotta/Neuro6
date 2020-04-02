@@ -2,12 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import './Appointment.css';
-import { Input } from 'antd';
+import { Input, Card } from 'antd';
 
 const Appointment = (props) => {
   const { patientEmail, title, time, location, reminders } = props.data;
 
   return (
+    <Card>
     <div className='Appointment'>
       <div className='all'>
         <div className='leftAppointment'>
@@ -21,6 +22,7 @@ const Appointment = (props) => {
         </div>
       </div>
     </div>
+    </Card>
   );
 };
 export default Appointment;

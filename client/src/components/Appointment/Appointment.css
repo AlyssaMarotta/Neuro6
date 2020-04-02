@@ -1,21 +1,9 @@
-.Appointment
-{
-        margin: 10px;
-        border-width: 3px;
-        border-style: solid;
-        border-color: white;
-        border-radius: 12px;
-        text-align: left;
-        padding-left: 40px;
-        
 
-}
 .leftAppointment
 {
         display: flex;
         flex-direction: column;
         width: 75%;
-        line-height: 0;
 }
 .rights
 {

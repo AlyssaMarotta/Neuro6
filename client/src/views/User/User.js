@@ -3,27 +3,23 @@ import { Link } from 'react-router-dom';
 import './User.css';
 import Reminders from '../../components/Reminders/Reminders';
 import Appointments from '../../components/Appointments/Appointments';
-import UserNavBar2 from '../../components/UserNavBar2/UserNavBar2';
 import CalendarComponent from '../../components/CalendarComponent/CalendarComponent';
 import { PromiseProvider } from 'mongoose';
+import { Row, Col,  } from 'antd';
 
 
 const User = (props) => {
   return (
-    <div className='User'>
-      <div className='navBar2'>
-        <UserNavBar2 />
-      </div>
-      <header className='User-Section'>
-        <div className='all'>
-          <div className='left'>
+    <Row gutter ={[20,8]}>
+    <Col flex={6}>
             <Reminders />
             <Appointments email = {props.email}/>
-          </div>
+          </Col>
+            <Col flex={2}>  
             <CalendarComponent />
-        </div>
-      </header>
-    </div>
+            </Col>
+          </Row>
+    
   );
 }
 

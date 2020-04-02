@@ -12,6 +12,7 @@ import Admin from './views/Admin/Admin';
 import RescheduleAppointment from './views/RescheduleAppointment/RescheduleAppointment';
 import ContactAndFindUs from './views/ContactAndFindUs/ContactAndFindUs';
 import Appointment from './views/Appointment/Appointment';
+import NewAppointmentAdmin from './views/NewAppointmentAdmin/NewAppointmentAdmin';
 import 'antd/dist/antd.css';
 
 const Auth = {
@@ -120,6 +121,7 @@ const updateAdminAuthorization = (value) => {
           component={() => <User email={account} />}
         />
         <PrivateRoute exact path="/NewAppointment" email = {account} component={() => <NewAppointment email={account}/>} />
+        <PrivateRoute exact path="/NewAppointmentAdmin" component={() => <NewAppointmentAdmin/>} />
         <PrivateRoute exact path="/Admin" component={Admin} />
         <PrivateRoute exact path="/RescheduleAppointment" component={RescheduleAppointment} />
         

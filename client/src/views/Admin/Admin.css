@@ -5,7 +5,6 @@
     min-height: 100vh;
     font-size: calc(10px + 2vmin);
     color: white;
-    background: #282c34;
     
 }
 
@@ -14,7 +13,7 @@
 }
 
 .card-container > .ant-tabs-card > .ant-tabs-content {
-    height: 120px;
+    height: auto;
     margin-top: -16px;
   }
   
