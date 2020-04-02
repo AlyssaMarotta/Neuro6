@@ -9,8 +9,8 @@ const { sha512WithSalt, saltHashPassword } = require('./utils/salt.js');
 const port = process.env.PORT || 5000;
 const app = express.init();
 
-const ACCESS_TOKEN_SECRET =
-  process.env.ACCESS_TOKEN_SECRET ||
+const JWT_ACCESS_TOKEN_SECRET =
+  process.env.JWT_ACCESS_TOKEN_SECRET ||
   require('./config/config.js').jwt.accessTokenSecret;
 
 /**
@@ -69,7 +69,7 @@ const getUserWithAuthLogin = async (email, password) => {
  * @param {string} token JWT token associated with the user
  */
 const getUserWithAuthToken = async token => {
-  const { email } = jwt.verify(token, ACCESS_TOKEN_SECRET);
+  const { email } = jwt.verify(token, JWT_ACCESS_TOKEN_SECRET);
   return await getUser(email);
 };
 
@@ -79,7 +79,7 @@ const getUserWithAuthToken = async token => {
  * @param {string} email Email to create token for
  */
 const createToken = email => {
-  return jwt.sign({ email }, ACCESS_TOKEN_SECRET);
+  return jwt.sign({ email }, JWT_ACCESS_TOKEN_SECRET);
 };
 
 /**

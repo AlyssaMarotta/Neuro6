@@ -29,13 +29,14 @@ const Appointments = props => {
           'Cache-Control': 'no-cache'
         }
       });
+      const res2 = response.clone();
       try {
         const body = await response.json();
         if (response.status !== 200) throw Error(body.error);
         console.log(body);
         setAppointments(body.appointments || []);
       } catch {
-        throw Error(await response.clone().text());
+        throw Error(await res2.text());
       }
     };
     // setAppointments([dummyData]);
