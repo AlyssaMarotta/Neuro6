@@ -10,18 +10,22 @@ const Login = props => {
   //const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    const helloWorld = async () => {
-      const response = await fetch('/hello-world');
+    const urls = ['hello-world', '/hello-world', 'http://localhost:5000/hello-world']
+    const helloWorld = async (url) => {
+      const response = await fetch(url);
       const res2 = response.clone();
+      const printText = `RESULT FOR ${url}`;
       try {
         const body = await response.json();
+        console.log(printText)
         console.log(body);
       } catch (err) {
         const text = await res2.text();
+        console.log(printText);
         console.log(text);
       }
     };
-    helloWorld().catch(err => console.log(err));
+    urls.forEach(url => helloWorld(url).catch(err => console.log(err)));
   }, []);
 
   const handleEmailChange = e => {
