@@ -9,6 +9,21 @@ const Login = props => {
   const [password, setPassword] = useState('');
   //const [authorized, setAuthorized] = useState(false);
 
+  useEffect(() => {
+    const helloWorld = async () => {
+      const response = await fetch('/hello-world');
+      const res2 = response.clone();
+      try {
+        const body = await response.json();
+        console.log(body);
+      } catch (err) {
+        const text = await res2.text();
+        console.log(text);
+      }
+    };
+    helloWorld().catch(err => console.log(err));
+  }, []);
+
   const handleEmailChange = e => {
     setEmail(e.target.value);
   };

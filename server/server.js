@@ -1,7 +1,8 @@
+const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const yup = require('yup');
 
 const express = require('./config/express.js');
-let yup = require('yup');
 const User = require('./models/User.js');
 const Appointment = require('./models/Appointment.js');
 const { sha512WithSalt, saltHashPassword } = require('./utils/salt.js');
@@ -12,6 +13,12 @@ const app = express.init();
 const JWT_ACCESS_TOKEN_SECRET =
   process.env.JWT_ACCESS_TOKEN_SECRET ||
   require('./config/config.js').jwt.accessTokenSecret;
+
+  app.use(
+    bodyParser.urlencoded({
+      extended: true,
+    })
+  );
 
 /**
  * Gets a user document associated with an email, if it exists.
@@ -100,6 +107,10 @@ const authToken = async (req, res, next) => {
   req.user = user;
   next();
 };
+
+app.get('/hello-world', async (req, res) => {
+  res.send({ message: 'Hello world!' });
+});
 
 /**
  * Endpoint to authenticate token.
