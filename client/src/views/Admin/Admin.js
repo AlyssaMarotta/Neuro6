@@ -11,7 +11,7 @@ import {
   Input,
   Card
 } from 'antd';
-import Appointment from '../../components/Appointment/Appointment';
+import AppointmentAdmin from '../../components/AppointmentAdmin/AppointmentAdmin';
 import moment from 'moment';
 
 const Admin = () => {
@@ -21,6 +21,30 @@ const Admin = () => {
   const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
   const dateFormat = 'YYYY/MM/DD';
   const { RangePicker } = DatePicker;
+  const [searchEmail, setSearchEmail] = useState("");
+  const [searchUserEmail, setSearchUserEmail] = useState("");
+  const [searchUserFirstName, setSearchUserFirstName] = useState("");
+  const [searchUserLastName, setSearchUserLastName] = useState("");
+
+  const updateSearchUserEmail = e => {
+    console.log(e.target.value);
+    setSearchUserEmail(e.target.value);
+  }
+
+  const updateSearchUserFirstName = e => {
+    console.log(e.target.value);
+    setSearchUserFirstName(e.target.value);
+  }
+
+  const updateSearchUserLastName = e => {
+    console.log(e.target.value);
+    setSearchUserLastName(e.target.value);
+  }
+
+  const updateSearchEmail = e => {
+    console.log(e.target.value);
+    setSearchEmail(e.target.value);
+  }
 
   const updateAppointment = e => {
     console.log('updating appointments' + e);
@@ -45,6 +69,31 @@ const Admin = () => {
     };
     getAppointments().catch(err => console.log(err));
   }, []);
+
+  let filteredAppointments = appointments.filter(
+    (directory) => {
+        return directory.patientEmail.toLowerCase().indexOf(searchEmail) !== -1; //Search  
+    }
+);
+
+let filteredUsers = users.filter(
+  (directory) => {
+      return (((directory.email.toLowerCase().indexOf(searchUserEmail))  )) !== -1;
+      //let firstName = (email.name.first.toLowerCase().indexOf(searchUserFirstName)) !== -1;
+      //.name.toLowerCase().indexOf(searchUserLastName)) !== -1; //Search  
+  }
+);
+let filteredFirstNameUsers =  filteredUsers.filter(
+  (directory) => {
+    return (directory.name.first.toLowerCase().indexOf(searchUserFirstName)) !== -1;
+  }
+);
+
+let filteredLastNameUsers =  filteredFirstNameUsers.filter(
+  (directory) => {
+    return (directory.name.last.toLowerCase().indexOf(searchUserFirstName)) !== -1;
+  }
+);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -86,6 +135,7 @@ const Admin = () => {
               <TabPane tab='Appointments' key='1'>
                 <Search
                   placeholder='Patients Email'
+                  onChange= {value => updateSearchEmail(value)}
                   onSearch={value => console.log(value)}
                   style={{ width: 200 }}
                 />
@@ -103,14 +153,27 @@ const Admin = () => {
                   title='Appointments'
                   text-align='left'
                 >
-                  {appointments.map((appointment, index) => (
-                    <Appointment key={index} data={appointment} id={index} />
+                  {filteredAppointments.map((appointment, index) => (
+                    <AppointmentAdmin key={index} data={appointment} id={index} />
                   ))}
                 </Card>
               </TabPane>
               <TabPane tab='Patients' key='2'>
                 <Search
                   placeholder='Patients Email'
+                  onChange= {value => updateSearchUserEmail(value)}
+                  onSearch={value => console.log(value)}
+                  style={{ width: 200 }}
+                />
+                <Search
+                  placeholder='First Name'
+                  onChange= {value => updateSearchUserFirstName(value)}
+                  onSearch={value => console.log(value)}
+                  style={{ width: 200 }}
+                />
+                <Search
+                  placeholder='Last Name'
+                  onChange= {value => updateSearchUserLastName(value)}
                   onSearch={value => console.log(value)}
                   style={{ width: 200 }}
                 />
@@ -121,7 +184,7 @@ const Admin = () => {
                   title='Patients'
                   text-align='left'
                 >
-                  {users.map((user, index) => (
+                  {filteredLastNameUsers.map((user, index) => (
                     <Card key={index}>
                       <p>{user.email}</p>
                       <p>

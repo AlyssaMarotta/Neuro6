@@ -155,6 +155,13 @@ app.get('/appointmentsgetall', async (req, res) => {
   const appointments = await Appointment.find({}).sort({ time: 1 });
   res.send({ appointments });
 });
+
+app.get('/AdminGetUser', async (req, res) => {
+  console.log(req.body);
+  const {body} = req.body;
+  const user = await User.find({email: body.email});
+  res.send({ user });
+});
 //END OF GREAT CODE
 
 /**
