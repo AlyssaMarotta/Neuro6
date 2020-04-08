@@ -14,10 +14,13 @@ import {
 import AppointmentAdmin from '../../components/AppointmentAdmin/AppointmentAdmin';
 import moment from 'moment';
 
+
 const Admin = () => {
   const [appointments, setAppointments] = useState([]);
   const [users, setUsers] = useState([]);
   const { Search } = Input;
+  const [dateFrom, setDateFrom] = useState(new Date());
+  const [dateTo,  setDateTo] = useState(new Date(new Date().setDate(new Date().getDate() + 30)));
   const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
   const dateFormat = 'YYYY/MM/DD';
   const { RangePicker } = DatePicker;
@@ -25,6 +28,19 @@ const Admin = () => {
   const [searchUserEmail, setSearchUserEmail] = useState("");
   const [searchUserFirstName, setSearchUserFirstName] = useState("");
   const [searchUserLastName, setSearchUserLastName] = useState("");
+
+  const updateSelectDate = e => {
+    if (e == null || e[1] == null){
+      setDateFrom(new Date(new Date().setYear(new Date().getYear() - 10)));
+      setDateTo(new Date(new Date().setYear(new Date().getYear() + 10)));
+    }
+    else 
+    {
+      setDateFrom(e[0]._d);
+      setDateTo(e[1]._d);
+    }
+    //TODO FIX BUG: when a user hits the x within the range picker
+  }
 
   const updateSearchUserEmail = e => {
     console.log(e.target.value);
@@ -72,26 +88,30 @@ const Admin = () => {
 
   let filteredAppointments = appointments.filter(
     (directory) => {
-        return directory.patientEmail.toLowerCase().indexOf(searchEmail) !== -1; //Search  
+        return directory.patientEmail.toLowerCase().indexOf(searchEmail.toLowerCase()) !== -1; //Search  
     }
 );
+  let filteredDateAppointments = filteredAppointments.filter(
+    (directory) => {
+        return  moment(directory.time).isBetween(dateFrom, dateTo);
+    });
 
 let filteredUsers = users.filter(
   (directory) => {
-      return (((directory.email.toLowerCase().indexOf(searchUserEmail))  )) !== -1;
+      return (((directory.email.toLowerCase().indexOf(searchUserEmail.toLowerCase()))  )) !== -1;
       //let firstName = (email.name.first.toLowerCase().indexOf(searchUserFirstName)) !== -1;
       //.name.toLowerCase().indexOf(searchUserLastName)) !== -1; //Search  
   }
 );
 let filteredFirstNameUsers =  filteredUsers.filter(
   (directory) => {
-    return (directory.name.first.toLowerCase().indexOf(searchUserFirstName)) !== -1;
+    return (directory.name.first.toLowerCase().indexOf(searchUserFirstName.toLowerCase())) !== -1;
   }
 );
 
 let filteredLastNameUsers =  filteredFirstNameUsers.filter(
   (directory) => {
-    return (directory.name.last.toLowerCase().indexOf(searchUserFirstName)) !== -1;
+    return (directory.name.last.toLowerCase().indexOf(searchUserLastName.toLowerCase())) !== -1;
   }
 );
 
@@ -140,10 +160,12 @@ let filteredLastNameUsers =  filteredFirstNameUsers.filter(
                   style={{ width: 200 }}
                 />
                 <RangePicker
+                  allowEmpty = {[false, false]}
                   defaultValue={[
-                    moment('2020/01/01', dateFormat),
-                    moment('2020/12/31', dateFormat)
+                    moment(dateFrom, dateFormat),
+                    moment(dateTo , dateFormat)
                   ]}
+                  onCalendarChange= {value => updateSelectDate(value)}
                   format={dateFormat}
                 />
                 <Card
@@ -153,7 +175,7 @@ let filteredLastNameUsers =  filteredFirstNameUsers.filter(
                   title='Appointments'
                   text-align='left'
                 >
-                  {filteredAppointments.map((appointment, index) => (
+                  {filteredDateAppointments.map((appointment, index) => (
                     <AppointmentAdmin key={index} data={appointment} id={index} />
                   ))}
                 </Card>
