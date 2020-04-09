@@ -3,10 +3,18 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import './AppointmentAdmin.css';
 import { Button, Card, Row, Col } from 'antd';
-
+import AppointmentPageAdmin from '../AppointmentPageAdmin/AppointmentPageAdmin'
 
 
 const Appointment = props => {
+
+  
+const [visibility, setVisibility] = useState(false);
+
+const updateVisibility = e =>
+{
+  setVisibility(e);
+}
     /*const initUser = {
         Name: 
         {
@@ -41,9 +49,21 @@ const Appointment = props => {
         <Col>
             <p>{patientEmail}</p>
           <p>{moment(time).format('MMMM Do, YYYY @ h:mm a')}</p>
-          <Link to={'/Appointment/' + props.id}>
-            <Button type='primary'>More Details</Button>
-          </Link>
+          <Button
+            type="primary"
+            onClick={() => {
+              updateVisibility(true);
+            }}
+          >
+            Appointment Details
+          </Button>
+          <AppointmentPageAdmin
+            visible={visibility}
+            onCancel={() => {
+              updateVisibility(false);
+            }}
+            data = {props.data}
+          />
         </Col>
       </Row>
     </Card>
