@@ -9,13 +9,18 @@ import {
   Tabs,
   Calendar,
   Input,
-  Card
+  Card,
+  Drawer,
+  Button
 } from 'antd';
 import AppointmentAdmin from '../../components/AppointmentAdmin/AppointmentAdmin';
+import AppointmentAdmin2 from '../../components/AppointmentAdmin2/AppointmentAdmin2';
 import moment from 'moment';
 
 
 const Admin = () => {
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [drawerVisible, setDrawerVisible] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [users, setUsers] = useState([]);
   const { Search } = Input;
@@ -72,6 +77,13 @@ const Admin = () => {
     setUsers(e);
   };
 
+
+  const updateDrawerVisible = (e, s) => {
+    console.log('updating Users' + e);
+    setSelectedUser(s);
+    setDrawerVisible(e);
+  };
+
   useEffect(() => {
     const getAppointments = async () => {
       const appointmentResponse = await fetch('/appointmentsgetall', {});
@@ -112,6 +124,14 @@ let filteredFirstNameUsers =  filteredUsers.filter(
 let filteredLastNameUsers =  filteredFirstNameUsers.filter(
   (directory) => {
     return (directory.name.last.toLowerCase().indexOf(searchUserLastName.toLowerCase())) !== -1;
+  }
+);
+
+let filteredUserAppointments = appointments.filter(
+  (directory) => {
+      if(selectedUser)
+      return directory.patientEmail.toLowerCase().indexOf(selectedUser.email.toLowerCase()) !== -1; //Search  
+      else return null;
   }
 );
 
@@ -212,9 +232,37 @@ let filteredLastNameUsers =  filteredFirstNameUsers.filter(
                       <p>
                         {user.name.first} {user.name.last}
                       </p>
-                      <p>{user.dob}</p>
+                      <Button type="primary" onClick={() => updateDrawerVisible(true, user)}>
+                        More Information
+                      </Button>
+
+                      {/* <p>{user.dob}</p> */}
                     </Card>
                   ))}
+                      <Drawer
+                        width={"80%"}
+                        title= {selectedUser && selectedUser.name.first + " " +  selectedUser.name.last}
+                        placement="right"
+                        closable={false}
+                        onClose={() => updateDrawerVisible(false, null)}
+                        visible={drawerVisible}
+                      >
+                        <p>{selectedUser && selectedUser.email}</p>
+                        <p>{selectedUser && selectedUser.dob}</p>
+                        <Card 
+                          style={styles.card, {background: "#ffffff"}}
+                          bodyStyle={styles.cardBody}
+                          align='left'
+                          title='Appointments'
+                          text-align='left'
+                          // style = {{margin : 10, background: "#ffffff"}}
+                          >
+                          Appointments
+                          {selectedUser && filteredUserAppointments.map((appointment, index) => (
+                            <AppointmentAdmin2 key={index} data={appointment} id={index} />
+                          ))}
+                        </Card>
+                      </Drawer>
                 </Card>
               </TabPane>
             </Tabs>
