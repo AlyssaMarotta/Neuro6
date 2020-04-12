@@ -1,5 +1,7 @@
 import React from 'react';
-import { Card, Col } from 'antd';
+import { Card, 
+  Row,
+  Col, } from 'antd';
 import { Link } from 'react-router-dom';
 import './User.css';
 import Reminders from '../../components/Reminders/Reminders';
@@ -25,7 +27,8 @@ const User = props => {
       <header className='User-Section'>
         <div className='all'>
           {/* <div className='left'> */}
-            <Col span={15}>
+          <Row gutter={[20, 8]}>
+            <Col flex={4}>
               <Card align='left' title='Reminders' text-align='left'>
                 <Reminders />
               </Card>
@@ -48,11 +51,12 @@ const User = props => {
             <p></p>
           </Col>
           {/* align='left' justifyContent='center' */}
-          <Col span={7}>
+          <Col flex={2}>
           <Card justify-content='center' title='Calendar'>
-            <CalendarComponent align='center'/>
+            <CalendarComponent align='center' email={props.email}/>
           </Card>
           </Col>
+          </Row>
         </div>
       </header>
     </div>
