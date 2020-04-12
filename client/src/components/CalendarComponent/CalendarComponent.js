@@ -44,62 +44,6 @@ const CalendarComponent = (props) => {
     console.log(value, mode);
   }
   
-
-
-
-
-  function getListData(value) {
-    let listData;
-    switch (value.date()) {
-      case 8:
-        listData = [
-          { type: 'warning', content: 'This is warning event.' }
-        ];
-        break;
-      case 10:
-        listData = [
-          { type: 'warning', content: 'This is warning event.' }
-        ];
-        break;
-      case 15:
-        listData = [
-          { type: 'warning', content: 'This is warning event' }
-        ];
-        break;
-      default:
-    }
-    return listData || [];
-  }
-  
-  function dateCellRender(value) {
-    const listData = getListData(value);
-    return (
-      <ul className="events">
-        {listData.map(item => (
-          <li key={item.content}>
-            <Badge status={item.type} text={item.content} />
-          </li>
-        ))}
-      </ul>
-    );
-  }
-  
-  // function dateCellRender() {
-  //   return (
-  //     <ul className="events">
-  //       {appointments.map((appointment, index) => (
-  //         <Badge text={appointment.title} />
-  //       ))}
-  //     </ul>
-  //   );
-  // }
-
-  const mark = [
-    '03-04-2020',
-    '15-04-2020',
-    '24-04-2020'
-]
-
   return (
     <Card  style={{ padding : 0, margin: 10 }}>
     <div className='CalendarComponent'>
@@ -109,9 +53,13 @@ const CalendarComponent = (props) => {
     <ReactCalendar calendarType="US"
               oneWeekCalendar={true}
               tileClassName={({ date, view }) => {
-              if(mark.find(x=>x===moment(date).format("DD-MM-YYYY"))){
-              return  'highlight'
-              }
+                if(
+                (appointments.map((appointment, index) => (
+                  moment(appointment.time).format("DD-MM-YYYY")
+                ))).find(x=>x===moment(date).format("DD-MM-YYYY")))
+                {
+                  return  'highlight'
+                  }
             }}
               />
   </div>
