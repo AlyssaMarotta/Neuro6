@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import './AppointmentPageComp.css';
-import ConfirmCancel from '../ConfirmCancel/ConfirmCancel'
+import ConfirmCancel from '../ConfirmCancel/ConfirmCancel';
 import { Input } from 'antd';
 import Map from '../../components/Map/Map.js';
 import { Card } from 'antd';
