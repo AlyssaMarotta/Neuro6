@@ -37,8 +37,8 @@ const getUser = async email => {
  * @param {User.schema} userData User data of the User schema
  */
 const getUserDataToSend = userData => {
-  const { email, name, dob, isAdmin } = userData;
-  return { email, name, dob, isAdmin };
+  const { email, name, dob, isAdmin, phone } = userData;
+  return { email, name, dob, isAdmin, phone };
 };
 
 /**
@@ -246,7 +246,7 @@ app.post('/login', async (req, res) => {
  * Endpoint to create an account.
  */
 app.post('/create-account', async (req, res) => {
-  const { email, password, firstName, lastName, dob } = req.body;
+  const { email, password, firstName, lastName, dob, phone } = req.body;
   const { salt, hashedPassword } = saltHashPassword(password);
 
   const userExists = await User.exists({ email });
@@ -268,6 +268,7 @@ app.post('/create-account', async (req, res) => {
       .min(8, 'Must be a minimum of 8 characters'),
     first: yup.string().required(),
     last: yup.string().required(),
+    //TODO: phone number validation...sup
     //TODO: pass confirmation in future...sup
   });
 
@@ -276,6 +277,7 @@ app.post('/create-account', async (req, res) => {
     password: password,
     first: firstName,
     last: lastName,
+    //phone: phone,
   };
 
   const valid = await newUserYupCheck.isValid(userCheck);
@@ -294,6 +296,7 @@ app.post('/create-account', async (req, res) => {
     },
     dob: new Date(dob),
     isAdmin: false,
+    phone
   });
 
   user.save((err, doc) => {

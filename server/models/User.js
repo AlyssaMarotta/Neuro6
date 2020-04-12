@@ -10,6 +10,7 @@ const User = new mongoose.Schema({
     last: { type: String, required: true },
   },
   isAdmin: { type: Boolean, required: true },
+  phone: {type: String, required: false}
 });
 
 module.exports = mongoose.model('users', User);
