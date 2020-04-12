@@ -121,6 +121,18 @@ const CreateUser = props => {
               />
             </label>
             <p>{'\n'}</p>
+
+            <label>
+            Phone Number (optional for text reminders):{' '}
+              <Input
+                className='textbox'
+                type='tel'
+                name='phone'
+                placeholder='Phone'
+                onChange={handleFormChange}
+              />
+            </label>
+            <p>{'\n'}</p>
             <Input className='buttons' type='submit' value='Create Account' />
           </form>
           </Card>
