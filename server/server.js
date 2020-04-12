@@ -7,6 +7,7 @@ const yup = require('yup');
 const express = require('./config/express.js');
 const User = require('./models/User.js');
 const Appointment = require('./models/Appointment.js');
+const AppointmentRequest = require('./models/AppointmentRequest.js');
 const { sha512WithSalt, saltHashPassword } = require('./utils/salt.js');
 
 const port = process.env.PORT || 5000;
@@ -16,18 +17,18 @@ const JWT_ACCESS_TOKEN_SECRET =
   process.env.JWT_ACCESS_TOKEN_SECRET ||
   require('./config/config.js').jwt.accessTokenSecret;
 
-  app.use(
-    bodyParser.urlencoded({
-      extended: true,
-    })
-  );
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 /**
  * Gets a user document associated with an email, if it exists.
  *
  * @param {string} email Email for the account.
  */
-const getUser = async email => {
+const getUser = async (email) => {
   return await User.findOne({ email });
 };
 
@@ -36,7 +37,7 @@ const getUser = async email => {
  *
  * @param {User.schema} userData User data of the User schema
  */
-const getUserDataToSend = userData => {
+const getUserDataToSend = (userData) => {
   const { email, name, dob, isAdmin, phone } = userData;
   return { email, name, dob, isAdmin, phone };
 };
@@ -77,7 +78,7 @@ const getUserWithAuthLogin = async (email, password) => {
  *
  * @param {string} token JWT token associated with the user
  */
-const getUserWithAuthToken = async token => {
+const getUserWithAuthToken = async (token) => {
   const { email } = jwt.verify(token, JWT_ACCESS_TOKEN_SECRET);
   return await getUser(email);
 };
@@ -87,7 +88,7 @@ const getUserWithAuthToken = async token => {
  *
  * @param {string} email Email to create token for
  */
-const createToken = email => {
+const createToken = (email) => {
   return jwt.sign({ email }, JWT_ACCESS_TOKEN_SECRET);
 };
 
@@ -158,10 +159,15 @@ app.get('/appointmentsgetall', async (req, res) => {
   res.send({ appointments });
 });
 
+app.get('/appointmentrequestsgetall', async (req, res) => {
+  const appointmentReqs = await AppointmentRequest.find({}).sort({ time: 1 });
+  res.send({ appointmentReqs });
+});
+
 app.get('/AdminGetUser', async (req, res) => {
   console.log(req.body);
-  const {body} = req.body;
-  const user = await User.find({email: body.email});
+  const { body } = req.body;
+  const user = await User.find({ email: body.email });
   res.send({ user });
 });
 //END OF GREAT CODE
@@ -171,9 +177,13 @@ app.get('/AdminGetUser', async (req, res) => {
  */
 app.post('/appointments', async (req, res) => {
   // TODO: authenticate with JWT token
+
+  //appointment requests instead of add
+  const appointmentReq = new AppointmentRequest(req.body);
+
   console.log(req.body);
-  const appointment = new Appointment(req.body);
-  appointment.save((err, doc) => {
+  //const appointment = new Appointment(req.body);
+  appointmentReq.save((err, doc) => {
     if (err) {
       console.warn(err);
       res.status(500).send({ error: `Appointment creation failed` });
@@ -181,6 +191,44 @@ app.post('/appointments', async (req, res) => {
     }
     res.status(200).send(doc);
     return;
+  });
+});
+
+/**
+ * Endpoint to approve an appointment.
+ */
+app.post('/appointment-approval', async (req, res) => {
+  const id = req.body.id;
+
+  AppointmentRequest.findById(id, (err, doc) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send({ error: err });
+      return;
+    }
+    if(!doc){
+      console.log('no doc found lol')
+      res.status(404).send({error :'document not found'})
+      return
+    }
+
+    const appointment = new Appointment(req.body);
+    appointment.save((err, doc) => {
+      if (err) {
+        console.warn(err);
+        res.status(500).send({ error: `Appointment save failed` });
+        return;
+      }
+      AppointmentRequest.findByIdAndDelete(id, (err, doc) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(doc);
+        }
+      });
+      res.status(200).send(doc);
+      return;
+    });
   });
 });
 
@@ -258,10 +306,7 @@ app.post('/create-account', async (req, res) => {
   }
 
   const newUserYupCheck = yup.object().shape({
-    email: yup
-      .string()
-      .email()
-      .required('No email provided.'),
+    email: yup.string().email().required('No email provided.'),
     password: yup
       .string()
       .required('Password is required')
@@ -296,7 +341,7 @@ app.post('/create-account', async (req, res) => {
     },
     dob: new Date(dob),
     isAdmin: false,
-    phone
+    phone,
   });
 
   user.save((err, doc) => {

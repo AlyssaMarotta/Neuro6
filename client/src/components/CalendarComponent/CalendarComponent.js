@@ -19,7 +19,7 @@ const CalendarComponent = () => {
     <Calendar fullscreen={false} onPanelChange={onPanelChange} />
   </div>
       <Link to='/NewAppointment'>
-      <Button type='primary' size='large'>Schedule an Appointment</Button>
+      <Button type='primary' size='large'>Request an Appointment</Button>
       </Link>
     </div>
     </Card>

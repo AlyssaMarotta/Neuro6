@@ -288,6 +288,11 @@ let filteredUserAppointments = appointments.filter(
               <p>
                 <Input className='buttons' value='Create a new Admin' />
               </p>
+              {/* <p>
+                <Link to='/AppointmentApproval'>
+                  <Input className='buttons' value='approve appointment' />
+                </Link>
+              </p> */}
             </div>
           </Card>
         </Col>

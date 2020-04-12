@@ -87,7 +87,7 @@ const onPanelChange = value => {
     
     <div className='App'>
         <header className='App-header'>
-          Schedule a New Appointment
+          Request a New Appointment
           <div className="NewAppointment">
           <Card> 
           <Card>
