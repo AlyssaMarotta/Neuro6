@@ -240,7 +240,7 @@ let filteredUserAppointments = appointments.filter(
                     </Card>
                   ))}
                       <Drawer
-                        width={"80%"}
+                        width={"50%"}
                         title= {selectedUser && selectedUser.name.first + " " +  selectedUser.name.last}
                         placement="right"
                         closable={false}
