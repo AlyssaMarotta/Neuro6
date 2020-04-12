@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const yup = require('yup');
