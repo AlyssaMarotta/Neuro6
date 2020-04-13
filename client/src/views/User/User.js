@@ -27,8 +27,8 @@ const User = props => {
       <header className='User-Section'>
         <div className='all'>
           {/* <div className='left'> */}
-          <Row gutter={[20, 8]}>
-            <Col flex={4}>
+          <Row>
+            <Col flex={60}>
               <Card align='left' title='Reminders' text-align='left'>
                 <Reminders />
               </Card>
@@ -51,7 +51,7 @@ const User = props => {
             <p></p>
           </Col>
           {/* align='left' justifyContent='center' */}
-          <Col flex={2}>
+          <Col flex={1}>
           <Card justify-content='center' title='Calendar'>
             <CalendarComponent align='center' email={props.email}/>
           </Card>

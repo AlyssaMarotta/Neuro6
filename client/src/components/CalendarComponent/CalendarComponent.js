@@ -45,7 +45,6 @@ const CalendarComponent = (props) => {
   }
   
   return (
-    <Card  style={{ padding : 0, margin: 10 }}>
     <div className='CalendarComponent'>
       <div className="site-calendar-demo-card">
         
@@ -67,7 +66,6 @@ const CalendarComponent = (props) => {
       <Button type='primary' size='large'>Request an Appointment</Button>
       </Link>
     </div>
-    </Card>
   );
 };
 export default CalendarComponent;

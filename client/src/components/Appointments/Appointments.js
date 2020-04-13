@@ -67,12 +67,9 @@ const Appointments = props => {
   return (
 
     <div className='Appointments'>
-      <Card style = {{margin : 10}}>
-        Appointments
         {appointments.map((appointment, index) => (
           <Appointment key={index} data={appointment} id={index} />
         ))}
-      </Card>
     </div>
    );
 
