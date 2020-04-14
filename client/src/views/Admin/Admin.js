@@ -15,6 +15,7 @@ import {
 } from 'antd';
 import AppointmentAdmin from '../../components/AppointmentAdmin/AppointmentAdmin';
 import AppointmentAdmin2 from '../../components/AppointmentAdmin2/AppointmentAdmin2';
+import CreateUserAdmin from '../../components/CreateUserAdmin/CreateUserAdmin'
 import moment from 'moment';
 
 
@@ -33,6 +34,12 @@ const Admin = () => {
   const [searchUserEmail, setSearchUserEmail] = useState("");
   const [searchUserFirstName, setSearchUserFirstName] = useState("");
   const [searchUserLastName, setSearchUserLastName] = useState("");
+  const [createUserVisibility, setCreateUserVisibility] = useState(false);
+
+const updateCreateUserVisibility = e =>
+{
+  setCreateUserVisibility(e);
+}
 
   const updateSelectDate = e => {
     if (e == null || e[1] == null){
@@ -283,7 +290,21 @@ let filteredUserAppointments = appointments.filter(
                 </Link>
               </p>
               <p>
-                <Input className='buttons' value='Create a new User' />
+                {/* <Input className='buttons' value='Create a new User' /> */}
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    updateCreateUserVisibility(true);
+                  }}
+                >
+                  Create a new User
+                </Button>
+                <CreateUserAdmin
+                  visible={createUserVisibility}
+                  onCancel={() => {
+                    updateCreateUserVisibility(false);
+                  }}
+                />
               </p>
               <p>
                 <Input className='buttons' value='Create a new Admin' />

@@ -7,7 +7,7 @@ import Appointment from '../Appointment/Appointment';
 
 const Appointments = props => {
 
-  const [dateFrom, setDateFrom] = useState(new Date());
+  const [dateFrom, setDateFrom] = useState(new Date(new Date().setDate(new Date().getDate() -1)));
   const [dateTo,  setDateTo] = useState(new Date(new Date().setDate(new Date().getDate() + 120)));
 
   // TODO: Use logged in email from useReducer + useContext
