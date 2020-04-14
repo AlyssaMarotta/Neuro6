@@ -167,7 +167,7 @@ let filteredUserAppointments = appointments.filter(
   };
 
   return (
-    <header className='App-header-Admin'>
+    // <header className='App-header-Admin'>
       <Row gutter={[20, 8]}>
         <Col flex={4}>
           <div className='card-container'>
@@ -270,7 +270,7 @@ let filteredUserAppointments = appointments.filter(
         </Col>
         <Col flex={2}>
           <Card style={{ margin: 10 }}>
-            <div className='CalendarComponent'>
+            <div className='AdminCalendarComponent'>
               {' '}
               <p>
                 <div className='site-calendar-demo-card'>
@@ -297,7 +297,7 @@ let filteredUserAppointments = appointments.filter(
           </Card>
         </Col>
       </Row>
-    </header>
+    // </header>
   );
 };
 

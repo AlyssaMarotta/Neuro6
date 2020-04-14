@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, 
   Row,
   Col, } from 'antd';
@@ -11,6 +11,9 @@ import { PromiseProvider } from 'mongoose';
 //import { Row, Col} from 'antd';
 
 const User = props => {
+
+  const [reminder, setReminder] = useState();
+
   const styles = {
     card: {
       maxHeight: '100%'
@@ -30,7 +33,7 @@ const User = props => {
           <Row>
             <Col flex={60}>
               <Card align='left' title='Reminders' text-align='left'>
-                <Reminders />
+                <Reminders reminder = {reminder} />
               </Card>
               <p>{'\n'}</p>
               <p>{' '}</p>
@@ -43,7 +46,7 @@ const User = props => {
                 text-align='left'
               >
                 {/* <p className='site-card-demo-inner-p'>All Apointments</p> */}
-                <Appointments email={props.email} />
+                <Appointments email={props.email} setReminder = {e => setReminder(e)}/>
               </Card>
             </Col>
           {/* </div> */}

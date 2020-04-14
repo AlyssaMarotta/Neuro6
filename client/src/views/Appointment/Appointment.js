@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { Link } from 'react-router-dom';
 import './Appointment.css';
 import AppointmentPageComp from '..//..//components/AppointmentPageComp/AppointmentPageComp';
@@ -10,6 +11,9 @@ function Appointment(props) {
   const {email} = props;
   const [appointments, setAppointments] = useState([]);
   let filteredAppointments;
+
+  const [dateFrom, setDateFrom] = useState(new Date());
+  const [dateTo,  setDateTo] = useState(new Date(new Date().setDate(new Date().getDate() + 120)));
 
   useEffect(() => {
     if (!email) return;
@@ -36,8 +40,13 @@ function Appointment(props) {
     // setAppointments([dummyData]);
     getAppointments().catch(err => console.log(err));
   }, [email]);
-  
-  const appointmentList = appointments.map((appointment, index) => 
+
+  let filteredDateAppointments = appointments.filter(
+    (directory) => {
+        return  moment(directory.time).isBetween(dateFrom, dateTo);
+    });
+
+  const appointmentList = filteredDateAppointments.map((appointment, index) => 
     {
       if(index == props.match.params.value)
       {

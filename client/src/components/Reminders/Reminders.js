@@ -4,14 +4,15 @@ import './Reminders.css';
 import Reminder from '../Reminder/Reminder';
 import { Input, Card, Alert } from 'antd';
 // TODO: Fetch reminders based on user context
-const Reminders = () => {
+const Reminders = (props) => {
+  console.log(props.reminder);
   return (
     // <div className='Reminders'>
       <div>
       {/* Reminders */}
-      <Reminder>Be on time</Reminder>
-      <p>{'\n'}</p>
-      <Reminder>Fast the night before</Reminder>
+        {props.reminder && props.reminder.map((reminder, index) => (
+      <Reminder reminder = {reminder}/>
+      ))}
     </div>
         //   <Alert style ={{margin: 10}}
         //   message="Reminder"
