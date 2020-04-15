@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import './CreateUserAdmin.css';
+import './CreateAdmin.css';
 import { Input, Button, Modal, Form,  Radio } from 'antd';
 
-const CreateUserAdmin= (props) => {
+const CreateAdmin= (props) => {
 
     const initForm = {
         email: '',
@@ -26,7 +26,7 @@ const CreateUserAdmin= (props) => {
         const handleSubmit = e => {
           //sourced from https://medium.com/@maison.moa/setting-up-an-express-backend-server-for-create-react-app-bc7620b20a61
           const createAccount = async () => {
-            const response = await fetch('/create-account', {
+            const response = await fetch('/create-admin', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(formData)
@@ -47,7 +47,7 @@ const CreateUserAdmin= (props) => {
     return (
         <Modal
         visible={props.visible}
-        title="Create a new user"
+        title="Create a new Admin"
         okText="Create"
         cancelText="Cancel"
         onCancel={props.onCancel}
@@ -120,7 +120,7 @@ const CreateUserAdmin= (props) => {
                 <p>{'\n'}</p>
 
                 <label>
-                Phone Number (optional for text reminders):{' '}
+                Phone Number:{' '}
                 <Input
                     className='textbox'
                     type='tel'
@@ -136,4 +136,4 @@ const CreateUserAdmin= (props) => {
         </Modal>
     );
 };
-export default CreateUserAdmin;
+export default CreateAdmin;

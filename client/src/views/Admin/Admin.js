@@ -16,6 +16,7 @@ import {
 import AppointmentAdmin from '../../components/AppointmentAdmin/AppointmentAdmin';
 import AppointmentAdmin2 from '../../components/AppointmentAdmin2/AppointmentAdmin2';
 import CreateUserAdmin from '../../components/CreateUserAdmin/CreateUserAdmin'
+import CreateAdmin from '../../components/CreateAdmin/CreateAdmin'
 import moment from 'moment';
 
 
@@ -35,6 +36,12 @@ const Admin = () => {
   const [searchUserFirstName, setSearchUserFirstName] = useState("");
   const [searchUserLastName, setSearchUserLastName] = useState("");
   const [createUserVisibility, setCreateUserVisibility] = useState(false);
+  const [createAdminVisibility, setCreateAdminVisibility] = useState(false);
+
+const updateCreateAdminVisibility = e =>
+{
+  setCreateAdminVisibility(e);
+}
 
 const updateCreateUserVisibility = e =>
 {
@@ -307,7 +314,22 @@ let filteredUserAppointments = appointments.filter(
                 />
               </p>
               <p>
-                <Input className='buttons' value='Create a new Admin' />
+              {/* <Input className='buttons' value='Create a new Admin' /> */}
+              <Button
+                  type="primary"
+                  onClick={() => {
+                    updateCreateAdminVisibility(true);
+                  }}
+                >
+                  Create a new Admin
+                </Button>
+              <CreateAdmin
+                  visible={createAdminVisibility}
+                  onCancel={() => {
+                    updateCreateAdminVisibility(false);
+                  }}
+                />
+                
               </p>
               {/* <p>
                 <Link to='/AppointmentApproval'>

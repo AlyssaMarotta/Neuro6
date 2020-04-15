@@ -356,4 +356,69 @@ app.post('/create-account', async (req, res) => {
   });
 });
 
+
+//Creates a new Admin
+app.post('/create-admin', async (req, res) => {
+  const { email, password, firstName, lastName, dob, phone } = req.body;
+  const { salt, hashedPassword } = saltHashPassword(password);
+
+  const userExists = await User.exists({ email });
+  if (userExists) {
+    res
+      .status(409)
+      .send({ error: `Account associated with the email already exists` });
+    return;
+  }
+
+  const newUserYupCheck = yup.object().shape({
+    email: yup.string().email().required('No email provided.'),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(8, 'Must be a minimum of 8 characters'),
+    first: yup.string().required(),
+    last: yup.string().required(),
+    //TODO: phone number validation...sup
+    //TODO: pass confirmation in future...sup
+  });
+
+  let userCheck = {
+    email: email,
+    password: password,
+    first: firstName,
+    last: lastName,
+    //phone: phone,
+  };
+
+  const valid = await newUserYupCheck.isValid(userCheck);
+
+  if (!valid) {
+    res.send(409).send({ error: 'Either wrong email or wrong pass lol' });
+    return;
+  }
+  const user = new User({
+    email,
+    hashedPassword,
+    salt,
+    name: {
+      first: firstName,
+      last: lastName,
+    },
+    dob: new Date(dob),
+    isAdmin: true,
+    phone,
+  });
+
+  user.save((err, doc) => {
+    if (err) {
+      console.warn(err);
+      res.status(500).send({ error: `User creation failed` });
+      return;
+    }
+    const accessToken = createToken(email);
+    res.status(200).send({ ...getUserDataToSend(doc), accessToken });
+    return;
+  });
+});
+
 app.listen(port, () => console.log(`Server now running on port ${port}!`));
