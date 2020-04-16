@@ -240,7 +240,7 @@ app.post('/appointment-approval', async (req, res) => {
 app.put('/appointments', async (req, res) => {
   // TODO: authenticate with JWT token
   const { id, ...newAppt } = req.body;
-  Appointment.findByIdAndUpdate(id, newAppt, (err, doc) => {
+  Appointment.findByIdAndUpdate(id, newAppt.newAppt, {new: true}, (err, doc) => {
     if (err) {
       console.warn(err);
       res.status(500).send({ error: 'Appointment update failed' });
