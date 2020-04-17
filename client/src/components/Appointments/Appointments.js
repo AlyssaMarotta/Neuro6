@@ -70,13 +70,13 @@ const Appointments = props => {
   };*/
   let checked = true;
   let filteredDateAppointments = appointments.filter(
-    (directory) => {
-        if(moment(directory.time).isBetween(dateFrom, dateTo) && checked ) {
+    (appointment) => {
+        if(moment(appointment.time).isBetween(dateFrom, dateTo) && checked ) {
           console.log(checked); 
-          props.setReminder(directory.reminders);
+          props.setNextAppointment(appointment);
           checked = false;
         }
-        return  moment(directory.time).isBetween(dateFrom, dateTo);
+        return  moment(appointment.time).isBetween(dateFrom, dateTo);
     });
 
 
