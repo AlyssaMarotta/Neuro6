@@ -262,7 +262,7 @@ let filteredUserAppointments = appointments.filter(
                         visible={drawerVisible}
                       >
                         <p>{selectedUser && selectedUser.email}</p>
-                        <p>{selectedUser && selectedUser.dob}</p>
+                        <p>{selectedUser && moment(selectedUser.dob).format('MMMM Do, YYYY')}</p>
                         <Card 
                           style={styles.card, {background: "#ffffff"}}
                           bodyStyle={styles.cardBody}
