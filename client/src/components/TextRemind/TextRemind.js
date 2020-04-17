@@ -1,112 +1,48 @@
-const mailgun = require("mailgun-js");
+var twilio = require('twilio');
 var express = require('express');
+const http = require('http');
 
 
-const api_key =process.env.MAILGUN_API_KEY;
-const DOMAIN = process.env.MAILGUN_DOMAIN;
-var from_who = process.env.MAILGUN_FROM;
+//var accountSid =process.env.TWILIO_SID;
+//var authToken = process.env.TWILIO_AUTHTOKEN;
+//var from_who = process.env.TWILIO_FROM;
 
-const mg = mailgun({apiKey: api_key , domain: DOMAIN});
+
+var accountSid = 'AC104bdf5084dcc56cbe4f18ea60473a24'; 
+var authToken = 'f6dedcd961aeee0096812710ecad52da'; 
+var from_who = '+12058283252';  
+
+var client = new twilio(accountSid, authToken);
 var app = express();
 
-/*//Test email
-const data = {
-	from: from_who,
-	to: "uf.neuro6@gmail.com",
-	subject: "ENV Test",
-    text: "blah blah ",
-    //html: 'Reset password: <a href="http://0.0.0.0:3030/reset?">Click here to reset your password </a>'
-};
 
-mg.messages().send(data, function (error, body) {
-    console.log(body);
-});*/
-
-
-//RESET PASSWORD
-// Send a message to the specified email address when you navigate to /resetpass/someaddr@email.com
-app.get('/resetpass/:mail', function(req,res) {
-
-    const ResetPass = {
-        from: from_who,
-        to: "uf.neuro6@gmail.com", // req.params.mail
-        subject: "Reset Password",
-        text: "Hello, we were notified you would like to reset your password. If you did not send this notification please contact our offices immediately. ",
-        html: 'Reset password: <a href="http://0.0.0.0:3030/reset?' + req.params.mail + '">Click here to reset your password </a>'
-    };
-
-    
-    mg.messages().send(ResetPass, function (error, body) {
-        console.log(body);
-    });
-});
-
-//CONFIRM APPOINTMENT
-// Send a message to the specified email address when you navigate to /conf/someaddr@email.com
-app.get('/conf/:mail', function(req,res) {
-
-    const AptConfirmation = {
-        from: from_who,
-        to: "uf.neuro6@gmail.com", // req.params.mail
-        subject: "Appointment Confirmation",
-        text: "Hello, Your request for an appointment has been recieved."
-    };
-
-    mg.messages().send(AptCancelation, function (error, body) {
-        console.log(body);
-    });
-});
-
-//APPOINTMENT REMINDER
-// Send a message to the specified email address when you navigate to /remind/someaddr@email.com
-app.get('/remind/:mail', function(req,res) {
-
-    const AptReminder = {
-        from: from_who,
-        to: "uf.neuro6@gmail.com",
-        subject: "Reminder: You have an appointment",
-        text: "Hello, Here is a reminder that you have and appointment on _____ at _____ with _____"
-    };
-    
-    mg.messages().send(AptReminder, function (error, body) {
-        console.log(body);
-    });
-});
-
-//CANCEL APPOINTMENT CONFIRMATION
-// Send a message to the specified email address when you navigate to /cancel/someaddr@email.com
-app.get('/cancel/:mail', function(req,res) {
-
-    const AptCancelation = {
-        from: from_who,
-        to: "uf.neuro6@gmail.com",
-        subject: "Cancelation Confirmation",
-        text: "Hello, Your appointment has been canceled. To reschedule please contact UF Neurosurgery at _____"
-    };
-    
-    mg.messages().send(AptCancelation, function (error, body) {
-        console.log(body);
-    });
-});
-
+/* //sample code to test message sending
+client.messages.create({
+    body: 'testing',
+    to: '+19546369174',  // Text this number
+    from: from_who // From a valid Twilio number
+})
+.then((message) => console.log(message.sid));
+*/
 
 //CURRENT OFFICE DELAY
-// Send a message to the specified email address when you navigate to /cancel/someaddr@email.com
-app.get('/cancel/:mail', function(req,res) {
-
-    const delay = {
-        from: from_who,
-        to: "uf.neuro6@gmail.com",
-        subject: "Experiencing Delays",
-        text: "Hello, we contacting you to let you know that our office is running behind today and your apppointment has been delayed by ____ minutes"
-    };
+// Send a message to the specified phone num when you navigate to /delay
+//need to link admin side 
+//need to get database of users with todays appointments (that havent passed)
+//need to access time request to delay by
+app.get('/delay', function(req,res) {
     
-    mg.messages().send(delay, function (error, body) {
-        console.log(body);
+    var numbersToMessage = ["+15558675310", "+14158141829", "+15017122661"]
+    numbersToMessage.forEach(function(number){
+        var message = client.messages.create({
+            body: 'Hello, we contacting you to let you know that our office is running behind today and your apppointment has been delayed by ____ minutes',
+            from: from_who,
+            to: number
+        })
+        .then(message =>  console.log(message))
+        .done();
     });
 });
-
-
 
 
 //Add more endpoints
