@@ -8,9 +8,7 @@ const http = require('http');
 //var from_who = process.env.TWILIO_FROM;
 
 
-var accountSid = 'AC104bdf5084dcc56cbe4f18ea60473a24'; 
-var authToken = 'f6dedcd961aeee0096812710ecad52da'; 
-var from_who = '+12058283252';  
+
 
 var client = new twilio(accountSid, authToken);
 var app = express();
