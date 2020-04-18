@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { Card, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import './Appointments.css';
 import Appointment from '../Appointment/Appointment';
 
 const Appointments = props => {
+
+  const [dateFrom, setDateFrom] = useState(new Date(new Date().setDate(new Date().getDate() -1)));
+  const [dateTo,  setDateTo] = useState(new Date(new Date().setDate(new Date().getDate() + 120)));
+
   // TODO: Use logged in email from useReducer + useContext
   const { email } = props;
 
@@ -63,16 +68,25 @@ const Appointments = props => {
 
     addAppointment().catch(err => console.log(err));
   };*/
+  let checked = true;
+  let filteredDateAppointments = appointments.filter(
+    (appointment) => {
+        if(moment(appointment.time).isBetween(dateFrom, dateTo) && checked ) {
+          console.log(checked); 
+          props.setNextAppointment(appointment);
+          checked = false;
+        }
+        return  moment(appointment.time).isBetween(dateFrom, dateTo);
+    });
+
 
   return (
 
     <div className='Appointments'>
-      <Card style = {{margin : 10}}>
-        Appointments
-        {appointments.map((appointment, index) => (
+        {filteredDateAppointments.map((appointment, index) => (
+          
           <Appointment key={index} data={appointment} id={index} />
         ))}
-      </Card>
     </div>
    );
 
