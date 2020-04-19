@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const yup = require('yup');
 
@@ -20,7 +21,8 @@ const JWT_ACCESS_TOKEN_SECRET =
 app.use(
   bodyParser.urlencoded({
     extended: true,
-  })
+  }),
+  cors()
 );
 
 /**
