@@ -1,4 +1,4 @@
-import proxy from 'http-proxy-middleware';
+const proxy = require('http-proxy-middleware').createProxyMiddleware;
 
 module.exports = function(app) {
     // add other server routes to path array
