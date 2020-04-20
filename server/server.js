@@ -1,10 +1,11 @@
-require('dotenv').config();
+ require('dotenv').config();
 
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const yup = require('yup');
+var cron = require('node-cron');
 
 const express = require('./config/express.js');
 const expressjs = require('express');
@@ -16,9 +17,23 @@ const { sha512WithSalt, saltHashPassword } = require('./utils/salt.js');
 const port = process.env.PORT || 5000;
 const app = express.init();
 
+//mailgun thangs
+const mailgun = require("mailgun-js");
+const api_key = process.env.MAILGUN_API_KEY;
+const DOMAIN = process.env.MAILGUN_DOMAIN;
+var from_who = process.env.MAILGUN_FROM;
+const mg = mailgun({ apiKey: api_key, domain: DOMAIN });
+
+
+//twilio thangs
+var twilio = require('twilio');
+var accountSid = process.env.TWILIO_SID;
+var authTokenMail = process.env.TWILIO_AUTHTOKEN;
+var from_who = process.env.TWILIO_FROM;
+var client = new twilio(accountSid, authTokenMail);
+
 const JWT_ACCESS_TOKEN_SECRET =
-  process.env.JWT_ACCESS_TOKEN_SECRET ||
-  require('./config/config.js').jwt.accessTokenSecret;
+  process.env.JWT_ACCESS_TOKEN_SECRET 
 
 app.use(
   bodyParser.urlencoded({
@@ -429,6 +444,136 @@ app.use(expressjs.static(path.join(__dirname, '../build')));
 app.get('*', (req, res) => {
   console.log('Sending static file');
   res.sendFile(path.join(__dirname, '../build'));
+});
+
+app.listen(port, () => console.log(`Server now running on port ${port}!`));
+
+
+//EMAIL
+//reset password
+app.post('/resetpass', function (req, res) {
+  const ResetPass = {
+    from: from_who,
+    to: req.body.email,
+    subject: "Reset Password",
+    text: "Hello, we were notified you would like to reset your password. If you did not send this notification please contact our offices immediately. ",
+    html: 'Reset password: <a href="https://dashboard.heroku.com/apps/neuro6/reset' + req.body.email + '">Click here to reset your password </a>'
+  };
+  mg.messages().send(ResetPass, function (error, body) {
+    console.log(body);
+  });
+});
+
+//confirm appointment
+app.post('/conf', function (req, res) {
+  const AptConfirmation = {
+    from: from_who,
+    to: req.body.email,
+    subject: "Appointment Confirmation",
+    text: "Hello, Your request for an appointment has been recieved and is under considertion, you will be contacted shortly."
+  };
+  mg.messages().send(AptCancelation, function (error, body) {
+    console.log(body);
+  });
+});
+
+//appointment reminders
+const today = new Date();
+const tomorrow = new Date(today);
+tomorrow.setDate(tomorrow.getDate() + 1)
+
+cron.schedule('0 9 * * *', () => {
+  //every day at 9am
+  const appointments = Appointment.find({ time: tomorrow }); //find tomorrows appointments
+  appointments.forEach(function (appt) {
+    const AptReminder = {
+      from: from_who,
+      to: appt.patientEmail,
+      subject: "NO REPLY-Reminder: You have an appointment",
+      text: "Hello, Here is a reminder that you have a(n) " + appt.title +
+        " appointment on " + appt.time + " at " + appt.location
+        + ". Please contact us if this is incorrect or you would like to cancel. Have a great day! "
+    };
+    mg.messages().send(AptReminder, function (error, body) {
+      console.log(body);
+    });
+  });
+});
+
+//cancel appointment confirmation
+app.post('/cancel', function (req, res) {
+
+  //actually cancel appointment?
+
+  const AptCancelation = {
+    from: from_who,
+    to: req.body.mail,
+    subject: "Cancelation Confirmation",
+    text: "Hello, Your appointment has been canceled. To reschedule please contact the UF Neurosurgery Department"
+  };
+  mg.messages().send(AptCancelation, function (error, body) {
+    console.log(body);
+  });
+});
+
+
+//office delay
+app.post('/delayemail', function (req, res) {
+  const appointments =  Appointment.find({ time: today }); //find todays appointments
+  appointments.forEach(function (appt) {
+    const delay = {
+      from: from_who,
+      to: req.body.email,
+      subject: "Experiencing Delays",
+      text: "Hello, we contacting you to let you know that our office is running behind today and your apppointment has been delayed by 15 minutes"
+    };
+    mg.messages().send(delay, function (error, body) {
+      console.log(body);
+    });
+
+    //actually delay appointments?
+
+  });
+});
+
+
+//TEXT MESSAGES
+//office delay
+app.post('/delaytext', function (req, res) {
+  const appointments =  Appointment.find({ time: today }); //find todays appointments
+  appointments.forEach(function (appt) {
+    //get phone # linked to appointment email
+    const number =  User.find({ email: appt.patientEmail });
+    var message = client.messages.create({
+      body: 'Hello, we contacting you to let you know that our office is running behind today and your apppointment has been delayed by 15 minutes',
+      from: from_who,
+      to: number
+    })
+      .then(message => console.log(message))
+      .done();
+  });
+
+  //actually delay appointment??
+
+});
+
+//appointment reminder text
+cron.schedule('0 9 * * *', () => {
+  //every day at 9am
+  const appointments =  Appointment.find({ time: tomorrow }); //find tomorrows appointments
+  appointments.forEach(function (appt) {
+    //get number from user with email associated with that appointment
+    const number =  User.find({ email: appt.patientEmail });
+    var message = client.messages.create({
+      body: "Hello, Here is a reminder that you have a(n) " + appt.title +
+        " appointment on " + appt.time + " at " + appt.location
+        + ". Please contact us if this is incorrect or you would like to cancel. Have a great day! ",
+      from: from_who,
+      to: number
+    })
+      .then(message => console.log(message))
+      .done();
+  });
 });
 
 app.listen(port, () => console.log(`Server now running on port ${port}!`));
