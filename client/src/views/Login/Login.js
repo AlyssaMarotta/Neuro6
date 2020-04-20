@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import './Login.css';
 import { PromiseProvider } from 'mongoose';
 import { Col, Card, Form, Input, Button } from 'antd';
+import axios from 'axios';
 
 const Login = props => {
   const [email, setEmail] = useState('');
@@ -12,7 +13,11 @@ const Login = props => {
   useEffect(() => {
     const urls = ['hello-world', '/hello-world', 'http://localhost:5000/hello-world']
     const helloWorld = async (url) => {
-      const response = await fetch(url);
+      // const response = await axios.get(url);
+      // const printText = `RESULT FOR ${url}`;
+      // console.log(printText);
+      // console.log(response.data);
+      const response = await fetch(url, {mode: 'cors'});
       const res2 = response.clone();
       const printText = `RESULT FOR ${url}`;
       try {

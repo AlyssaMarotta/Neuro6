@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const yup = require('yup');
 
@@ -20,7 +21,8 @@ const JWT_ACCESS_TOKEN_SECRET =
 app.use(
   bodyParser.urlencoded({
     extended: true,
-  })
+  }),
+  cors()
 );
 
 /**
@@ -240,7 +242,7 @@ app.post('/appointment-approval', async (req, res) => {
 app.put('/appointments', async (req, res) => {
   // TODO: authenticate with JWT token
   const { id, ...newAppt } = req.body;
-  Appointment.findByIdAndUpdate(id, newAppt, (err, doc) => {
+  Appointment.findByIdAndUpdate(id, newAppt.newAppt, {new: true}, (err, doc) => {
     if (err) {
       console.warn(err);
       res.status(500).send({ error: 'Appointment update failed' });
@@ -341,6 +343,71 @@ app.post('/create-account', async (req, res) => {
     },
     dob: new Date(dob),
     isAdmin: false,
+    phone,
+  });
+
+  user.save((err, doc) => {
+    if (err) {
+      console.warn(err);
+      res.status(500).send({ error: `User creation failed` });
+      return;
+    }
+    const accessToken = createToken(email);
+    res.status(200).send({ ...getUserDataToSend(doc), accessToken });
+    return;
+  });
+});
+
+
+//Creates a new Admin
+app.post('/create-admin', async (req, res) => {
+  const { email, password, firstName, lastName, dob, phone } = req.body;
+  const { salt, hashedPassword } = saltHashPassword(password);
+
+  const userExists = await User.exists({ email });
+  if (userExists) {
+    res
+      .status(409)
+      .send({ error: `Account associated with the email already exists` });
+    return;
+  }
+
+  const newUserYupCheck = yup.object().shape({
+    email: yup.string().email().required('No email provided.'),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(8, 'Must be a minimum of 8 characters'),
+    first: yup.string().required(),
+    last: yup.string().required(),
+    //TODO: phone number validation...sup
+    //TODO: pass confirmation in future...sup
+  });
+
+  let userCheck = {
+    email: email,
+    password: password,
+    first: firstName,
+    last: lastName,
+    //phone: phone,
+  };
+
+  const valid = await newUserYupCheck.isValid(userCheck);
+
+  if (!valid) {
+    res.send(409).send({ error: 'Either wrong email or wrong pass lol' });
+    return;
+  }
+  const user = new User({
+    email,
+    hashedPassword,
+    salt,
+    name: {
+      first: firstName,
+      last: lastName,
+    },
+    dob: new Date(dob),
+    isAdmin: true,
     phone,
   });
 

@@ -5,7 +5,9 @@ import Map from '../../components/Map/Map.js';
 
 const ContactAndFindUs = () => {
   return (
+    
     <div className='App'>
+      <Map />
       <header className='App-header'>
         <h1> Address</h1>
         <h2> UF Health Neurosurgery – Neuromedicine Hospital</h2>
@@ -14,7 +16,7 @@ const ContactAndFindUs = () => {
         Gainesville, Fla., on the University of Florida campus off of Archer
         Road (SR 24), about three miles east of I-75, exit 384, and one block
         west of U.S. Hwy 441.
-        <Map />
+        
         <h2> Directions</h2>
         <h3> From I-75</h3>
         Take exit 384 to Gainesville/Archer. Head east on Archer Road for

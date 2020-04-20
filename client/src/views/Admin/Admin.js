@@ -15,6 +15,8 @@ import {
 } from 'antd';
 import AppointmentAdmin from '../../components/AppointmentAdmin/AppointmentAdmin';
 import AppointmentAdmin2 from '../../components/AppointmentAdmin2/AppointmentAdmin2';
+import CreateUserAdmin from '../../components/CreateUserAdmin/CreateUserAdmin'
+import CreateAdmin from '../../components/CreateAdmin/CreateAdmin'
 import moment from 'moment';
 
 
@@ -33,6 +35,18 @@ const Admin = () => {
   const [searchUserEmail, setSearchUserEmail] = useState("");
   const [searchUserFirstName, setSearchUserFirstName] = useState("");
   const [searchUserLastName, setSearchUserLastName] = useState("");
+  const [createUserVisibility, setCreateUserVisibility] = useState(false);
+  const [createAdminVisibility, setCreateAdminVisibility] = useState(false);
+
+const updateCreateAdminVisibility = e =>
+{
+  setCreateAdminVisibility(e);
+}
+
+const updateCreateUserVisibility = e =>
+{
+  setCreateUserVisibility(e);
+}
 
   const updateSelectDate = e => {
     if (e == null || e[1] == null){
@@ -167,7 +181,7 @@ let filteredUserAppointments = appointments.filter(
   };
 
   return (
-    <header className='App-header-Admin'>
+    // <header className='App-header-Admin'>
       <Row gutter={[20, 8]}>
         <Col flex={4}>
           <div className='card-container'>
@@ -240,7 +254,7 @@ let filteredUserAppointments = appointments.filter(
                     </Card>
                   ))}
                       <Drawer
-                        width={"80%"}
+                        width={"50%"}
                         title= {selectedUser && selectedUser.name.first + " " +  selectedUser.name.last}
                         placement="right"
                         closable={false}
@@ -248,7 +262,7 @@ let filteredUserAppointments = appointments.filter(
                         visible={drawerVisible}
                       >
                         <p>{selectedUser && selectedUser.email}</p>
-                        <p>{selectedUser && selectedUser.dob}</p>
+                        <p>{selectedUser && moment(selectedUser.dob).format('MMMM Do, YYYY')}</p>
                         <Card 
                           style={styles.card, {background: "#ffffff"}}
                           bodyStyle={styles.cardBody}
@@ -270,7 +284,7 @@ let filteredUserAppointments = appointments.filter(
         </Col>
         <Col flex={2}>
           <Card style={{ margin: 10 }}>
-            <div className='CalendarComponent'>
+            <div className='AdminCalendarComponent'>
               {' '}
               <p>
                 <div className='site-calendar-demo-card'>
@@ -283,10 +297,39 @@ let filteredUserAppointments = appointments.filter(
                 </Link>
               </p>
               <p>
-                <Input className='buttons' value='Create a new User' />
+                {/* <Input className='buttons' value='Create a new User' /> */}
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    updateCreateUserVisibility(true);
+                  }}
+                >
+                  Create a new User
+                </Button>
+                <CreateUserAdmin
+                  visible={createUserVisibility}
+                  onCancel={() => {
+                    updateCreateUserVisibility(false);
+                  }}
+                />
               </p>
               <p>
-                <Input className='buttons' value='Create a new Admin' />
+              {/* <Input className='buttons' value='Create a new Admin' /> */}
+              <Button
+                  type="primary"
+                  onClick={() => {
+                    updateCreateAdminVisibility(true);
+                  }}
+                >
+                  Create a new Admin
+                </Button>
+              <CreateAdmin
+                  visible={createAdminVisibility}
+                  onCancel={() => {
+                    updateCreateAdminVisibility(false);
+                  }}
+                />
+                
               </p>
               {/* <p>
                 <Link to='/AppointmentApproval'>
@@ -297,7 +340,7 @@ let filteredUserAppointments = appointments.filter(
           </Card>
         </Col>
       </Row>
-    </header>
+    // </header>
   );
 };
 
