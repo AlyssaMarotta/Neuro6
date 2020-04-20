@@ -29,8 +29,7 @@ var from_who = process.env.TWILIO_FROM;
 var client = new twilio(accountSid, authTokenMail);
 
 const JWT_ACCESS_TOKEN_SECRET =
-  process.env.JWT_ACCESS_TOKEN_SECRET ||
-  require('./config/config.js').jwt.accessTokenSecret;
+  process.env.JWT_ACCESS_TOKEN_SECRET 
 
 app.use(
   bodyParser.urlencoded({
@@ -361,6 +360,7 @@ app.post('/conf', function (req, res) {
 const today = new Date();
 const tomorrow = new Date(today);
 tomorrow.setDate(tomorrow.getDate() + 1)
+
 cron.schedule('0 9 * * *', () => {
   //every day at 9am
   const appointments = Appointment.find({ time: tomorrow }); //find tomorrows appointments
@@ -397,14 +397,14 @@ app.post('/cancel', function (req, res) {
 
 
 //office delay
-app.post('/delay/:time', function (req, res) {
+app.post('/delayemail', function (req, res) {
   const appointments =  Appointment.find({ time: today }); //find todays appointments
   appointments.forEach(function (appt) {
     const delay = {
       from: from_who,
       to: req.body.email,
       subject: "Experiencing Delays",
-      text: "Hello, we contacting you to let you know that our office is running behind today and your apppointment has been delayed by " + req.params.time + " minutes"
+      text: "Hello, we contacting you to let you know that our office is running behind today and your apppointment has been delayed by 15 minutes"
     };
     mg.messages().send(delay, function (error, body) {
       console.log(body);
@@ -418,13 +418,13 @@ app.post('/delay/:time', function (req, res) {
 
 //TEXT MESSAGES
 //office delay
-app.post('/delaytext/:time', function (req, res) {
+app.post('/delaytext', function (req, res) {
   const appointments =  Appointment.find({ time: today }); //find todays appointments
   appointments.forEach(function (appt) {
     //get phone # linked to appointment email
     const number =  User.find({ email: appt.patientEmail });
     var message = client.messages.create({
-      body: 'Hello, we contacting you to let you know that our office is running behind today and your apppointment has been delayed by '+ req.params.time+' minutes',
+      body: 'Hello, we contacting you to let you know that our office is running behind today and your apppointment has been delayed by 15 minutes',
       from: from_who,
       to: number
     })
