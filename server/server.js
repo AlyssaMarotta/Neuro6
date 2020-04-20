@@ -1,10 +1,13 @@
 require('dotenv').config();
 
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const path = require('path');
 const jwt = require('jsonwebtoken');
 const yup = require('yup');
 
 const express = require('./config/express.js');
+const expressjs = require('express');
 const User = require('./models/User.js');
 const Appointment = require('./models/Appointment.js');
 const AppointmentRequest = require('./models/AppointmentRequest.js');
@@ -20,7 +23,8 @@ const JWT_ACCESS_TOKEN_SECRET =
 app.use(
   bodyParser.urlencoded({
     extended: true,
-  })
+  }),
+  cors()
 );
 
 /**
@@ -111,7 +115,7 @@ const authToken = async (req, res, next) => {
   next();
 };
 
-app.get('/hello-world', async (req, res) => {
+app.get('/api/hello-world', async (req, res) => {
   res.send({ message: 'Hello world!' });
 });
 
@@ -419,6 +423,12 @@ app.post('/create-admin', async (req, res) => {
     res.status(200).send({ ...getUserDataToSend(doc), accessToken });
     return;
   });
+});
+
+app.use(expressjs.static(path.join(__dirname, '../build')));
+app.get('*', (req, res) => {
+  console.log('Sending static file');
+  res.sendFile(path.join(__dirname, '../build'));
 });
 
 app.listen(port, () => console.log(`Server now running on port ${port}!`));
