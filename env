@@ -1,0 +1,2 @@
+DB_URI=mongodb+srv://BradonZhang:B00tc4mp2@cen3031-bradon-zhang-sewyc.mongodb.net/Neuro6?retryWrites=true&w=majority
+JWT_ACCESS_TOKEN_SECRET=3c2cedde33d069db40fb02cd9c8ebaac08580ddae0173f31d4b4466af0382536f445790ff930e956113a43645346dd7d323e80046f40b3ed618b1a6da42dd140
