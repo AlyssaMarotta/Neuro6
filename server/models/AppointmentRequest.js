@@ -6,6 +6,7 @@ const AppointmentRequest = new mongoose.Schema({
   time: { type: Date, required: true },
   location: { type: String, required: true },
   reminders: [{ type: String, required: true }],
+  providerEmail: {type: String, required: true}
 });
 
 module.exports = mongoose.model('appointmentRequests', AppointmentRequest);
