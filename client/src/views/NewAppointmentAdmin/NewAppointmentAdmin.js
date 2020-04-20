@@ -64,7 +64,7 @@ const onPanelChange = value => {
   const handleAddAppointment = (appointment) => {
     console.log("Trying To Add appointment");
     const addAppointment = async () => {
-      const response = await fetch('/appointments', {
+      const response = await fetch('/appointments-admin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

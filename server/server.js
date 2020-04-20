@@ -175,7 +175,7 @@ app.get('/AdminGetUser', async (req, res) => {
 //END OF GREAT CODE
 
 /**
- * Endpoint to create an appointment.
+ * Endpoint to request an appointment.
  */
 app.post('/appointments', async (req, res) => {
   // TODO: authenticate with JWT token
@@ -186,6 +186,28 @@ app.post('/appointments', async (req, res) => {
   console.log(req.body);
   //const appointment = new Appointment(req.body);
   appointmentReq.save((err, doc) => {
+    if (err) {
+      console.warn(err);
+      res.status(500).send({ error: `Appointment creation failed` });
+      return;
+    }
+    res.status(200).send(doc);
+    return;
+  });
+});
+
+/**
+ * Endpoint to create an appointment from admin side.
+ */
+app.post('/appointments-admin', async (req, res) => {
+  // TODO: authenticate with JWT token
+
+  //appointment requests instead of add
+  //const appointmentReq = new AppointmentRequest(req.body);
+
+  console.log(req.body);
+  const appointment = new Appointment(req.body);
+  appointment.save((err, doc) => {
     if (err) {
       console.warn(err);
       res.status(500).send({ error: `Appointment creation failed` });

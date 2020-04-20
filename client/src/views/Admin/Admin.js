@@ -14,6 +14,7 @@ import {
   Button
 } from 'antd';
 import AppointmentAdmin from '../../components/AppointmentAdmin/AppointmentAdmin';
+import AppointmentAdminApproval from '../../components/AppointmentAdminApproval/AppointmentAdminApproval';
 import AppointmentAdmin2 from '../../components/AppointmentAdmin2/AppointmentAdmin2';
 import CreateUserAdmin from '../../components/CreateUserAdmin/CreateUserAdmin'
 import CreateAdmin from '../../components/CreateAdmin/CreateAdmin'
@@ -24,6 +25,7 @@ const Admin = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [appointments, setAppointments] = useState([]);
+  const [appointmentReqs, setAppointmentReq] = useState([])
   const [users, setUsers] = useState([]);
   const { Search } = Input;
   const [dateFrom, setDateFrom] = useState(new Date());
@@ -86,6 +88,11 @@ const updateCreateUserVisibility = e =>
     setAppointments(e);
   };
 
+  const updateAppointmentReq = e => {
+    console.log('updating appointment requesr' + e);
+    setAppointmentReq(e);
+  };
+
   const updateUsers = e => {
     console.log('updating Users' + e);
     setUsers(e);
@@ -110,6 +117,20 @@ const updateCreateUserVisibility = e =>
       }
     };
     getAppointments().catch(err => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    const getAppointmentRequests = async () => {
+      const appointmentRequestResponse = await fetch('/appointmentrequestsgetall', {});
+      try {
+        const body = await appointmentRequestResponse.json();
+        if (appointmentRequestResponse.status !== 200) throw Error(body.error);
+        updateAppointmentReq(body.appointmentReqs);
+      } catch {
+        throw Error();
+      }
+    };
+    getAppointmentRequests().catch(err => console.log(err));
   }, []);
 
   let filteredAppointments = appointments.filter(
@@ -277,6 +298,35 @@ let filteredUserAppointments = appointments.filter(
                           ))}
                         </Card>
                       </Drawer>
+                </Card>
+              </TabPane>
+              <TabPane tab='Appointment Requests' key='3'>
+                <Search
+                  placeholder='Patients Email'
+                  onChange= {value => updateSearchEmail(value)}
+                  onSearch={value => console.log(value)}
+                  style={{ width: 200 }}
+                />
+                <RangePicker
+                  allowEmpty = {[false, false]}
+                  defaultValue={[
+                    moment(dateFrom, dateFormat),
+                    moment(dateTo , dateFormat)
+                  ]}
+                  onCalendarChange= {value => updateSelectDate(value)}
+                  format={dateFormat}
+                />
+                <Card
+                  style={styles.card}
+                  bodyStyle={styles.cardBody}
+                  align='left'
+                  title='Appointment Requests'
+                  text-align='left'
+                >
+                  {appointmentReqs.map((appointmentReqs, index) => (
+                    <AppointmentAdminApproval key={index} data={appointmentReqs} id={index} />
+                    
+                  ))}
                 </Card>
               </TabPane>
             </Tabs>
