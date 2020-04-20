@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from 'antd';
 import './ContactAndFindUs.css';
 import Map from '../../components/Map/Map.js';
 
@@ -8,6 +9,13 @@ const ContactAndFindUs = () => {
     
     <div className='App'>
       <Map />
+      <Button type="primary"
+        onClick={() => {
+          window.open('https://www.google.com/maps/dir//1505+SW+Archer+Rd,+Gainesville,+FL');
+        }}
+      >
+        Open Directions in Google Maps
+      </Button>
       <header className='App-header'>
         <h1> Address</h1>
         <h2> UF Health Neurosurgery – Neuromedicine Hospital</h2>
