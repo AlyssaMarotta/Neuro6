@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card, Col } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 import './User.css';
 import Reminders from '../../components/Reminders/Reminders';
@@ -9,28 +9,30 @@ import { PromiseProvider } from 'mongoose';
 //import { Row, Col} from 'antd';
 
 const User = props => {
+  const [nextAppointment, setNextAppointment] = useState({});
+
   const styles = {
     card: {
-      maxHeight: '100%'
+      maxHeight: '100%',
     },
     cardBody: {
       maxHeight: 400,
-      overflow: 'auto'
-    }
+      overflow: 'auto',
+    },
   };
 
   return (
     <div className='User'>
-      
       <header className='User-Section'>
         <div className='all'>
           {/* <div className='left'> */}
-            <Col span={15}>
+          <Row>
+            <Col flex={60}>
               <Card align='left' title='Reminders' text-align='left'>
-                <Reminders />
+                <Reminders appointment={nextAppointment} />
               </Card>
               <p>{'\n'}</p>
-              <p>{' '}</p>
+              <p> </p>
               <p>{'\n'}</p>
               <Card
                 style={styles.card}
@@ -40,19 +42,23 @@ const User = props => {
                 text-align='left'
               >
                 {/* <p className='site-card-demo-inner-p'>All Apointments</p> */}
-                <Appointments email={props.email} />
+                <Appointments
+                  email={props.email}
+                  setNextAppointment={e => setNextAppointment(e)}
+                />
               </Card>
             </Col>
-          {/* </div> */}
-          <Col span={1}>
-            <p></p>
-          </Col>
-          {/* align='left' justifyContent='center' */}
-          <Col span={7}>
-          <Card justify-content='center' title='Calendar'>
-            <CalendarComponent align='center'/>
-          </Card>
-          </Col>
+            {/* </div> */}
+            <Col span={1}>
+              <p></p>
+            </Col>
+            {/* align='left' justifyContent='center' */}
+            <Col flex={1}>
+              <Card justify-content='center' title='Calendar'>
+                <CalendarComponent align='center' email={props.email} />
+              </Card>
+            </Col>
+          </Row>
         </div>
       </header>
     </div>

@@ -1,6 +1,7 @@
  require('dotenv').config();
 
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const yup = require('yup');
 var cron = require('node-cron');
@@ -8,6 +9,7 @@ var cron = require('node-cron');
 const express = require('./config/express.js');
 const User = require('./models/User.js');
 const Appointment = require('./models/Appointment.js');
+const AppointmentRequest = require('./models/AppointmentRequest.js');
 const { sha512WithSalt, saltHashPassword } = require('./utils/salt.js');
 
 const port = process.env.PORT || 5000;
@@ -34,7 +36,8 @@ const JWT_ACCESS_TOKEN_SECRET =
 app.use(
   bodyParser.urlencoded({
     extended: true,
-  })
+  }),
+  cors()
 );
 
 /**
@@ -42,7 +45,7 @@ app.use(
  *
  * @param {string} email Email for the account.
  */
-const getUser = async email => {
+const getUser = async (email) => {
   return await User.findOne({ email });
 };
 
@@ -51,7 +54,7 @@ const getUser = async email => {
  *
  * @param {User.schema} userData User data of the User schema
  */
-const getUserDataToSend = userData => {
+const getUserDataToSend = (userData) => {
   const { email, name, dob, isAdmin, phone } = userData;
   return { email, name, dob, isAdmin, phone };
 };
@@ -92,7 +95,7 @@ const getUserWithAuthLogin = async (email, password) => {
  *
  * @param {string} token JWT token associated with the user
  */
-const getUserWithAuthToken = async token => {
+const getUserWithAuthToken = async (token) => {
   const { email } = jwt.verify(token, JWT_ACCESS_TOKEN_SECRET);
   return await getUser(email);
 };
@@ -102,7 +105,7 @@ const getUserWithAuthToken = async token => {
  *
  * @param {string} email Email to create token for
  */
-const createToken = email => {
+const createToken = (email) => {
   return jwt.sign({ email }, JWT_ACCESS_TOKEN_SECRET);
 };
 
@@ -173,6 +176,11 @@ app.get('/appointmentsgetall', async (req, res) => {
   res.send({ appointments });
 });
 
+app.get('/appointmentrequestsgetall', async (req, res) => {
+  const appointmentReqs = await AppointmentRequest.find({}).sort({ time: 1 });
+  res.send({ appointmentReqs });
+});
+
 app.get('/AdminGetUser', async (req, res) => {
   console.log(req.body);
   const { body } = req.body;
@@ -186,9 +194,13 @@ app.get('/AdminGetUser', async (req, res) => {
  */
 app.post('/appointments', async (req, res) => {
   // TODO: authenticate with JWT token
+
+  //appointment requests instead of add
+  const appointmentReq = new AppointmentRequest(req.body);
+
   console.log(req.body);
-  const appointment = new Appointment(req.body);
-  appointment.save((err, doc) => {
+  //const appointment = new Appointment(req.body);
+  appointmentReq.save((err, doc) => {
     if (err) {
       console.warn(err);
       res.status(500).send({ error: `Appointment creation failed` });
@@ -200,6 +212,44 @@ app.post('/appointments', async (req, res) => {
 });
 
 /**
+ * Endpoint to approve an appointment.
+ */
+app.post('/appointment-approval', async (req, res) => {
+  const id = req.body.id;
+
+  AppointmentRequest.findById(id, (err, doc) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send({ error: err });
+      return;
+    }
+    if(!doc){
+      console.log('no doc found lol')
+      res.status(404).send({error :'document not found'})
+      return
+    }
+
+    const appointment = new Appointment(req.body);
+    appointment.save((err, doc) => {
+      if (err) {
+        console.warn(err);
+        res.status(500).send({ error: `Appointment save failed` });
+        return;
+      }
+      AppointmentRequest.findByIdAndDelete(id, (err, doc) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(doc);
+        }
+      });
+      res.status(200).send(doc);
+      return;
+    });
+  });
+});
+
+/**
  * Endpoint to update an appointment.
  *
  * Pass the ID of the appointment in the request body as id.
@@ -207,7 +257,7 @@ app.post('/appointments', async (req, res) => {
 app.put('/appointments', async (req, res) => {
   // TODO: authenticate with JWT token
   const { id, ...newAppt } = req.body;
-  Appointment.findByIdAndUpdate(id, newAppt, (err, doc) => {
+  Appointment.findByIdAndUpdate(id, newAppt.newAppt, {new: true}, (err, doc) => {
     if (err) {
       console.warn(err);
       res.status(500).send({ error: 'Appointment update failed' });
@@ -273,10 +323,7 @@ app.post('/create-account', async (req, res) => {
   }
 
   const newUserYupCheck = yup.object().shape({
-    email: yup
-      .string()
-      .email()
-      .required('No email provided.'),
+    email: yup.string().email().required('No email provided.'),
     password: yup
       .string()
       .required('Password is required')
@@ -311,7 +358,72 @@ app.post('/create-account', async (req, res) => {
     },
     dob: new Date(dob),
     isAdmin: false,
-    phone
+    phone,
+  });
+
+  user.save((err, doc) => {
+    if (err) {
+      console.warn(err);
+      res.status(500).send({ error: `User creation failed` });
+      return;
+    }
+    const accessToken = createToken(email);
+    res.status(200).send({ ...getUserDataToSend(doc), accessToken });
+    return;
+  });
+});
+
+
+//Creates a new Admin
+app.post('/create-admin', async (req, res) => {
+  const { email, password, firstName, lastName, dob, phone } = req.body;
+  const { salt, hashedPassword } = saltHashPassword(password);
+
+  const userExists = await User.exists({ email });
+  if (userExists) {
+    res
+      .status(409)
+      .send({ error: `Account associated with the email already exists` });
+    return;
+  }
+
+  const newUserYupCheck = yup.object().shape({
+    email: yup.string().email().required('No email provided.'),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(8, 'Must be a minimum of 8 characters'),
+    first: yup.string().required(),
+    last: yup.string().required(),
+    //TODO: phone number validation...sup
+    //TODO: pass confirmation in future...sup
+  });
+
+  let userCheck = {
+    email: email,
+    password: password,
+    first: firstName,
+    last: lastName,
+    //phone: phone,
+  };
+
+  const valid = await newUserYupCheck.isValid(userCheck);
+
+  if (!valid) {
+    res.send(409).send({ error: 'Either wrong email or wrong pass lol' });
+    return;
+  }
+  const user = new User({
+    email,
+    hashedPassword,
+    salt,
+    name: {
+      first: firstName,
+      last: lastName,
+    },
+    dob: new Date(dob),
+    isAdmin: true,
+    phone,
   });
 
   user.save((err, doc) => {
