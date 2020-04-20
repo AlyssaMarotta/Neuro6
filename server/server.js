@@ -1,4 +1,4 @@
- require('dotenv').config();
+require('dotenv').config();
 
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -463,22 +463,6 @@ app.post('/delay-appointments', async (req, res) => {
   res.status(200).send(appts);
 });
 
-if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
-  // Add production middleware such as redirecting to https
-
-  // Express will serve up production assets i.e. main.js
-  app.use(express.static(__dirname + '/client/build'));
-  // If Express doesn't recognize route serve index.html
-  const path = require('path');
-  app.get('*', (req, res) => {
-      res.sendFile(
-          path.resolve(__dirname, 'client', 'build', 'index.html')
-      );
-  });
-}
-
-app.listen(port, () => console.log(`Server now running on port ${port}!`));
-
 
 //EMAIL
 //reset password
@@ -606,5 +590,22 @@ cron.schedule('0 9 * * *', () => {
       .done();
   });
 });
+
+
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+  // Add production middleware such as redirecting to https
+
+  // Express will serve up production assets i.e. main.js
+  app.use(express.static(__dirname + '/client/build'));
+  // If Express doesn't recognize route serve index.html
+  const path = require('path');
+  app.get('*', (req, res) => {
+      res.sendFile(
+          path.resolve(__dirname, 'client', 'build', 'index.html')
+      );
+  });
+}
+
+
 
 app.listen(port, () => console.log(`Server now running on port ${port}!`));
