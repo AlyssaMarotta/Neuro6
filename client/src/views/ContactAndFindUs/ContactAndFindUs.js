@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from 'antd';
 import './ContactAndFindUs.css';
 import Map from '../../components/Map/Map.js';
 import { Card, Collapse } from 'antd';
@@ -12,12 +13,13 @@ const ContactAndFindUs = () => {
     <div>
     
     
-      <Card style={{alignSelf: 'center' }}>
+      <Card bordered ={false } style={{alignSelf: 'center' }}>
       <Collapse accordion>
     <Panel header="Address" key="1">
       <div style={{marginLeft: '5%', marginRight: '5%'}}>
     <h3> UF Health Neurosurgery – Neuromedicine Hospital</h3>
         <p>1505 SW Archer Road <p>Gainesville, FL 32608</p></p>
+
         UF Health Neurosurgery – Neuromedicine Hospital is located in
         Gainesville, Fla., on the University of Florida campus off of Archer
         Road (SR 24), about three miles east of I-75, exit 384, and one block
@@ -52,8 +54,23 @@ const ContactAndFindUs = () => {
   </Collapse>
         
         </Card>
-        <Card><Map /></Card>
-        </div>
+        
+        <Card bordered={false}  style={{justifyContent:'center', textAlign: 'center'}}>
+          <p>
+          <Button type="primary"
+            onClick={() => {
+              window.open('https://www.google.com/maps/dir//1505+SW+Archer+Rd,+Gainesville,+FL');
+            }}
+          >
+            Open Directions in Google Maps
+          </Button>
+          </p>
+          <p>
+            <Map />
+          </p>
+        </Card>
+          
+      </div>
   );
 }
 

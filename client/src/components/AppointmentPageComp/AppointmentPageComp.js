@@ -6,6 +6,7 @@ import ConfirmCancel from '../ConfirmCancel/ConfirmCancel';
 import { Input } from 'antd';
 import Map from '../../components/Map/Map.js';
 import { Card } from 'antd';
+import { Button } from 'antd';
 
 
 const AppointmentPageComponent = (props) => {
@@ -25,6 +26,13 @@ const AppointmentPageComponent = (props) => {
           <p>{location}</p>
           <div className = "map">
             <Map/>
+            <Button type="primary"
+              onClick={() => {
+                window.open('https://www.google.com/maps/dir//1505+SW+Archer+Rd,+Gainesville,+FL');
+              }}
+            >
+              Open Directions in Google Maps
+            </Button>
           </div>
           <Input onClick = {togglePopup} value = "Cancel Appointment"/>
           {showPopup ?
