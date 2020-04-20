@@ -23,6 +23,7 @@ const Reminders = props => {
       {reminders ?
         reminders.map((reminder, index) => (
           <Reminder
+            key={index}
             time={time}
             title={title}
             reminder={reminder} 
