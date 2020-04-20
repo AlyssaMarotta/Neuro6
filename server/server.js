@@ -131,7 +131,7 @@ const authToken = async (req, res, next) => {
 };
 
 app.get('/api/hello-world', async (req, res) => {
-  res.send({ message: 'Hello world!' });
+  res.status(200).send({ message: 'Hello world!' });
 });
 
 /**
@@ -604,7 +604,5 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging')
       );
   });
 }
-
-
 
 app.listen(port, () => console.log(`Server now running on port ${port}!`));
