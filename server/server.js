@@ -440,11 +440,42 @@ app.post('/create-admin', async (req, res) => {
   });
 });
 
-app.use(expressjs.static(path.join(__dirname, '../build')));
-app.get('*', (req, res) => {
-  console.log('Sending static file');
-  res.sendFile(path.join(__dirname, '../build'));
+/**
+ * Delays all appointments in the current day that have not yet happened.
+ * 
+ * TODO: Emails/texts the patients who have appointments when they are delayed.
+ * 
+ * Takes in a time (in milliseconds) in the req.body.
+ */
+app.post('/delay-appointments', async (req, res) => {
+  // TODO: THIS ENDPOINT IS INCOMPLETE, DO NOT USE YET
+  const { time } = req.body;
+  const currDate = new Date();
+  const tomorrow = new Date(currDate);
+  today.setHours(0, 0, 0, 0);
+  tomorrow.setDate(today.getDate() + 1);
+  const appts = await Appointment.find({
+    time: {
+      $gte: today,
+      $lt: tomorrow
+    }
+  }).sort({ time: 1 });
+  res.status(200).send(appts);
 });
+
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+  // Add production middleware such as redirecting to https
+
+  // Express will serve up production assets i.e. main.js
+  app.use(express.static(__dirname + '/client/build'));
+  // If Express doesn't recognize route serve index.html
+  const path = require('path');
+  app.get('*', (req, res) => {
+      res.sendFile(
+          path.resolve(__dirname, 'client', 'build', 'index.html')
+      );
+  });
+}
 
 app.listen(port, () => console.log(`Server now running on port ${port}!`));
 
