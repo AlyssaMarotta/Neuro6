@@ -1,7 +1,11 @@
 body {
     margin: 0;
 }
-
+.footer{
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px;
+}
 .Image-background {
     /* background:url("https://m.ufhealth.org/sites/default/files/hvnm_0.jpg") no-repeat center;
     background-size:cover;

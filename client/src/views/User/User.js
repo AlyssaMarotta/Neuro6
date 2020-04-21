@@ -45,6 +45,8 @@ const User = props => {
                   setNextAppointment={e => setNextAppointment(e)}
                 />
               </Card>
+              <p>{'\n'}</p>
+              <p>{'\n'}</p>
             </Col>
             {/* </div> */}
             <Col span={1}>

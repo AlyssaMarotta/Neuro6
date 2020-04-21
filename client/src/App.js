@@ -188,6 +188,12 @@ const App = (props) => {
         </Route>
         <Route component={NotFound} />
       </Switch>
+      <div className = 'footer' style={{
+        backgroundColor: '#041528',
+        height: '50px',
+        color: 'white',
+        
+      }}>Made with ❤ by Neuro6</div>
     </div>
   );
 };
