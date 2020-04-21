@@ -52,7 +52,7 @@ const User = props => {
             </Col>
             {/* align='left' justifyContent='center' */}
             <Col flex={1}>
-              <Card justify-content='center' title='Calendar'>
+              <Card align='center' justify-content='center' title='Calendar'>
                 <CalendarComponent align='center' email={props.email} />
               </Card>
             </Col>
