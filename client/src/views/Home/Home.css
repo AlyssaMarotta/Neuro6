@@ -2,6 +2,13 @@ body {
     margin: 0;
 }
 
+.Image-background {
+    /* background:url("https://m.ufhealth.org/sites/default/files/hvnm_0.jpg") no-repeat center;
+    background-size:cover;
+    text-align:center; */
+    background: radial-gradient(circle, black, white);
+}
+
 .App {
     text-align: center;
     background: #ffffff;
@@ -46,7 +53,7 @@ body {
     text-decoration: none;
     font-size: 20px;
     border-radius: 4px;
-    font-family: Palatino, "Palatino Linotype";
+    /* font-family: Palatino, "Palatino Linotype"; */
     vertical-align: middle;
     
 }

@@ -57,7 +57,9 @@ const NavBar = props => {
             </Link>
           </Menu>
         </Col>
-        <Col span={20} margin-bottom='20px' text-align='right'>
+        <Col span={11}> 
+        </Col>
+        <Col span={9} margin-bottom='20px' text-align='right'>
           <Menu
             style={{ margin: 'auto' }}
             theme='dark'
