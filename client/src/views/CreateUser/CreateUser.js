@@ -12,6 +12,11 @@ const initForm = {
 };
 
 const CreateUser = props => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [dob, setDob] = useState('');
   const [formData, setFormData] = useState(initForm);
   const [authorized, setAuthorized] = useState(false);
 
@@ -23,14 +28,41 @@ const CreateUser = props => {
     }));
   };
 
+  const handleEmailChange = e => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = e => {
+    setPassword(e.target.value);
+  };
+
+  const handleFirstNameChange = e => {
+    setFirstName(e.target.value);
+  }
+
+  const handleLastNameChange = e => {
+    setLastName(e.target.value);
+  }
+
+  const handleDobChange = e => {
+    setDob(e.target.value);
+  }
+
   const handleSubmit = e => {
-    e.preventDefault();
+    //e.preventDefault();
     //sourced from https://medium.com/@maison.moa/setting-up-an-express-backend-server-for-create-react-app-bc7620b20a61
     const createAccount = async () => {
       const response = await fetch('/create-account', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
+        // body: JSON.stringify({
+        //   email,
+        //   password,
+        //   firstName,
+        //   lastName,
+        //   dob
+        // })
       });
       const body = await response.json();
 
@@ -46,7 +78,7 @@ const CreateUser = props => {
     createAccount().catch(err => console.log(err));
   };
 
-  if (authorized) return <Redirect to='/User' />;
+  if (authorized) return <Redirect to={'/User'} />;
 
   return (
     <div className='App'>
@@ -57,84 +89,95 @@ const CreateUser = props => {
           alt='Uf Health Building'
         />
         <div className='section'>
-          <Card>
-          <form onSubmit={handleSubmit}>
-            <label>
-              Email:{' '}
+          <Card title='Create Account' align='left' span={14}>
+          <Form onFinish={handleSubmit}>
+            <Form.Item label='Email' 
+            required>
+              {/* Email:{' '} */}
               <Input
-                className='textbox'
+                //addonBefore='Email'
                 type='email'
                 name='email'
-                placeholder='Email'
                 required
                 onChange={handleFormChange}
               />
-            </label>
+            </Form.Item>
             <p>{'\n'}</p>
-            <label>
-              Password:{' '}
+            <Form.Item label='Password'
+            required>
+              {/* Password:{' '} */}
               <Input
-                className='textbox'
+                //addonBefore='Password'
                 type='password'
                 name='password'
-                placeholder='Password'
-                required
+                //placeholder='Password'
+                //required
                 onChange={handleFormChange}
                 minLength={8}
               />
-            </label>
+            </Form.Item>
             <p>{'\n'}</p>
-            <label>
-              First Name:{' '}
+            <Form.Item label='First Name'
+            required>
+              {/* First Name:{' '} */}
               <Input
-                className='textbox'
+                //addonBefore='First Name'
                 type='text'
                 name='firstName'
-                placeholder='First Name'
-                required
+                //placeholder='First Name'
+                //required
                 onChange={handleFormChange}
               />
-            </label>
+            </Form.Item>
             <p>{'\n'}</p>
-            <label>
-              Last Name:{' '}
+            <Form.Item label='Last Name'
+            required>
+              {/* Last Name:{' '} */}
               <Input
-                className='textbox'
+                //addonBefore='Last Name'
                 type='text'
                 name='lastName'
-                placeholder='Last Name'
-                required
+                //placeholder='Last Name'
+                //required
                 onChange={handleFormChange}
               />
-            </label>
+            </Form.Item>
             <p>{'\n'}</p>
 
-            <label>
-              Date of Birth:{' '}
+            <Form.Item label='Date of Birth'
+            required>
+              {/* Date of Birth:{' '} */}
               <Input
-                className='textbox'
+                //addonBefore='Date of Birth'
                 type='date'
                 name='dob'
-                placeholder='Date of Birth'
-                required
+                //placeholder='Date of Birth'
+                //required
                 onChange={handleFormChange}
               />
-            </label>
+            </Form.Item>
             <p>{'\n'}</p>
 
-            <label>
-            Phone Number (optional for text reminders):{' '}
+            <Form.Item label='Phone Number:'>
+            {/* Phone Number (optional for text reminders):{' '} */}
               <Input
-                className='textbox'
+                //addonBefore='Phone Number * :'
                 type='tel'
                 name='phone'
-                placeholder='Phone'
+                //placeholder='Phone'
                 onChange={handleFormChange}
               />
-            </label>
+              
+            </Form.Item>
+            <label align='left'>Phone number is optional for text reminders</label>
             <p>{'\n'}</p>
-            <Input className='buttons' type='submit' value='Create Account' />
-          </form>
+            {/* <Button type='primary' htmlType='submit' onClick={handleSubmit}> */}
+            <Form.Item>
+            <Button type='primary' htmlType='submit'>
+              Create Account
+            </Button>
+            </Form.Item>
+          </Form>
           </Card>
 
           {/* <Card title='Create Account' align='left' span={14}>
@@ -145,9 +188,9 @@ const CreateUser = props => {
                 rules={[
                   { type: 'email', message: 'Not a valid Email!' },
                   { required: true, message: 'Please enter your Email!' }
-                ]} onChange={handleFormChange} 
+                ]} 
               >
-                <Input name='email' />
+                <Input onChange={handleEmailChange}  />
               </Form.Item>
 
               <Form.Item
@@ -155,9 +198,9 @@ const CreateUser = props => {
                 name='password'
                 rules={[
                   { required: true, message: 'Please enter your password!' }
-                ]} onChange={handleFormChange} 
+                ]} 
               >
-                <Input.Password name='password' />
+                <Input.Password onChange={handlePasswordChange} />
               </Form.Item>
 
               <Form.Item
@@ -165,9 +208,9 @@ const CreateUser = props => {
                 name='firstname'
                 rules={[
                   { required: true, message: 'Please enter your first name!' }
-                ]} onChange={handleFormChange}
+                ]} 
               >
-                <Input name='firstname'/>
+                <Input onChange={handleFirstNameChange} />
               </Form.Item>
 
               <Form.Item
@@ -175,19 +218,17 @@ const CreateUser = props => {
                 name='lastname'
                 rules={[
                   { required: true, message: 'Please enter your last name!' }
-                ]} onChange={handleFormChange}
+                ]} 
               >
-                <Input name='lastname'/>
+                <Input onChange={handleLastNameChange} />
               </Form.Item>
 
               <Form.Item
                 label='Date of Birth'
                 name='dob'
-                rules={[{ required: true, message: 'Please enter your DOB!' }]} onChange={handleFormChange} 
+                rules={[{ required: true, message: 'Please enter your DOB!' }]}  
               >
-                <DatePicker 
-                name='dob'
-                />
+                <DatePicker onChange={handleDobChange} />
               </Form.Item>
 
               <Form.Item>
@@ -197,7 +238,6 @@ const CreateUser = props => {
               </Form.Item>
             </Form>
           </Card> */}
-
 
         </div>
       </header>

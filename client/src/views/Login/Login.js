@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import './Login.css';
 import { PromiseProvider } from 'mongoose';
-import { Col, Card, Form, Input, Button } from 'antd';
+import { Layout, Col, Card, Form, Input, Button } from 'antd';
 import axios from 'axios';
+const { Header, Content, Footer } = Layout;
 
 const Login = props => {
   const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ const Login = props => {
   //const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    const urls = ['api/hello-world', '/api/hello-world']
+    const urls = ['hello-world', '/hello-world', 'http://localhost:5000/hello-world']
     const helloWorld = async (url) => {
       let response = await axios.get(url);
       let printText = `RESULT FOR ${url} (axios)`;
@@ -83,7 +84,8 @@ const Login = props => {
           src={'/UFHealthBuilding.jpg'}
           alt='Uf Health Building'
         />
-        <div className='section'>
+        {/* <div className='section'> */}
+        <div style={{position: 'absolute'}}>
           {/* <form onSubmit={handleSubmit}>
             <label>
               Email:{' '}
@@ -109,28 +111,29 @@ const Login = props => {
             <p>{'\n'}</p>
             <Input className='buttons' type='submit' value='Login' />
           </form> */}
-
+          
+          <Content style={{ padding: '0 4px'}}>
           <Card title='Login' align='left' span={14}>
             <Form size='large' name='basic' onFinish={handleSubmit}>
               <Form.Item
-                label='Email'
+                
                 name='email'
                 rules={[
                   { type: 'email', message: 'Not a valid Email!' },
                   { required: true, message: 'Please input your Email!' }
                 ]}
               >
-                <Input onChange={handleEmailChange} />
+                <Input addonBefore='Email' onChange={handleEmailChange} />
               </Form.Item>
 
               <Form.Item
-                label='Password'
+                
                 name='password'
                 rules={[
                   { required: true, message: 'Please input your password!' }
                 ]}
               >
-                <Input.Password onChange={handlePasswordChange} />
+                <Input.Password addonBefore='Password' onChange={handlePasswordChange} />
               </Form.Item>
 
               <Form.Item>
@@ -140,8 +143,10 @@ const Login = props => {
               </Form.Item>
             </Form>
           </Card>
+          </Content>
         </div>
       </header>
+      
     </div>
   );
 };

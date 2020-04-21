@@ -8,13 +8,13 @@ const Reminder = props => {
 
   return (
     <div className='Reminder'>
-      <Alert
-        message={`Appointment Reminder`}
-        description={reminder}
+      <p><Alert
+        message={reminder}
         type='info'
         showIcon
         align='left'
       />
+      </p>
       {/* <p>{children}</p> */}
     </div>
   );

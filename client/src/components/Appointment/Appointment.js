@@ -30,7 +30,7 @@ const Appointment = props => {
             <Button type='primary'>More Details</Button>
           </Link>
         </Col>
-      </Row>
+    </Row>
     </Card>
   );
 };

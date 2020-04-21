@@ -84,7 +84,7 @@ const Appointments = props => {
 
     <div className='Appointments'>
         {filteredDateAppointments.map((appointment, index) => (
-          <Appointment key={index} data={appointment} id={index} />
+          <Appointment key={index} data={appointment} id={appointment._id} />
         ))}
     </div>
    );

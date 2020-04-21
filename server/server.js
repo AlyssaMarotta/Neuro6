@@ -18,12 +18,11 @@ const port = process.env.PORT || 5000;
 const app = express.init();
 
 //mailgun thangs
-const mailgun = require("mailgun-js");
+const mailgun = require('mailgun-js');
 const api_key = process.env.MAILGUN_API_KEY;
 const DOMAIN = process.env.MAILGUN_DOMAIN;
 var from_who = process.env.MAILGUN_FROM;
 const mg = mailgun({ apiKey: api_key, domain: DOMAIN });
-
 
 //twilio thangs
 var twilio = require('twilio');
@@ -32,8 +31,7 @@ var authTokenMail = process.env.TWILIO_AUTHTOKEN;
 var from_who = process.env.TWILIO_FROM;
 var client = new twilio(accountSid, authTokenMail);
 
-const JWT_ACCESS_TOKEN_SECRET =
-  process.env.JWT_ACCESS_TOKEN_SECRET 
+const JWT_ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_TOKEN_SECRET;
 
 app.use(
   bodyParser.urlencoded({
@@ -151,6 +149,23 @@ app.get('/usersgetall', async (req, res) => {
 });
 //END OF GREAT CODE
 
+app.get('/appointment/:id', async (req, res) => {
+  // TODO: Get an appointment with a specific ID
+  Appointment.findById(req.params.id, (err, doc) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send({ error: err });
+      return;
+    }
+    if (!doc) {
+      console.log('no doc found lol');
+      res.status(404).send({ error: 'document not found' });
+      return;
+    }
+    res.status(200).send(doc);
+  });
+});
+
 /**
  * @deprecated Use the endpoint with auth token instead.
  */
@@ -195,7 +210,7 @@ app.get('/AdminGetUser', async (req, res) => {
 //END OF GREAT CODE
 
 /**
- * Endpoint to create an appointment.
+ * Endpoint to request an appointment.
  */
 app.post('/appointments', async (req, res) => {
   // TODO: authenticate with JWT token
@@ -206,6 +221,28 @@ app.post('/appointments', async (req, res) => {
   console.log(req.body);
   //const appointment = new Appointment(req.body);
   appointmentReq.save((err, doc) => {
+    if (err) {
+      console.warn(err);
+      res.status(500).send({ error: `Appointment creation failed` });
+      return;
+    }
+    res.status(200).send(doc);
+    return;
+  });
+});
+
+/**
+ * Endpoint to create an appointment from admin side.
+ */
+app.post('/appointments-admin', async (req, res) => {
+  // TODO: authenticate with JWT token
+
+  //appointment requests instead of add
+  //const appointmentReq = new AppointmentRequest(req.body);
+
+  console.log(req.body);
+  const appointment = new Appointment(req.body);
+  appointment.save((err, doc) => {
     if (err) {
       console.warn(err);
       res.status(500).send({ error: `Appointment creation failed` });
@@ -228,10 +265,10 @@ app.post('/appointment-approval', async (req, res) => {
       res.status(500).send({ error: err });
       return;
     }
-    if(!doc){
-      console.log('no doc found lol')
-      res.status(404).send({error :'document not found'})
-      return
+    if (!doc) {
+      console.log('no doc found lol');
+      res.status(404).send({ error: 'document not found' });
+      return;
     }
 
     const appointment = new Appointment(req.body);
@@ -262,18 +299,23 @@ app.post('/appointment-approval', async (req, res) => {
 app.put('/appointments', async (req, res) => {
   // TODO: authenticate with JWT token
   const { id, ...newAppt } = req.body;
-  Appointment.findByIdAndUpdate(id, newAppt.newAppt, {new: true}, (err, doc) => {
-    if (err) {
-      console.warn(err);
-      res.status(500).send({ error: 'Appointment update failed' });
-      return;
+  Appointment.findByIdAndUpdate(
+    id,
+    newAppt.newAppt,
+    { new: true },
+    (err, doc) => {
+      if (err) {
+        console.warn(err);
+        res.status(500).send({ error: 'Appointment update failed' });
+        return;
+      }
+      if (!doc) {
+        res.status(404).send({ error: 'Appointment does not exist' });
+        return;
+      }
+      res.status(200).send(doc);
     }
-    if (!doc) {
-      res.status(404).send({ error: 'Appointment does not exist' });
-      return;
-    }
-    res.status(200).send(doc);
-  });
+  );
 });
 
 /**
@@ -378,7 +420,6 @@ app.post('/create-account', async (req, res) => {
   });
 });
 
-
 //Creates a new Admin
 app.post('/create-admin', async (req, res) => {
   const { email, password, firstName, lastName, dob, phone } = req.body;
@@ -445,9 +486,9 @@ app.post('/create-admin', async (req, res) => {
 
 /**
  * Delays all appointments in the current day that have not yet happened.
- * 
+ *
  * TODO: Emails/texts the patients who have appointments when they are delayed.
- * 
+ *
  * Takes in a time (in milliseconds) in the req.body.
  */
 app.post('/delay-appointments', async (req, res) => {
@@ -460,12 +501,11 @@ app.post('/delay-appointments', async (req, res) => {
   const appts = await Appointment.find({
     time: {
       $gte: today,
-      $lt: tomorrow
-    }
+      $lt: tomorrow,
+    },
   }).sort({ time: 1 });
   res.status(200).send(appts);
 });
-
 
 //EMAIL
 //reset password
@@ -473,9 +513,13 @@ app.post('/resetpass', function (req, res) {
   const ResetPass = {
     from: from_who,
     to: req.body.email,
-    subject: "Reset Password",
-    text: "Hello, we were notified you would like to reset your password. If you did not send this notification please contact our offices immediately. ",
-    html: 'Reset password: <a href="https://dashboard.heroku.com/apps/neuro6/reset' + req.body.email + '">Click here to reset your password </a>'
+    subject: 'Reset Password',
+    text:
+      'Hello, we were notified you would like to reset your password. If you did not send this notification please contact our offices immediately. ',
+    html:
+      'Reset password: <a href="https://dashboard.heroku.com/apps/neuro6/reset' +
+      req.body.email +
+      '">Click here to reset your password </a>',
   };
   mg.messages().send(ResetPass, function (error, body) {
     console.log(body);
@@ -487,8 +531,9 @@ app.post('/conf', function (req, res) {
   const AptConfirmation = {
     from: from_who,
     to: req.body.email,
-    subject: "Appointment Confirmation",
-    text: "Hello, Your request for an appointment has been recieved and is under considertion, you will be contacted shortly."
+    subject: 'Appointment Confirmation',
+    text:
+      'Hello, Your request for an appointment has been recieved and is under considertion, you will be contacted shortly.',
   };
   mg.messages().send(AptCancelation, function (error, body) {
     console.log(body);
@@ -498,7 +543,7 @@ app.post('/conf', function (req, res) {
 //appointment reminders
 const today = new Date();
 const tomorrow = new Date(today);
-tomorrow.setDate(tomorrow.getDate() + 1)
+tomorrow.setDate(tomorrow.getDate() + 1);
 
 cron.schedule('0 9 * * *', () => {
   //every day at 9am
@@ -507,10 +552,15 @@ cron.schedule('0 9 * * *', () => {
     const AptReminder = {
       from: from_who,
       to: appt.patientEmail,
-      subject: "NO REPLY-Reminder: You have an appointment",
-      text: "Hello, Here is a reminder that you have a(n) " + appt.title +
-        " appointment on " + appt.time + " at " + appt.location
-        + ". Please contact us if this is incorrect or you would like to cancel. Have a great day! "
+      subject: 'NO REPLY-Reminder: You have an appointment',
+      text:
+        'Hello, Here is a reminder that you have a(n) ' +
+        appt.title +
+        ' appointment on ' +
+        appt.time +
+        ' at ' +
+        appt.location +
+        '. Please contact us if this is incorrect or you would like to cancel. Have a great day! ',
     };
     mg.messages().send(AptReminder, function (error, body) {
       console.log(body);
@@ -520,91 +570,96 @@ cron.schedule('0 9 * * *', () => {
 
 //cancel appointment confirmation
 app.post('/cancel', function (req, res) {
-
   //actually cancel appointment?
 
   const AptCancelation = {
     from: from_who,
     to: req.body.mail,
-    subject: "Cancelation Confirmation",
-    text: "Hello, Your appointment has been canceled. To reschedule please contact the UF Neurosurgery Department"
+    subject: 'Cancelation Confirmation',
+    text:
+      'Hello, Your appointment has been canceled. To reschedule please contact the UF Neurosurgery Department',
   };
   mg.messages().send(AptCancelation, function (error, body) {
     console.log(body);
   });
 });
 
-
 //office delay
 app.post('/delayemail', function (req, res) {
-  const appointments =  Appointment.find({ time: today }); //find todays appointments
+  const appointments = Appointment.find({ time: today }); //find todays appointments
   appointments.forEach(function (appt) {
     const delay = {
       from: from_who,
       to: req.body.email,
-      subject: "Experiencing Delays",
-      text: "Hello, we contacting you to let you know that our office is running behind today and your apppointment has been delayed by 15 minutes"
+      subject: 'Experiencing Delays',
+      text:
+        'Hello, we contacting you to let you know that our office is running behind today and your apppointment has been delayed by 15 minutes',
     };
     mg.messages().send(delay, function (error, body) {
       console.log(body);
     });
 
     //actually delay appointments?
-
   });
 });
-
 
 //TEXT MESSAGES
 //office delay
 app.post('/delaytext', function (req, res) {
-  const appointments =  Appointment.find({ time: today }); //find todays appointments
+  const appointments = Appointment.find({ time: today }); //find todays appointments
   appointments.forEach(function (appt) {
     //get phone # linked to appointment email
-    const number =  User.find({ email: appt.patientEmail });
-    var message = client.messages.create({
-      body: 'Hello, we contacting you to let you know that our office is running behind today and your apppointment has been delayed by 15 minutes',
-      from: from_who,
-      to: number
-    })
-      .then(message => console.log(message))
+    const number = User.find({ email: appt.patientEmail });
+    var message = client.messages
+      .create({
+        body:
+          'Hello, we contacting you to let you know that our office is running behind today and your apppointment has been delayed by 15 minutes',
+        from: from_who,
+        to: number,
+      })
+      .then((message) => console.log(message))
       .done();
   });
 
   //actually delay appointment??
-
 });
 
 //appointment reminder text
 cron.schedule('0 9 * * *', () => {
   //every day at 9am
-  const appointments =  Appointment.find({ time: tomorrow }); //find tomorrows appointments
+  const appointments = Appointment.find({ time: tomorrow }); //find tomorrows appointments
   appointments.forEach(function (appt) {
     //get number from user with email associated with that appointment
-    const number =  User.find({ email: appt.patientEmail });
-    var message = client.messages.create({
-      body: "Hello, Here is a reminder that you have a(n) " + appt.title +
-        " appointment on " + appt.time + " at " + appt.location
-        + ". Please contact us if this is incorrect or you would like to cancel. Have a great day! ",
-      from: from_who,
-      to: number
-    })
-      .then(message => console.log(message))
+    const number = User.find({ email: appt.patientEmail });
+    var message = client.messages
+      .create({
+        body:
+          'Hello, Here is a reminder that you have a(n) ' +
+          appt.title +
+          ' appointment on ' +
+          appt.time +
+          ' at ' +
+          appt.location +
+          '. Please contact us if this is incorrect or you would like to cancel. Have a great day! ',
+        from: from_who,
+        to: number,
+      })
+      .then((message) => console.log(message))
       .done();
   });
 });
 
-
-if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+if (
+  process.env.NODE_ENV === 'production' ||
+  process.env.NODE_ENV === 'staging'
+) {
   // Add production middleware such as redirecting to https
 
   // Express will serve up production assets i.e. main.js
   app.use(expressjs.static(__dirname + '/client/build'));
   // If Express doesn't recognize route serve index.html
   app.get('*', (req, res) => {
-      res.sendFile(
-          path.resolve(__dirname, 'client', 'build', 'index.html')
-      );
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
 
