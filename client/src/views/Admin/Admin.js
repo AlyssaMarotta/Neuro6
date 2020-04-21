@@ -358,7 +358,7 @@ const Admin = () => {
         </div>
       </Col>
       <Col flex={2}>
-        <Card title='Calendar' style={{ margin: 10 }}>
+        <Card title='Calendar' align='center' style={{ margin: 10 }}>
           <div className='AdminCalendarComponent'>
             {' '}
             <p>
@@ -373,7 +373,7 @@ const Admin = () => {
             </p>
           </div>
         </Card>
-        <Card title='Create New Users'>
+        <Card title='Create New Users' align='center' style={{ margin: 10 }}>
           <div className='AdminNewUsersComponent'>
             <p>
               {/* <Input className='buttons' value='Create a new User' /> */}
