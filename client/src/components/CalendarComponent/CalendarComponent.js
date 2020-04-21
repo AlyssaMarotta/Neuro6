@@ -62,6 +62,7 @@ const CalendarComponent = (props) => {
             }}
               />
   </div>
+  <p></p>
       <Link to='/NewAppointment'>
       <Button type='primary' size='large'>Request an Appointment</Button>
       </Link>
