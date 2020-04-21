@@ -8,6 +8,7 @@ import SimpleReactCalendar from 'simple-react-calendar';
 //import 'react-calendar/dist/Calendar.css';
 import ReactCalendar from 'react-calendar';
 import moment from 'moment';
+import axios from 'axios';
 
 const CalendarComponent = (props) => {
   const { email } = props;
@@ -18,22 +19,14 @@ const CalendarComponent = (props) => {
     if (!email) return;
     // TODO: Fetch appointments with backend endpoint
     const getAppointments = async () => {
-      const response = await fetch(`/appointments/${email}`, {
-        // TODO: Find out how to actually send the authorized email/password
-        headers: {
-          Authorization: 'Basic YWxhZGRpbjpvcGVuc2VzYW1l',
-          'Cache-Control': 'no-cache',
-        },
-      });
-      const res2 = response.clone();
-      try {
-        const body = await response.json();
-        if (response.status !== 200) throw Error(body.error);
-        console.log(body);
-        setAppointments(body.appointments || []);
-      } catch {
-        throw Error(await res2.text());
+      const response = await axios.post(`/appointments/${email}`);
+      const body = response.data;
+      if (response.status !== 200) {
+        alert('Something went wrong when getting your appointments');
+        throw Error(body.error);
       }
+      console.log(body);
+      setAppointments(body.appointments || []);
     };
     // setAppointments([dummyData]);
     getAppointments().catch((err) => console.log(err));

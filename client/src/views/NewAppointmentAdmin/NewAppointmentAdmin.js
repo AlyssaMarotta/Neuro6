@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import './NewAppointmentAdmin.css';
 import { Calendar, Select, Button, Input } from 'antd';
 import moment from 'moment';
+import axios from 'axios';
 
 const NewAppointment = (props) => {
   console.count(props.email);
@@ -54,12 +55,8 @@ const NewAppointment = (props) => {
   const handleAddAppointment = (appointment) => {
     console.log('Trying To Add appointment');
     const addAppointment = async () => {
-      const response = await fetch('/appointments-admin', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      const body = await response.json();
+      const response = await axios.post('/appointments-admin', formData);
+      const body = response.data;
       if (response.status !== 200) {
         console.log('Failed add Appointment');
         throw Error(body.error);
