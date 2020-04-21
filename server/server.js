@@ -14,7 +14,7 @@ const Appointment = require('./models/Appointment.js');
 const AppointmentRequest = require('./models/AppointmentRequest.js');
 const { sha512WithSalt, saltHashPassword } = require('./utils/salt.js');
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 const app = express.init();
 
 //mailgun thangs
@@ -465,7 +465,7 @@ app.post('/resetpass', function (req, res) {
 });
 
 //confirm appointment
-app.post('/conf', function (req, res) {
+app.post('/NewAppointment', function (req, res) {
   const AptConfirmation = {
     from: from_who,
     to: req.body.email,
@@ -518,7 +518,7 @@ app.post('/cancel', function (req, res) {
 
 
 //office delay
-app.post('/delayemail', function (req, res) {
+app.post('/delay', function (req, res) {
   const appointments =  Appointment.find({ time: today }); //find todays appointments
   appointments.forEach(function (appt) {
     const delay = {
@@ -539,7 +539,7 @@ app.post('/delayemail', function (req, res) {
 
 //TEXT MESSAGES
 //office delay
-app.post('/delaytext', function (req, res) {
+app.post('/delay', function (req, res) {
   const appointments =  Appointment.find({ time: today }); //find todays appointments
   appointments.forEach(function (appt) {
     //get phone # linked to appointment email
