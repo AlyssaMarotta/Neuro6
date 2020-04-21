@@ -32,8 +32,6 @@ const User = props => {
                 <Reminders appointment={nextAppointment} />
               </Card>
               <p>{'\n'}</p>
-              <p> </p>
-              <p>{'\n'}</p>
               <Card
                 style={styles.card}
                 bodyStyle={styles.cardBody}
