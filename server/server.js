@@ -5,7 +5,8 @@ const cors = require('cors');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const yup = require('yup');
-var cron = require('node-cron');
+const cron = require('node-cron');
+const moment = require('moment');
 
 const express = require('./config/express.js');
 const expressjs = require('express');
@@ -491,11 +492,10 @@ app.post('/create-admin', async (req, res) => {
  * Takes in a time (in milliseconds) in the req.body.
  */
 app.post('/delay-appointments', async (req, res) => {
-  // TODO: THIS ENDPOINT IS INCOMPLETE, DO NOT USE YET
   const { time } = req.body;
-  const currDate = new Date();
-  const tomorrow = new Date(currDate);
-  today.setHours(0, 0, 0, 0);
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setHours(0, 0, 0, 0);
   tomorrow.setDate(today.getDate() + 1);
   const appts = await Appointment.find({
     time: {
@@ -503,7 +503,30 @@ app.post('/delay-appointments', async (req, res) => {
       $lt: tomorrow,
     },
   }).sort({ time: 1 });
-  res.status(200).send(appts);
+  let remaining = appts.length;
+  let failures = appts.length;
+  appts.forEach((appt) => {
+    const newTime = new Date(new Date(appt.time).getTime() + time);
+    Appointment.findByIdAndUpdate(appt._id, {
+      time: newTime
+    }, (err, doc) => {
+      remaining--;
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(`SUCCESS: pushed back ${appt._id} for ${appt.patientEmail}`);
+        failures--;
+      }
+      if (remaining === 0) {
+        if (failures > 0) {
+          res.status(500).send({error: `${failures} documents not pushed back`});
+        }
+        else {
+          res.status(200).send({message: 'Successfully pushed back all appointments'});
+        }
+      }
+    });
+  })
 });
 
 //EMAIL
@@ -539,14 +562,15 @@ app.post('/conf', function (req, res) {
   });
 });
 
-//appointment reminders
-const today = new Date();
-const tomorrow = new Date(today);
-tomorrow.setDate(tomorrow.getDate() + 1);
-
-cron.schedule('0 9 * * *', () => {
-  //every day at 9am
-  const appointments = Appointment.find({ time: tomorrow }); //find tomorrows appointments
+cron.schedule('0 8 * * *', () => {
+  //every day at 8am
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const appointments = Appointment.find({ time: {
+    $gte: today,
+    $lt: tomorrow
+  }}); //find tomorrows appointments
   appointments.forEach(function (appt) {
     const AptReminder = {
       from: from_who,
@@ -636,7 +660,7 @@ cron.schedule('0 9 * * *', () => {
           'Hello, Here is a reminder that you have a(n) ' +
           appt.title +
           ' appointment on ' +
-          appt.time +
+          moment(appt.time).format('LLLL') +
           ' at ' +
           appt.location +
           '. Please contact us if this is incorrect or you would like to cancel. Have a great day! ',
