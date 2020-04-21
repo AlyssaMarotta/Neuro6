@@ -46,6 +46,7 @@ const Login = props => {
       const body = await response.json();
 
       if (response.status !== 200) {
+        alert('Wrong username or password');
         throw Error(body.error);
       }
 

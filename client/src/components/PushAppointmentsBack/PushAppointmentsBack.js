@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import './PushAppointmentsBack.css';
-import { Input, Button, Modal, Form, Radio, Select } from 'antd';
+import { Input, Button, Modal, Form, Radio, Select, Alert } from 'antd';
+import axios from 'axios';
+
 const { Option } = Select;
+
 const PushAppointmentsBack = props => {
   const [time, setTime] = useState(0);
 
   const handleSubmit = e => {
     const pushBack = async () => {
-      const response = await fetch('delay-appointments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ time: { time } }),
-      });
-      const body = await response.json();
+      const response = await axios.post('delay-appointments', { time });
+      const body = response.data;
 
       if (response.status !== 200) {
         throw Error(body.error);
       }
+
+      alert(`All appointments for today successfully pushed back ${time / 60000} minutes`);
 
       console.log(body);
       props.onCancel();
