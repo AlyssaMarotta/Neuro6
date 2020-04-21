@@ -8,10 +8,10 @@ Alyssa Marotta<br>
 Darren Wang<br>
 Bradon Zhang<br>
 
-We created a web app for the UF Neurosurgery department to allow patients and admins to request, view, and add appointments
-We used the MERN technology stack to implement the project
-Allows patients to create an account, view upcoming appointments and reminders, view contact and clinic location information, and request new appointments.
-Allows admin to create an account, view current patient and appointment information, approve appointments, and create new appointments.
+We created a web app for the UF Neurosurgery department to allow patients and admins to request, view, and add appointments<br>
+We used the MERN technology stack to implement the project<br>
+Allows patients to create an account, view upcoming appointments and reminders, view contact and clinic location information, and request new appointments.<br>
+Allows admin to create an account, view current patient and appointment information, approve appointments, and create new appointments.<br>
 
 Features<br>
 Patients can create an account<br>
