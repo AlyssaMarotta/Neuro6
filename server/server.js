@@ -22,15 +22,15 @@ const app = express.init();
 const mailgun = require('mailgun-js');
 const api_key = process.env.MAILGUN_API_KEY;
 const DOMAIN = process.env.MAILGUN_DOMAIN;
-var from_who = process.env.MAILGUN_FROM;
+const from_who = process.env.MAILGUN_FROM;
 const mg = mailgun({ apiKey: api_key, domain: DOMAIN });
 
 //twilio thangs
-var twilio = require('twilio');
-var accountSid = process.env.TWILIO_SID;
-var authTokenMail = process.env.TWILIO_AUTHTOKEN;
-var from_who = process.env.TWILIO_FROM;
-var client = new twilio(accountSid, authTokenMail);
+const twilio = require('twilio');
+const accountSid = process.env.TWILIO_SID;
+const authTokenMail = process.env.TWILIO_AUTHTOKEN;
+// var from_who = process.env.TWILIO_FROM;
+const client = new twilio(accountSid, authTokenMail);
 
 const JWT_ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_TOKEN_SECRET;
 
@@ -130,6 +130,17 @@ const authToken = async (req, res, next) => {
   if (!user) return res.status(403).send({ error: `Forbidden` });
   req.user = user;
   next();
+};
+
+/**
+ * Sends an email to a given user through mailgun.
+ * 
+ * @param {string} to Email recipient
+ * @param {string} subject Email subject
+ * @param {string} body Email body
+ */
+const sendEmail = async (to, subject, body) => {
+
 };
 
 app.post('/api/hello-world', async (req, res) => {
@@ -545,6 +556,7 @@ app.post('/resetpass', function (req, res) {
   };
   mg.messages().send(ResetPass, function (error, body) {
     console.log(body);
+    console.log(from_who);
   });
 });
 
@@ -555,9 +567,9 @@ app.post('/conf', function (req, res) {
     to: req.body.email,
     subject: 'Appointment Confirmation',
     text:
-      'Hello, Your request for an appointment has been recieved and is under considertion, you will be contacted shortly.',
+      'Hello, Your request for an appointment has been received and is under consideration, you will be contacted shortly.',
   };
-  mg.messages().send(AptCancelation, function (error, body) {
+  mg.messages().send(AptConfirmation, function (error, body) {
     console.log(body);
   });
 });

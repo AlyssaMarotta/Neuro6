@@ -20,10 +20,13 @@ const AppointmentPageComponent = (props) => {
   return (
     
           <Card style = {{margin : 20, width : "80%"}}>
-          <p>{title}</p>
-          <p>{moment(time).format('MMMM Do, YYYY @ h:mm a')}</p>
-          <p>{reminders}</p>
-          <p>{location}</p>
+          <h2>{title}</h2>
+          <h3>{moment(time).format('MMMM Do, YYYY @ h:mm a')}</h3>
+          <p><strong>Reminders:</strong></p>
+          {reminders?.map((reminder, index) => (
+            <p key={index}>{reminder}</p>
+          ))}
+          <p><em>{location}</em></p>
           <div className = "map">
             <Map/>
             <Button type="primary"
