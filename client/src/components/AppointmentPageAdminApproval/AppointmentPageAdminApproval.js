@@ -64,9 +64,32 @@ const AppointmentPageAdminApproval = (props) => {
         props.onCancel();
     }
 
+    const handleUpdateAppointment = () => {
+        console.log(JSON.stringify(ObjectId(_id)));
+        console.log(initForm);
+        const updateAppointment = async () => {
+        console.log("got heer");
+          const response = await fetch('/appointmentrequests', {
+            method: 'PUT',
+            headers: {
+            'Content-Type': 'application/json',
+            }, 
+            body: JSON.stringify({id: _id, newAppt: initForm}),
+          });
+          const body = await response.json();
+          if (response.status !== 200) {
+            console.log("Failed update Appointment");
+            throw Error(body.error);
+          }
+          console.log(body);
+          console.log(remindersS);
+          props.onCancel();
+        };
+        updateAppointment().catch(err => console.log(err));
+      };
     //working
     const handleApproveAppointment = () => {
-        const updateAppointment = async () => {
+        const approveAppointment = async () => {
         console.log("got heer");
           const response = await fetch('/appointment-approval', {
             method: 'POST',
@@ -84,7 +107,7 @@ const AppointmentPageAdminApproval = (props) => {
           console.log(remindersS);
           props.onCancel();
         };
-        updateAppointment().catch(err => console.log(err));
+        approveAppointment().catch(err => console.log(err));
       };
 
 
@@ -124,10 +147,11 @@ const AppointmentPageAdminApproval = (props) => {
     return (
         <Modal
             visible={props.visible}
-            okText="Approve"
+            okText="Update and Approve"
             cancelText="Cancel"
             onCancel={cancel}
             onOk={() => {
+            handleUpdateAppointment();
             handleApproveAppointment();
             // form
             //     .validateFields()
