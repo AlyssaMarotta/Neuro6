@@ -12,25 +12,12 @@ const Login = props => {
   //const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    const urls = ['hello-world', '/hello-world', 'http://localhost:5000/hello-world']
+    const urls = ['api/hello-world', '/api/hello-world']
     const helloWorld = async (url) => {
-      let response = await axios.get(url);
+      let response = await axios.post(url);
       let printText = `RESULT FOR ${url} (axios)`;
       console.log(printText);
       console.log(response.data);
-
-      response = await fetch(url, {mode: 'cors'});
-      printText = `RESULT FOR ${url} (fetch)`;
-      const res2 = response.clone();
-      try {
-        const body = await response.json();
-        console.log(printText)
-        console.log(body);
-      } catch (err) {
-        const text = await res2.text();
-        console.log(printText);
-        console.log(text);
-      }
     };
     urls.forEach(url => helloWorld(url).catch(err => console.log(err)));
   }, []);
