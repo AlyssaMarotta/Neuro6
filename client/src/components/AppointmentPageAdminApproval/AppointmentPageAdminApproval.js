@@ -10,7 +10,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 const AppointmentPageAdminApproval = (props) => {
 
-    const { patientEmail, title, time, location, reminders, _id } = props.data
+    const { patientEmail, title, time, location, reminders, providerEmail,  _id } = props.data
     const [showPopup, setPopup] = useState(false);
     const [showEdit, setEdit] = useState(false);
     const [patientEmailS, setPatientEmailS] = useState(patientEmail);
@@ -30,7 +30,8 @@ const AppointmentPageAdminApproval = (props) => {
             title: titleS,
             time: timeS,
             location: locationS,
-            reminders: remindersS
+            reminders: remindersS,
+            providerEmail: providerEmail
       };
     
     // const [formData, setFormData] = useState(initForm);
@@ -64,21 +65,19 @@ const AppointmentPageAdminApproval = (props) => {
     }
 
     //working
-    const handleUpdateAppointment = () => {
-        console.log(JSON.stringify(ObjectId(_id)));
-        console.log(initForm);
+    const handleApproveAppointment = () => {
         const updateAppointment = async () => {
         console.log("got heer");
-          const response = await fetch('/appointments', {
-            method: 'PUT',
+          const response = await fetch('/appointment-approval', {
+            method: 'POST',
             headers: {
             'Content-Type': 'application/json',
             }, 
-            body: JSON.stringify({id: _id, newAppt: initForm}),
+            body: JSON.stringify({id: _id, ...initForm}),
           });
           const body = await response.json();
           if (response.status !== 200) {
-            console.log("Failed update Appointment");
+            console.log("Failed to approve Appointment");
             throw Error(body.error);
           }
           console.log(body);
@@ -126,11 +125,11 @@ const AppointmentPageAdminApproval = (props) => {
         <Modal
             visible={props.visible}
             title="Create a new collection"
-            okText="Update"
+            okText="Approve"
             cancelText="Cancel"
             onCancel={cancel}
             onOk={() => {
-            handleUpdateAppointment();
+            handleApproveAppointment();
             // form
             //     .validateFields()
             //     .then(values => {
@@ -146,6 +145,7 @@ const AppointmentPageAdminApproval = (props) => {
         <p>{title}</p>
             <p>{moment(time).format('MMMM Do, YYYY @ h:mm a')}</p>
             <p>{reminders}</p>
+            <p>Provider Email: {providerEmail}</p>
             <p>{location}</p>
             <Button type='primary' size='large' onClick={togglePopup}>Cancel Appointment</Button>
             {showPopup ?

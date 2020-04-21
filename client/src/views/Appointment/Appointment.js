@@ -4,67 +4,49 @@ import { Link } from 'react-router-dom';
 import './Appointment.css';
 import AppointmentPageComp from '..//..//components/AppointmentPageComp/AppointmentPageComp';
 
-
-
 function Appointment(props) {
-
-  const {email} = props;
-  const [appointments, setAppointments] = useState([]);
+  console.log(props);
+  // alert('sup')
+  const { email } = props;
+  const [appointment, setAppointment] = useState([]);
   let filteredAppointments;
 
   const [dateFrom, setDateFrom] = useState(new Date());
-  const [dateTo,  setDateTo] = useState(new Date(new Date().setDate(new Date().getDate() + 120)));
+  const [dateTo, setDateTo] = useState(
+    new Date(new Date().setDate(new Date().getDate() + 120))
+  );
 
   useEffect(() => {
     if (!email) return;
+    console.log('is anybody out there');
     // TODO: Fetch appointments with backend endpoint
     const getAppointments = async () => {
-      const response = await fetch(`/appointments/${email}`, {
-        // TODO: Find out how to actually send the authorized email/password
-        headers: {
-          'Authorization': 'Basic YWxhZGRpbjpvcGVuc2VzYW1l',
-          'Cache-Control': 'no-cache',
-        }
-      });
+      console.log(props);
+      const response = await fetch(`/appointment/${props.match.params.id}`);
+      const res2 = response.clone();
       try {
         const body = await response.json();
+        console.log('OMG IT IS THE BODY');
         if (response.status !== 200) throw Error(body.error);
+        console.log('No errors pog')
         console.log(body);
-        setAppointments(body.appointments || []);
-        
+        setAppointment(body);
       } catch {
-        throw Error(await response.clone().text());
+        throw Error(await res2.text());
       }
-
     };
     // setAppointments([dummyData]);
-    getAppointments().catch(err => console.log(err));
+    getAppointments().catch((err) => console.log(err));
   }, [email]);
 
-  let filteredDateAppointments = appointments.filter(
-    (directory) => {
-        return  moment(directory.time).isBetween(dateFrom, dateTo);
-    });
-
-  const appointmentList = filteredDateAppointments.map((appointment, index) => 
-    {
-      if(index == props.match.params.value)
-      {
-            return(
-              <div className='App'>
-                <header className='App-header'> 
-                  <AppointmentPageComp key={index} data={appointment} id = {index} />
-                </header>
-              </div>
-            );
-      }
-    }
-      );
-        
-        
-      return <div>{appointmentList}</div>; 
-      
-};
+  return (
+    <div className='App'>
+      <header className='App-header'>
+        <AppointmentPageComp data={appointment} id={appointment.id} />
+      </header>
+    </div>
+  );
+}
 
 export default Appointment;
 

@@ -22,8 +22,8 @@ const updateVisibility = e =>
             last: "",
         },
       };*/
-   // const [user, setUser] = useState(initUser);
-  const { patientEmail, title, time, location, reminders } = props.data;
+   // const [user, setUser] = useState(initUser)  ;
+  const { patientEmail, title, time, location, reminders, providerEmail } = props.data;
 /*
   const initForm = {
     email: patientEmail,
