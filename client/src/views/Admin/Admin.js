@@ -20,6 +20,7 @@ import CreateUserAdmin from '../../components/CreateUserAdmin/CreateUserAdmin';
 import CreateAdmin from '../../components/CreateAdmin/CreateAdmin';
 import PushAppointmentsBack from '../../components/PushAppointmentsBack/PushAppointmentsBack';
 import moment from 'moment';
+import axios from 'axios';
 
 const Admin = () => {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -41,21 +42,24 @@ const Admin = () => {
   const [searchUserLastName, setSearchUserLastName] = useState('');
   const [createUserVisibility, setCreateUserVisibility] = useState(false);
   const [createAdminVisibility, setCreateAdminVisibility] = useState(false);
-  const [pushAppointmentsBackVisibility, setPushAppointmentsBackVisibility] = useState(false);
+  const [
+    pushAppointmentsBackVisibility,
+    setPushAppointmentsBackVisibility,
+  ] = useState(false);
 
-  const updatePushAppointmentsBackVisibility = (e) => {
+  const updatePushAppointmentsBackVisibility = e => {
     setPushAppointmentsBackVisibility(e);
-  }
+  };
 
-  const updateCreateAdminVisibility = (e) => {
+  const updateCreateAdminVisibility = e => {
     setCreateAdminVisibility(e);
   };
 
-  const updateCreateUserVisibility = (e) => {
+  const updateCreateUserVisibility = e => {
     setCreateUserVisibility(e);
   };
 
-  const updateSelectDate = (e) => {
+  const updateSelectDate = e => {
     if (e == null || e[1] == null) {
       setDateFrom(new Date(new Date().setYear(new Date().getYear() - 10)));
       setDateTo(new Date(new Date().setYear(new Date().getYear() + 10)));
@@ -66,38 +70,38 @@ const Admin = () => {
     //TODO FIX BUG: when a user hits the x within the range picker
   };
 
-  const updateSearchUserEmail = (e) => {
+  const updateSearchUserEmail = e => {
     console.log(e.target.value);
     setSearchUserEmail(e.target.value);
   };
 
-  const updateSearchUserFirstName = (e) => {
+  const updateSearchUserFirstName = e => {
     console.log(e.target.value);
     setSearchUserFirstName(e.target.value);
   };
 
-  const updateSearchUserLastName = (e) => {
+  const updateSearchUserLastName = e => {
     console.log(e.target.value);
     setSearchUserLastName(e.target.value);
   };
 
-  const updateSearchEmail = (e) => {
+  const updateSearchEmail = e => {
     console.log(e.target.value);
     setSearchEmail(e.target.value);
   };
 
-  const updateAppointment = (e) => {
+  const updateAppointment = e => {
     console.log('updating appointments' + e);
     setAppointments(e);
   };
 
-  const updateAppointmentReq = (e) => {
+  const updateAppointmentReq = e => {
     console.log('updating appointment requesr');
     console.log(e);
     setAppointmentReq(e);
   };
 
-  const updateUsers = (e) => {
+  const updateUsers = e => {
     console.log('updating Users' + e);
     setUsers(e);
   };
@@ -110,46 +114,42 @@ const Admin = () => {
 
   useEffect(() => {
     const getAppointments = async () => {
-      const appointmentResponse = await fetch('/appointmentsgetall');
-      try {
-        const body = await appointmentResponse.json();
-        if (appointmentResponse.status !== 200) throw Error(body.error);
-        updateAppointment(body.appointments);
-      } catch {
-        throw Error();
+      const response = await axios.post('/appointmentsgetall');
+      const body = response.data;
+      if (response.status !== 200) {
+        alert('There was an issue with getting appointments');
+        throw Error(body.error);
       }
+      updateAppointment(body.appointments);
     };
-    getAppointments().catch((err) => console.log(err));
+    getAppointments().catch(err => console.log(err));
   }, []);
 
   useEffect(() => {
     const getAppointmentRequests = async () => {
-      const appointmentRequestResponse = await fetch(
-        '/appointmentrequestsgetall'
-      );
-      try {
-        const body = await appointmentRequestResponse.json();
-        if (appointmentRequestResponse.status !== 200) throw Error(body.error);
-        updateAppointmentReq(body.appointmentReqs);
-      } catch {
-        throw Error();
+      const response = await axios.post('/appointmentrequestsgetall');
+      const body = response.data;
+      if (response.status !== 200) {
+        alert('There was an issue getting appointment requests');
+        throw Error(body.error);
       }
+      updateAppointmentReq(body.appointmentReqs);
     };
-    getAppointmentRequests().catch((err) => console.log(err));
+    getAppointmentRequests().catch(err => console.log(err));
   }, []);
 
-  let filteredAppointments = appointments.filter((directory) => {
+  let filteredAppointments = appointments.filter(directory => {
     return (
       directory.patientEmail
         .toLowerCase()
         .indexOf(searchEmail.toLowerCase()) !== -1
     ); //Search
   });
-  let filteredDateAppointments = filteredAppointments.filter((directory) => {
+  let filteredDateAppointments = filteredAppointments.filter(directory => {
     return moment(directory.time).isBetween(dateFrom, dateTo);
   });
 
-  let filteredUsers = users.filter((directory) => {
+  let filteredUsers = users.filter(directory => {
     return (
       directory.email.toLowerCase().indexOf(searchUserEmail.toLowerCase()) !==
       -1
@@ -157,7 +157,7 @@ const Admin = () => {
     //let firstName = (email.name.first.toLowerCase().indexOf(searchUserFirstName)) !== -1;
     //.name.toLowerCase().indexOf(searchUserLastName)) !== -1; //Search
   });
-  let filteredFirstNameUsers = filteredUsers.filter((directory) => {
+  let filteredFirstNameUsers = filteredUsers.filter(directory => {
     return (
       directory.name.first
         .toLowerCase()
@@ -165,7 +165,7 @@ const Admin = () => {
     );
   });
 
-  let filteredLastNameUsers = filteredFirstNameUsers.filter((directory) => {
+  let filteredLastNameUsers = filteredFirstNameUsers.filter(directory => {
     return (
       directory.name.last
         .toLowerCase()
@@ -173,7 +173,7 @@ const Admin = () => {
     );
   });
 
-  let filteredUserAppointments = appointments.filter((directory) => {
+  let filteredUserAppointments = appointments.filter(directory => {
     if (selectedUser)
       return (
         directory.patientEmail
@@ -186,19 +186,16 @@ const Admin = () => {
 
   useEffect(() => {
     const getUsers = async () => {
-      const userResponse = await fetch('/usersgetall');
-      try {
-        const body = await userResponse.json();
-        if (userResponse.status !== 200) throw Error(body.error);
-        updateUsers(body.users);
-      } catch {
-        throw Error();
+      const response = await axios.post('/usersgetall');
+      const body = response.data;
+      if (response.status !== 200) {
+        alert('There was an issue when trying to get all users');
+        throw Error(body.error);
       }
+      updateUsers(body.users);
     };
-    getUsers().catch((err) => console.log(err));
+    getUsers().catch(err => console.log(err));
   }, []);
-
-  //WHENEVER WE FIX /APPOINTMENT/GETALL UNCOMMENT ABOVE
 
   function onPanelChange(value, mode) {
     console.log(value, mode);
@@ -224,8 +221,8 @@ const Admin = () => {
             <TabPane tab='Appointments' key='1'>
               <Search
                 placeholder='Patients Email'
-                onChange={(value) => updateSearchEmail(value)}
-                onSearch={(value) => console.log(value)}
+                onChange={value => updateSearchEmail(value)}
+                onSearch={value => console.log(value)}
                 style={{ width: 200 }}
               />
               <RangePicker
@@ -234,7 +231,7 @@ const Admin = () => {
                   moment(dateFrom, dateFormat),
                   moment(dateTo, dateFormat),
                 ]}
-                onCalendarChange={(value) => updateSelectDate(value)}
+                onCalendarChange={value => updateSelectDate(value)}
                 format={dateFormat}
               />
               <Card
@@ -252,20 +249,20 @@ const Admin = () => {
             <TabPane tab='Patients' key='2'>
               <Search
                 placeholder='Patients Email'
-                onChange={(value) => updateSearchUserEmail(value)}
-                onSearch={(value) => console.log(value)}
+                onChange={value => updateSearchUserEmail(value)}
+                onSearch={value => console.log(value)}
                 style={{ width: 200 }}
               />
               <Search
                 placeholder='First Name'
-                onChange={(value) => updateSearchUserFirstName(value)}
-                onSearch={(value) => console.log(value)}
+                onChange={value => updateSearchUserFirstName(value)}
+                onSearch={value => console.log(value)}
                 style={{ width: 200 }}
               />
               <Search
                 placeholder='Last Name'
-                onChange={(value) => updateSearchUserLastName(value)}
-                onSearch={(value) => console.log(value)}
+                onChange={value => updateSearchUserLastName(value)}
+                onSearch={value => console.log(value)}
                 style={{ width: 200 }}
               />
               <Card
@@ -331,8 +328,8 @@ const Admin = () => {
             <TabPane tab='Appointment Requests' key='3'>
               <Search
                 placeholder='Patients Email'
-                onChange={(value) => updateSearchEmail(value)}
-                onSearch={(value) => console.log(value)}
+                onChange={value => updateSearchEmail(value)}
+                onSearch={value => console.log(value)}
                 style={{ width: 200 }}
               />
               <RangePicker
@@ -341,7 +338,7 @@ const Admin = () => {
                   moment(dateFrom, dateFormat),
                   moment(dateTo, dateFormat),
                 ]}
-                onCalendarChange={(value) => updateSelectDate(value)}
+                onCalendarChange={value => updateSelectDate(value)}
                 format={dateFormat}
               />
               <Card
@@ -376,8 +373,8 @@ const Admin = () => {
               <Link to='/NewAppointmentAdmin'>
                 <Button type='primary'>Schedule an Appointment</Button>
               </Link>
-              </p>
-              <p>
+            </p>
+            <p>
               <Button
                 type='primary'
                 onClick={() => {
@@ -386,13 +383,13 @@ const Admin = () => {
               >
                 Push All Appointments Back
               </Button>
-              </p>
-              <PushAppointmentsBack
-                visible={pushAppointmentsBackVisibility}
-                onCancel={() => {
-                  updatePushAppointmentsBackVisibility(false);
-                }}
-              />
+            </p>
+            <PushAppointmentsBack
+              visible={pushAppointmentsBackVisibility}
+              onCancel={() => {
+                updatePushAppointmentsBackVisibility(false);
+              }}
+            />
           </div>
         </Card>
         <Card title='Create New Users' align='center' style={{ margin: 10 }}>

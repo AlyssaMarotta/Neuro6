@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import './Appointment.css';
 import AppointmentPageComp from '..//..//components/AppointmentPageComp/AppointmentPageComp';
+import axios from 'axios';
 
 function Appointment(props) {
   console.log(props);
@@ -22,18 +23,14 @@ function Appointment(props) {
     // TODO: Fetch appointments with backend endpoint
     const getAppointments = async () => {
       console.log(props);
-      const response = await fetch(`/appointment/${props.match.params.id}`);
-      const res2 = response.clone();
-      try {
-        const body = await response.json();
-        console.log('OMG IT IS THE BODY');
-        if (response.status !== 200) throw Error(body.error);
-        console.log('No errors pog')
-        console.log(body);
-        setAppointment(body);
-      } catch {
-        throw Error(await res2.text());
+      const response = await axios.post(`/appointment/${props.match.params.id}`);
+      const body = response.data;
+      if (response.status !== 200) {
+        alert('There was an issue with viewing this appointment');
+        throw Error(body.error);
       }
+      console.log(body);
+      setAppointment(body);
     };
     // setAppointments([dummyData]);
     getAppointments().catch((err) => console.log(err));

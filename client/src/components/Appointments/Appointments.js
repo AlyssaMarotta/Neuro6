@@ -4,6 +4,7 @@ import { Card, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import './Appointments.css';
 import Appointment from '../Appointment/Appointment';
+import axios from 'axios';
 
 const Appointments = props => {
 
@@ -27,16 +28,14 @@ const Appointments = props => {
     if (!email) return;
     // TODO: Fetch appointments with backend endpoint
     const getAppointments = async () => {
-      const response = await fetch(`/appointments/${email}`);
-      const res2 = response.clone();
-      try {
-        const body = await response.json();
-        if (response.status !== 200) throw Error(body.error);
-        console.log(body);
-        setAppointments(body.appointments || []);
-      } catch {
-        throw Error(await res2.text());
+      const response = await axios.post(`/appointments/${email}`);
+      const body = response.data;
+      if (response.status !== 200) {
+        alert('Something went wrong when getting your appointments');
+        throw Error(body.error);
       }
+      console.log(body);
+      setAppointments(body.appointments || []);
     };
     // setAppointments([dummyData]);
     getAppointments().catch(err => console.log(err));

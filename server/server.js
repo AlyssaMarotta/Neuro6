@@ -143,14 +143,13 @@ app.get('/auth', authToken, async (req, res) => {
 });
 
 //BEST BACKEND CODE EVER, ITS GREAT
-app.get('/usersgetall', async (req, res) => {
-  const users = await User.find({});
+app.post('/usersgetall', async (req, res) => {
+  const users = await User.find({}).sort({ email: 1 });
   res.status(200).send({ users });
 });
 //END OF GREAT CODE
 
-app.get('/appointment/:id', async (req, res) => {
-  // TODO: Get an appointment with a specific ID
+app.post('/appointment/:id', async (req, res) => {
   Appointment.findById(req.params.id, (err, doc) => {
     if (err) {
       console.log(err);
@@ -169,7 +168,7 @@ app.get('/appointment/:id', async (req, res) => {
 /**
  * @deprecated Use the endpoint with auth token instead.
  */
-app.get('/appointments/:patientEmail', async (req, res) => {
+app.post('/appointments/:patientEmail', async (req, res) => {
   console.log(req.headers.authorization);
   const { patientEmail } = req.params;
   const appointments = await Appointment.find({ patientEmail }).sort({
@@ -191,17 +190,17 @@ app.get('/appointments', authToken, async (req, res) => {
 });
 
 //BEST BACKEND CODE EVER, ITS GREAT
-app.get('/appointmentsgetall', async (req, res) => {
+app.post('/appointmentsgetall', async (req, res) => {
   const appointments = await Appointment.find({}).sort({ time: 1 });
   res.status(200).send({ appointments });
 });
 
-app.get('/appointmentrequestsgetall', async (req, res) => {
+app.post('/appointmentrequestsgetall', async (req, res) => {
   const appointmentReqs = await AppointmentRequest.find({}).sort({ time: 1 });
   res.status(200).send({ appointmentReqs });
 });
 
-app.get('/AdminGetUser', async (req, res) => {
+app.post('/AdminGetUser', async (req, res) => {
   console.log(req.body);
   const { body } = req.body;
   const user = await User.find({ email: body.email });
