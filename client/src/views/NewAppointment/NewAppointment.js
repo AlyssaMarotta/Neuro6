@@ -55,7 +55,7 @@ const NewAppointment = (props) => {
     const { value } = e;
     setFormData((formData) => ({
       ...formData,
-      providerEmail : value
+      providerEmail: value,
     }));
     console.log(formData);
   };
@@ -97,14 +97,65 @@ const NewAppointment = (props) => {
                 style={{ width: 120 }}
                 onChange={handleFormTimeChange}
               >
-                <Option value='01:30:00' hour='13' minute='30'>
-                  1:30
+                <Option value='08:00:00' hour='8' minute='00'>
+                  8:00 am
                 </Option>
-                <Option value='04:00:00' hour='16' minute='00'>
-                  4:00
+                <Option value='08:30:00' hour='8' minute='30'>
+                  8:30 am
                 </Option>
-                <Option value='05:00:00' hour='17' minute='00'>
-                  5:00
+                <Option value='09:00:00' hour='9' minute='00'>
+                  9:00 am
+                </Option>
+                <Option value='09:30:00' hour='9' minute='30'>
+                  9:30 am
+                </Option>
+                <Option value='10:00:00' hour='10' minute='00'>
+                  10:00 am
+                </Option>
+                <Option value='10:30:00' hour='10' minute='30'>
+                  10:30 am
+                </Option>
+                <Option value='11:00:00' hour='11' minute='00'>
+                  11:00 am
+                </Option>
+                <Option value='11:30:00' hour='11' minute='30'>
+                  11:30 am
+                </Option>
+                <Option value='12:00:00' hour='12' minute='00'>
+                  12:00 pm
+                </Option>
+                <Option value='12:30:00' hour='12' minute='30'>
+                  12:30 pm
+                </Option>
+                <Option value='13:00:00' hour='13' minute='00'>
+                  1:00 pm
+                </Option>
+                <Option value='13:30:00' hour='13' minute='30'>
+                  1:30 pm
+                </Option>
+                <Option value='14:00:00' hour='14' minute='00'>
+                  2:00 pm
+                </Option>
+                <Option value='14:30:00' hour='14' minute='30'>
+                  2:30 pm
+                </Option>
+                <Option value='15:00:00' hour='15' minute='00'>
+                  3:00 pm
+                </Option>
+                <Option value='15:30:00' hour='15' minute='30'>
+                  3:30 pm
+                </Option>
+                <Option value='16:00:00' hour='16' minute='00'>
+                  4:00 pm
+                </Option>
+                <Option value='16:30:00' hour='16' minute='30'>
+                  4:30 pm
+                </Option>
+                <Option value='17:00:00' hour='17' minute='00'>
+                  5:00 pm
+                </Option>
+                <Option value='17:30:00' hour='17' minute='30'>
+                  5:30 pm
                 </Option>
               </Select>
             </p>
@@ -134,7 +185,8 @@ const NewAppointment = (props) => {
             <p>
               <Button onClick={handleAddAppointment}>Submit</Button>
             </p>
-            <p>Or click here to call</p>
+            <p>Or click here to call:</p>
+            <a href='tel:352-273-6990'>352-273-6990</a>
           </Card>
         </div>
       </header>
