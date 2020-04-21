@@ -45,13 +45,13 @@ const PushAppointmentsBack = props => {
         placeholder='Select an amount of Time'
         onChange={onChange}
       >
-        <Option value='600000'>10 minutes</Option>
-        <Option value='1200000'>20 minutes</Option>
-        <Option value='1800000'>30 minutes</Option>
-        <Option value='2400000'>40 minutes</Option>
-        <Option value='3000000'>50 minutes</Option>
-        <Option value='3600000'>1 hour</Option>
-        <Option value='5400000'>1 hour 30 minutes</Option>
+        <Option value={600000}>10 minutes</Option>
+        <Option value={1200000}>20 minutes</Option>
+        <Option value={1800000}>30 minutes</Option>
+        <Option value={2400000}>40 minutes</Option>
+        <Option value={3000000}>50 minutes</Option>
+        <Option value={3600000}>1 hour</Option>
+        <Option value={5400000}>1 hour 30 minutes</Option>
       </Select>
     </Modal>
   );
