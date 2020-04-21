@@ -42,6 +42,9 @@ app.use(
   cors()
 );
 
+// Disable cache
+app.disable('etag');
+
 /**
  * Gets a user document associated with an email, if it exists.
  *
@@ -130,7 +133,7 @@ const authToken = async (req, res, next) => {
   next();
 };
 
-app.get('/api/hello-world', async (req, res) => {
+app.post('/api/hello-world', async (req, res) => {
   res.status(200).send({ message: 'Hello world!' });
 });
 
@@ -144,7 +147,7 @@ app.get('/auth', authToken, async (req, res) => {
 //BEST BACKEND CODE EVER, ITS GREAT
 app.get('/usersgetall', async (req, res) => {
   const users = await User.find({});
-  res.send({ users });
+  res.status(200).send({ users });
 });
 //END OF GREAT CODE
 
@@ -157,7 +160,7 @@ app.get('/appointments/:patientEmail', async (req, res) => {
   const appointments = await Appointment.find({ patientEmail }).sort({
     time: 1,
   });
-  res.send({ appointments });
+  res.status(200).send({ appointments });
 });
 
 /**
@@ -169,25 +172,25 @@ app.get('/appointments', authToken, async (req, res) => {
   const appointments = await Appointment.find({ patientEmail: email }).sort({
     time: 1,
   });
-  res.send({ appointments });
+  res.status(200).send({ appointments });
 });
 
 //BEST BACKEND CODE EVER, ITS GREAT
 app.get('/appointmentsgetall', async (req, res) => {
   const appointments = await Appointment.find({}).sort({ time: 1 });
-  res.send({ appointments });
+  res.status(200).send({ appointments });
 });
 
 app.get('/appointmentrequestsgetall', async (req, res) => {
   const appointmentReqs = await AppointmentRequest.find({}).sort({ time: 1 });
-  res.send({ appointmentReqs });
+  res.status(200).send({ appointmentReqs });
 });
 
 app.get('/AdminGetUser', async (req, res) => {
   console.log(req.body);
   const { body } = req.body;
   const user = await User.find({ email: body.email });
-  res.send({ user });
+  res.status(200).send({ user });
 });
 //END OF GREAT CODE
 
