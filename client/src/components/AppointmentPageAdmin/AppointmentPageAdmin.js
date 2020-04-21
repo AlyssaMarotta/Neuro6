@@ -125,7 +125,6 @@ const AppointmentPageAdmin = (props) => {
     return (
         <Modal
             visible={props.visible}
-            title="Create a new collection"
             okText="Update"
             cancelText="Cancel"
             onCancel={cancel}

@@ -343,7 +343,7 @@ let filteredUserAppointments = appointments.filter(
               </p>
               <p>
                 <Link to='/NewAppointmentAdmin'>
-                  <Input className='buttons' value='Schedule an Appointment' />
+                  <Button type="primary">Schedule an Appointment'</Button>
                 </Link>
               </p>
               <p>
