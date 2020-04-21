@@ -18,6 +18,7 @@ import AppointmentAdminApproval from '../../components/AppointmentAdminApproval/
 import AppointmentAdmin2 from '../../components/AppointmentAdmin2/AppointmentAdmin2';
 import CreateUserAdmin from '../../components/CreateUserAdmin/CreateUserAdmin';
 import CreateAdmin from '../../components/CreateAdmin/CreateAdmin';
+import PushAppointmentsBack from '../../components/PushAppointmentsBack/PushAppointmentsBack';
 import moment from 'moment';
 
 const Admin = () => {
@@ -40,6 +41,11 @@ const Admin = () => {
   const [searchUserLastName, setSearchUserLastName] = useState('');
   const [createUserVisibility, setCreateUserVisibility] = useState(false);
   const [createAdminVisibility, setCreateAdminVisibility] = useState(false);
+  const [pushAppointmentsBackVisibility, setPushAppointmentsBackVisibility] = useState(false);
+
+  const updatePushAppointmentsBackVisibility = (e) => {
+    setPushAppointmentsBackVisibility(e);
+  }
 
   const updateCreateAdminVisibility = (e) => {
     setCreateAdminVisibility(e);
@@ -86,7 +92,8 @@ const Admin = () => {
   };
 
   const updateAppointmentReq = (e) => {
-    console.log('updating appointment requesr' + e);
+    console.log('updating appointment requesr');
+    console.log(e);
     setAppointmentReq(e);
   };
 
@@ -370,7 +377,23 @@ const Admin = () => {
               <Link to='/NewAppointmentAdmin'>
                 <Button type='primary'>Schedule an Appointment</Button>
               </Link>
-            </p>
+              </p>
+              <p>
+              <Button
+                type='primary'
+                onClick={() => {
+                  updatePushAppointmentsBackVisibility(true);
+                }}
+              >
+                Push All Appointments Back
+              </Button>
+              </p>
+              <PushAppointmentsBack
+                visible={pushAppointmentsBackVisibility}
+                onCancel={() => {
+                  updatePushAppointmentsBackVisibility(false);
+                }}
+              />
           </div>
         </Card>
         <Card title='Create New Users' align='center' style={{ margin: 10 }}>
