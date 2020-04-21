@@ -35,17 +35,14 @@ const Login = props => {
     //e.preventDefault();
     //sourced from https://medium.com/@maison.moa/setting-up-an-express-backend-server-for-create-react-app-bc7620b20a61
     const login = async () => {
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          password
-        })
+      const response = await axios.post('/login', {
+        email,
+        password,
       });
-      const body = await response.json();
+      const body = response.data;
 
       if (response.status !== 200) {
+        alert('Wrong username or password');
         throw Error(body.error);
       }
 

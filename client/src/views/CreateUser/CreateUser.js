@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import './CreateUser.css';
 import { DatePicker, Card, Button, Form, Input } from 'antd';
+import axios from 'axios';
 
 const initForm = {
   email: '',
@@ -52,19 +53,8 @@ const CreateUser = props => {
     //e.preventDefault();
     //sourced from https://medium.com/@maison.moa/setting-up-an-express-backend-server-for-create-react-app-bc7620b20a61
     const createAccount = async () => {
-      const response = await fetch('/create-account', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-        // body: JSON.stringify({
-        //   email,
-        //   password,
-        //   firstName,
-        //   lastName,
-        //   dob
-        // })
-      });
-      const body = await response.json();
+      const response = await axios.post('/create-account', formData);
+      const body = response.data;
 
       if (response.status !== 200) {
         throw Error(body.error);
