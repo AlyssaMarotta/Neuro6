@@ -4,13 +4,12 @@ import './CalendarComponent.css';
 import { Calendar } from 'antd';
 import 'antd/dist/antd.dark.css';
 import { Input, Button, Card, Badge } from 'antd';
-import SimpleReactCalendar from 'simple-react-calendar'
+import SimpleReactCalendar from 'simple-react-calendar';
 //import 'react-calendar/dist/Calendar.css';
 import ReactCalendar from 'react-calendar';
 import moment from 'moment';
 
 const CalendarComponent = (props) => {
-
   const { email } = props;
 
   const [appointments, setAppointments] = useState([]);
@@ -23,8 +22,8 @@ const CalendarComponent = (props) => {
         // TODO: Find out how to actually send the authorized email/password
         headers: {
           Authorization: 'Basic YWxhZGRpbjpvcGVuc2VzYW1l',
-          'Cache-Control': 'no-cache'
-        }
+          'Cache-Control': 'no-cache',
+        },
       });
       const res2 = response.clone();
       try {
@@ -37,38 +36,40 @@ const CalendarComponent = (props) => {
       }
     };
     // setAppointments([dummyData]);
-    getAppointments().catch(err => console.log(err));
+    getAppointments().catch((err) => console.log(err));
   }, [email]);
 
   function onPanelChange(value, mode) {
     console.log(value, mode);
   }
-  
+
   return (
     <div className='CalendarComponent'>
-      <div className="site-calendar-demo-card">
-        
-    {/* <Calendar fullscreen={false} onPanelChange={onPanelChange} dateCellRender={dateCellRender}/> */}
-    <ReactCalendar calendarType="US"
-              oneWeekCalendar={true}
-              tileClassName={({ date, view }) => {
-                if(
-                (appointments.map((appointment, index) => (
-                  moment(appointment.time).format("DD-MM-YYYY")
-                ))).find(x=>x===moment(date).format("DD-MM-YYYY")))
-                {
-                  return  'highlight'
-                  }
-            }}
-              />
-  </div>
-  <p></p>
+      <div className='site-calendar-demo-card'>
+        {/* <Calendar fullscreen={false} onPanelChange={onPanelChange} dateCellRender={dateCellRender}/> */}
+        <ReactCalendar
+          calendarType='US'
+          oneWeekCalendar={true}
+          tileClassName={({ date, view }) => {
+            if (
+              appointments
+                .map((appointment, index) =>
+                  moment(appointment.time).format('DD-MM-YYYY')
+                )
+                .find((x) => x === moment(date).format('DD-MM-YYYY'))
+            ) {
+              return 'highlight';
+            }
+          }}
+        />
+      </div>
+      <p></p>
       <Link to='/NewAppointment'>
-      <Button type='primary' size='large'>Request an Appointment</Button>
+        <Button type='primary' size='large'>
+          Request an Appointment
+        </Button>
       </Link>
     </div>
   );
 };
 export default CalendarComponent;
-
-

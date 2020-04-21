@@ -8,7 +8,7 @@ import CalendarComponent from '../../components/CalendarComponent/CalendarCompon
 import { PromiseProvider } from 'mongoose';
 //import { Row, Col} from 'antd';
 
-const User = props => {
+const User = (props) => {
   const [nextAppointment, setNextAppointment] = useState({});
 
   const styles = {
@@ -42,11 +42,9 @@ const User = props => {
                 {/* <p className='site-card-demo-inner-p'>All Apointments</p> */}
                 <Appointments
                   email={props.email}
-                  setNextAppointment={e => setNextAppointment(e)}
+                  setNextAppointment={(e) => setNextAppointment(e)}
                 />
               </Card>
-              <p>{'\n'}</p>
-              <p>{'\n'}</p>
             </Col>
             {/* </div> */}
             <Col span={1}>
@@ -66,3 +64,5 @@ const User = props => {
 };
 
 export default User;
+
+

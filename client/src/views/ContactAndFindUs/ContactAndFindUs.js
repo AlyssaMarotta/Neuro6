@@ -28,7 +28,7 @@ const ContactAndFindUs = () => {
               Referrals (New Patients):{' '}
               <a href='tel:352-273-6990'>352-273-6990</a>
               <p>
-                Main Office: <a href='tel:352-273-9000'>3352-273-9000</a>
+                Main Office: <a href='tel:352-273-9000'>352-273-9000</a>
               </p>
             </div>
           </Panel>
@@ -48,32 +48,29 @@ const ContactAndFindUs = () => {
           </Panel>
           <Panel header='Transportation' key='4'>
             <div style={{ marginLeft: '5%', marginRight: '5%' }}>
-              Gainesville Regional Airport Air Charity Network (877) 621-7177
+              Gainesville Regional Airport Air Charity Network{' '}
+              <a href='tel:877-621-7177'>877-621-7177</a>
               Gainesville Bus Schedules (RTS)
             </div>
           </Panel>
         </Collapse>
       </Card>
-
       <Card
         bordered={false}
         style={{ justifyContent: 'center', textAlign: 'center' }}
       >
-        <p>
-          <Button
-            type='primary'
-            onClick={() => {
-              window.open(
-                'https://www.google.com/maps/dir//1505+SW+Archer+Rd,+Gainesville,+FL'
-              );
-            }}
-          >
-            Open Directions in Google Maps
-          </Button>
-        </p>
-        <p>
-          
-        </p>
+        <Button
+          type='primary'
+          onClick={() => {
+            window.open(
+              'https://www.google.com/maps/dir//1505+SW+Archer+Rd,+Gainesville,+FL'
+            );
+          }}
+        >
+          Open Directions in Google Maps
+        </Button>
+
+        <p> </p>
         <p>
           <Map />
         </p>
@@ -83,3 +80,4 @@ const ContactAndFindUs = () => {
 };
 
 export default ContactAndFindUs;
+
