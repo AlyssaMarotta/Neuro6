@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import './ConfirmCancel.css';
-import { Button } from 'antd';
+import { Button, Card } from 'antd';
 var ObjectId = require('mongoose').Types.ObjectId; 
 
 
@@ -44,12 +44,14 @@ const ConfirmCancel = (props) => {
         <div className='popup'>
             
         <div className='popup_inner'>
+          <Card style = {{background: 'white'}}>
         <h1>Are you sure you want to cancel {props.text}</h1>
         <Link to={'/User'}>
           <Button type='primary' size='large' onClick={handleDeleteAppointment}>Yes, Cancel</Button>
         </Link>
         
         <Button type='primary' size='large' onClick={props.closePopup}>No, Close</Button>
+        </Card>
         </div>
       </div>
     );

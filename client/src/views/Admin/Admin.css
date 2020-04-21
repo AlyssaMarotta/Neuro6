@@ -1,5 +1,4 @@
 
-
 .App-header-Admin
 {
     min-height: 100vh;
@@ -41,5 +40,8 @@
 
   .AdminCalendarComponent
   {
-    width: 300px;	    width: 300px;
-  }	  
+    width: 300px;     width: 300px;
+  }   
+  .AdminNewUsersComponent {
+    width: 200px;
+  }

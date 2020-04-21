@@ -14,11 +14,9 @@ const Reminders = props => {
   return (
     // <div className='Reminders'>
     <div>
-      <PageHeader
-        title={title && `Reminders for ${title}`}
-      >
-        {time && <Statistic value={moment(time).format('LLLL')} />}
-      </PageHeader>
+        <h4> {title && `Reminders for ${title}`}</h4>
+        <p>{time && moment(time).format('LLLL')}</p>
+        {/* (<Statistic value={moment(time).format('LLLL')} />} */}
         {/* Reminders */}
       {reminders ?
         reminders.map((reminder, index) => (
