@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import './CreateUserAdmin.css';
 import { Input, Button, Modal, Form,  Radio } from 'antd';
+import axios from 'axios';
 
 const CreateUserAdmin= (props) => {
 
@@ -26,14 +27,11 @@ const CreateUserAdmin= (props) => {
         const handleSubmit = e => {
           //sourced from https://medium.com/@maison.moa/setting-up-an-express-backend-server-for-create-react-app-bc7620b20a61
           const createAccount = async () => {
-            const response = await fetch('/create-account', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(formData)
-            });
-            const body = await response.json();
+            const response = await axios.post('/create-account', formData);
+            const body = response.data;
       
             if (response.status !== 200) {
+              alert('There was an error with creating your account');
               throw Error(body.error);
             }
       

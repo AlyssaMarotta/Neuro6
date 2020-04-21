@@ -110,7 +110,7 @@ const Admin = () => {
 
   useEffect(() => {
     const getAppointments = async () => {
-      const appointmentResponse = await fetch('/appointmentsgetall', {});
+      const appointmentResponse = await fetch('/appointmentsgetall');
       try {
         const body = await appointmentResponse.json();
         if (appointmentResponse.status !== 200) throw Error(body.error);
@@ -125,8 +125,7 @@ const Admin = () => {
   useEffect(() => {
     const getAppointmentRequests = async () => {
       const appointmentRequestResponse = await fetch(
-        '/appointmentrequestsgetall',
-        {}
+        '/appointmentrequestsgetall'
       );
       try {
         const body = await appointmentRequestResponse.json();
@@ -187,7 +186,7 @@ const Admin = () => {
 
   useEffect(() => {
     const getUsers = async () => {
-      const userResponse = await fetch('/usersgetall', {});
+      const userResponse = await fetch('/usersgetall');
       try {
         const body = await userResponse.json();
         if (userResponse.status !== 200) throw Error(body.error);
