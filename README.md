@@ -51,19 +51,19 @@ We used the MERN technology stack (MongoDB, Express.js, React.js, and Node.js) t
 ## APIs
 
 * CRUD
-* * RESTful API implemented using Express, connecting to MongoDB.
+  * RESTful API implemented using Express, connecting to MongoDB.
 * crypto
-* * npm library used for generating random strings and hashing.
-* * Used for generating salts for passwords and hashing them to securely store passwords.
+  * npm library used for generating random strings and hashing.
+  * Used for generating salts for passwords and hashing them to securely store passwords.
 * node-cron
-* * npm cron-job library for scheduling events.
-* * While not fully implemented in the project, its purpose is to send scheduled reminders to patients with upcoming appointments.
+  * npm cron-job library for scheduling events.
+  * While not fully implemented in the project, its purpose is to send scheduled reminders to patients with upcoming appointments.
 * Google Maps
-* * Used to display the maps within appointments and the contact and find us page.
-* * The API key will need to be updated with a key that is attatched to a credit card
+  * Used to display the maps within appointments and the contact and find us page.
+  * The API key will need to be updated with a key that is attatched to a credit card
 * Mailgun
-* * Mailgun is a service for sending emails.
-* * While not implemented in the project, Mailgun would be used to send emails to patients regarding approved appointment requests, appointment reminders, and appointment delays.
+  * Mailgun is a service for sending emails.
+  * While not implemented in the project, Mailgun would be used to send emails to patients regarding approved appointment requests, appointment reminders, and appointment delays.
 * Twilio
-* * Twilio is a service for sending SMS.
-* * While not implemented in the project, Twilio would be used to send text messages to patients regarding approved appointment requests, appointment reminders, and appointment delays.
+  * Twilio is a service for sending SMS.
+  * While not implemented in the project, Twilio would be used to send text messages to patients regarding approved appointment requests, appointment reminders, and appointment delays.
