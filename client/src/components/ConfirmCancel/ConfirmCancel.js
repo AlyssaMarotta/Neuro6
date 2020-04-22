@@ -18,13 +18,15 @@ const ConfirmCancel = props => {
       const response = await axios.delete('/appointments', { id: data._id });
       const body = response.data;
       if (response.status !== 200) {
-        alert('Failed delete Appointment');
         throw Error(body.error);
       } else {
         setSubmitted(true);
       }
     };
-    deleteAppointment().catch(err => console.log(err));
+    deleteAppointment().catch(err => {
+      alert('Failed to delete appointment');
+      console.log(err);
+    });
   };
 
   if (submitted) return <Redirect to={'/user'} />;

@@ -31,14 +31,16 @@ const Appointments = props => {
       const response = await axios.post(`/appointments/${email}`);
       const body = response.data;
       if (response.status !== 200) {
-        alert('Something went wrong when getting your appointments');
         throw Error(body.error);
       }
       console.log(body);
       setAppointments(body.appointments || []);
     };
     // setAppointments([dummyData]);
-    getAppointments().catch(err => console.log(err));
+    getAppointments().catch(err => {
+      alert('Something went wrong when getting your appointments');
+      console.log(err);
+    });
   }, [email]);
 /*
   const handleAddAppointment = appointment => {

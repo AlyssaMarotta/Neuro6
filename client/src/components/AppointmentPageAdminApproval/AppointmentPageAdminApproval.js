@@ -82,14 +82,16 @@ const AppointmentPageAdminApproval = props => {
       });
       const body = response.data;
       if (response.status !== 200) {
-        alert('Failed update Appointment');
         throw Error(body.error);
       }
       console.log(body);
       console.log(remindersS);
       props.onCancel();
     };
-    updateAppointment().catch(err => console.log(err));
+    updateAppointment().catch(err => {
+      alert('Failed update Appointment');
+      console.log(err);
+    });
   };
   //working
   const handleApproveAppointment = () => {
@@ -101,14 +103,16 @@ const AppointmentPageAdminApproval = props => {
       });
       const body = response.data;
       if (response.status !== 200) {
-        alert('Failed to approve Appointment');
         throw Error(body.error);
       }
       console.log(body);
       console.log(remindersS);
       props.onCancel();
     };
-    approveAppointment().catch(err => console.log(err));
+    approveAppointment().catch(err => {
+      alert('Failed to approve Appointment');
+      console.log(err);
+    });
   };
 
   const formItemLayout = {

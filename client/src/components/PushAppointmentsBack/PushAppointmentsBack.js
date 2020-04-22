@@ -24,7 +24,10 @@ const PushAppointmentsBack = props => {
       props.onCancel();
     };
 
-    pushBack().catch(err => console.log(err));
+    pushBack().catch(err => {
+      alert('There was a problem pushing back the appointments');
+      console.log(err);
+    });
   };
   function onChange(value) {
     setTime(value);

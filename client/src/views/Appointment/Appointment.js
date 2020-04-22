@@ -26,14 +26,16 @@ function Appointment(props) {
       const response = await axios.post(`/appointment/${props.match.params.id}`);
       const body = response.data;
       if (response.status !== 200) {
-        alert('There was an issue with viewing this appointment');
         throw Error(body.error);
       }
       console.log(body);
       setAppointment(body);
     };
     // setAppointments([dummyData]);
-    getAppointments().catch((err) => console.log(err));
+    getAppointments().catch((err) => {
+      alert('There was an issue with viewing this appointment');
+      console.log(err);
+    });
   }, [email]);
 
   return (

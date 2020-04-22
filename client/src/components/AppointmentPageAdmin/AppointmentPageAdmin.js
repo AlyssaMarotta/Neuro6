@@ -74,14 +74,16 @@ const AppointmentPageAdmin = props => {
       });
       const body = response.data;
       if (response.status !== 200) {
-        alert('Failed update Appointment');
         throw Error(body.error);
       }
       console.log(body);
       console.log(remindersS);
       props.onCancel();
     };
-    updateAppointment().catch(err => console.log(err));
+    updateAppointment().catch(err => {
+      alert('Failed update Appointment');
+      console.log(err);
+    });
   };
 
   const formItemLayout = {
