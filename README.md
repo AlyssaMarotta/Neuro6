@@ -2,6 +2,8 @@
 
 Web app for the Lillian S. Wells Department of Neurosurgery at the University of Florida.
 
+[Link to the deployed Heroku App](http://neuro6.herokuapp.com/)
+
 ## Client
 
 Lillian S. Wells Department of Neurosurgery at the University of Florida
