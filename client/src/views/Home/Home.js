@@ -15,7 +15,7 @@ const Home = () => {
       <header className='App-header'>
         <img
           className='FrontImage'
-          src={'/UFHealthBuilding.jpg'}
+          src={'http://neuro6.herokuapp.com/UFHealthBuilding.jpg'}
           alt='Uf Health Building'
         />
         {/* <div className='Image-background'> */}

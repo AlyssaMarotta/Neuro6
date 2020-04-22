@@ -42,7 +42,6 @@ const Login = props => {
       const body = response.data;
 
       if (response.status !== 200) {
-        alert('Wrong username or password');
         throw Error(body.error);
       }
 
@@ -55,7 +54,10 @@ const Login = props => {
       props.set(email);
     };
 
-    login().catch(err => console.log(err));
+    login().catch(err => {
+      alert('Wrong email or password');
+      console.log(err);
+    });
   };
 
   if (props.authorized) return <Redirect to={'/User'} />;

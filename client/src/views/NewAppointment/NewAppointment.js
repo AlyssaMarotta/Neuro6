@@ -67,13 +67,15 @@ const NewAppointment = (props) => {
       const response = await axios.post('/appointments', formData);
       const body = response.data;
       if (response.status !== 200) {
-        alert('Failed add Appointment');
         throw Error(body.error);
       } else {
         setSubmitted(true);
       }
     };
-    addAppointment().catch((err) => console.log(err));
+    addAppointment().catch((err) => {
+      alert('Failed to add appointment');
+      console.log(err)
+    });
   };
   if (submitted) return <Redirect to={'/user'} />;
   return (

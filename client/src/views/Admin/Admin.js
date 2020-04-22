@@ -117,12 +117,14 @@ const Admin = () => {
       const response = await axios.post('/appointmentsgetall');
       const body = response.data;
       if (response.status !== 200) {
-        alert('There was an issue with getting appointments');
         throw Error(body.error);
       }
       updateAppointment(body.appointments);
     };
-    getAppointments().catch(err => console.log(err));
+    getAppointments().catch(err => {
+      alert('There was an issue with getting appointments');
+      console.log(err);
+    });
   }, []);
 
   useEffect(() => {
@@ -130,12 +132,14 @@ const Admin = () => {
       const response = await axios.post('/appointmentrequestsgetall');
       const body = response.data;
       if (response.status !== 200) {
-        alert('There was an issue getting appointment requests');
         throw Error(body.error);
       }
       updateAppointmentReq(body.appointmentReqs);
     };
-    getAppointmentRequests().catch(err => console.log(err));
+    getAppointmentRequests().catch(err => {
+      alert('There was an issue getting appointment requests');
+      console.log(err)
+    });
   }, []);
 
   let filteredAppointments = appointments.filter(directory => {
@@ -189,12 +193,14 @@ const Admin = () => {
       const response = await axios.post('/usersgetall');
       const body = response.data;
       if (response.status !== 200) {
-        alert('There was an issue when trying to get all users');
         throw Error(body.error);
       }
       updateUsers(body.users);
     };
-    getUsers().catch(err => console.log(err));
+    getUsers().catch(err => {
+      alert('There was an issue when trying to get all users');
+      console.log(err)
+    });
   }, []);
 
   function onPanelChange(value, mode) {
