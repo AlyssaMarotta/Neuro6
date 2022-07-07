@@ -9,7 +9,7 @@
     "google-map-react": "^1.1.7",
     "http-proxy-middleware": "^1.0.3",
     "mailgun.js": "^2.0.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "^16.10.1",
     "react-bootstrap": "^1.0.0-beta.17",
     "react-calendar": "^3.0.0",
